@@ -1,17 +1,25 @@
 
-import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
+
+import 'package:StreetSpot/controller/user_controller.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient extends GetxService {
 
+  final UserController userController = Get.find<UserController>();
   
   Future<http.Response> post({
   required String url,
   Object? body,
 }) async {
+
+    final headers = {
+      "Content-Type": "application/json",
+   "Authorization": "Bearer ${userController.token.value}",
+  };
   return await http.post(
     Uri.parse(url),
-    headers: {"Content-Type": "application/json"},
+    headers: headers,
     body: body,
   );
 }

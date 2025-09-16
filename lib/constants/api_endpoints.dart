@@ -1,7 +1,7 @@
 class ApiEndpoints {
   // static const baseApiURL = 'https://apistreetspot.myftp.org/v1/api';
 
-  static const baseApiURL = 'http://31.220.31.37:3000/vi/api';
+  static const baseApiURL = 'http://31.220.31.37:3000/v1/api';
 
   static const signup = '$baseApiURL/auth/sign-up';
   static const login = '$baseApiURL/auth/sign-in';

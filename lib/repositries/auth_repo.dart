@@ -21,9 +21,10 @@ class AuthRepository extends GetxController {
   }) async {
     try {
       
-      log(user.toJson().toString());
       final response =
-          await apiClient.signup(url: ApiEndpoints.signup, body: user.toJson());
+          await apiClient.signup(url: ApiEndpoints.signup,  
+          body: user.toJson(),
+);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
@@ -32,7 +33,6 @@ class AuthRepository extends GetxController {
           final data = responseData['data'];
           final token = data['access_token']; // ✅ correct field
           final userData = data['user']; // ✅ cokkrect field
-          //  authController.otp.value = userData["otp"];
           final registeredUser = UserModel.fromJson(userData);
 
           await userController.saveUserSessionFromResponse(
@@ -62,7 +62,6 @@ class AuthRepository extends GetxController {
     required Function(String message) onError,
   }) async {
     try {
-      log("hitting login api");
       final response = await apiClient.login(
         url: ApiEndpoints.login,
         body: {
@@ -70,13 +69,15 @@ class AuthRepository extends GetxController {
           'password': password,
         },
       ).timeout(const Duration(seconds: 15));
-      log(response.body);
+      // log(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
+     
         final responseData = jsonDecode(response.body);
 
         if (responseData['success'] == true) {
           final data = responseData['data'];
           final token = data['access_token'];
+          log("token value$token");
           final userData = data['user'];
 
           final user = UserModel.fromJson(userData);

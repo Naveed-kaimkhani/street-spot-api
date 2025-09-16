@@ -29,7 +29,7 @@ class UserModel {
       profilePicture: json['profile_picture'] ?? "",
       role: json['role'] ?? '',
 
-      otp: json['otp'] ?? '',
+      // otp: json['otp'] ?? '',
     );
   }
   Map<String, dynamic> toJson() {

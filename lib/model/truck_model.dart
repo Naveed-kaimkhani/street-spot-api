@@ -22,13 +22,11 @@ class WeeklySchedule {
       "day": day,
       "startTime": startTime,
       "endTime": endTime,
-       "latitude": latitude,
-       "longitude": longitude,
-
+      //  "latitude": latitude,
+      //  "longitude": longitude,
+ "latitude": 123.0,
+     "longitude": 123.0,
     "address": address,
-      // if (latitude != null) "latitude": 123.0,
-      // if (longitude != null) "longitude": 123.0,
-      // if (address != null) "address": address,
     };
   }
 }

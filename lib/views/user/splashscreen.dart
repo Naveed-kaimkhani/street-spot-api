@@ -90,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
           userController.currentUser != null) {
         Get.offAll(() => Dashboardscreen());
       } else {
-        Get.offAll(() => Dashboardscreen());
+        Get.offAll(() => UserSellerPage());
       }
     });
   }

@@ -32,7 +32,7 @@ class AuthController extends GetxController {
   // register User
   void registerUser({required UserModel user}) {
     isLoading.value = true;
-
+log("in register user");
     authRepo.registerUser(
       user: user,
       onSuccess: () {
@@ -62,9 +62,7 @@ class AuthController extends GetxController {
         isLoading.value = false;
 
         Get.snackbar("Success", "Login successful", colorText: Colors.black);
-        // Get.offAllNamed(RouteName
-        //     .bottomNavigation); // Navigate to home or dashboard after login
-        Get.offAllNamed(AppRouteName.emailverification);
+        Get.toNamed(AppRouteName.dashboardscreen);
       },
       onError: (message) {
         isLoading.value = false;

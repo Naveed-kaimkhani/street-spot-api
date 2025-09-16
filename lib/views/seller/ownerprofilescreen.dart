@@ -850,7 +850,7 @@ Future<void> _selectTime(
                   // }
 
                   // // ✅ safe to proceed
-                  // controller.submitTruckInfo();
+                  // // controller.submitTruckInfo();
                   
                   controller.submitTruckInfo();
                 },

@@ -18,7 +18,7 @@ class UserController extends GetxController {
     getUserFromPrefs(); // Load session on init
   }
 
-  Future<void> saveUserSessionFromResponse(UserModel userModel, String token) async {
+  Future<void> saveUserSessionFromResponse(UserModel userModel, String userToken) async {
  
     await prefs.setInt('id', userModel.id ?? 0);
     await prefs.setString('first_name', userModel.name);
@@ -26,21 +26,17 @@ class UserController extends GetxController {
     await prefs.setString('avatar_url', userModel.profilePicture ?? "");
 
     await prefs.setString('otp', userModel.otp ?? "");
-    await prefs.setString('token', token);
-
+    await prefs.setString('token', userToken);
+token.value=userToken;
      user.value = userModel;
   }
 
   Future<void> getUserFromPrefs() async {
-    final id = prefs.getInt('id');
+    final id =  prefs.getInt('id');
     final name = prefs.getString('first_name');
-
     final email = prefs.getString('email');
-
     final role = prefs.getString('role');
-    token.value = prefs.getString('token') ?? '';
-
-    token.value = prefs.getString('otp') ?? '';
+    token.value =  prefs.getString('token') ?? '';
 
 
     
