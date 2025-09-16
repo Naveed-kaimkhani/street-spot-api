@@ -1,0 +1,594 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:StreetSpot/custom_widgets/custom_button.dart';
+import 'package:StreetSpot/custom_widgets/custom_text.dart';
+import 'package:StreetSpot/utils/app_colors.dart';
+import 'package:StreetSpot/utils/app_fonts.dart';
+import 'package:get/get.dart';
+
+import '../../routes/route_name.dart';
+
+// Sample data model
+class Recommendation {
+  final String imageUrl;
+  final String title;
+  final String rating;
+  final String distance;
+  final String price;
+  final String reviews;
+
+  Recommendation({
+    required this.imageUrl,
+    required this.title,
+    required this.rating,
+    required this.distance,
+    required this.price,
+    required this.reviews,
+  });
+}
+
+class BurgerDetailsPage extends StatelessWidget {
+  // Sample recommendation list
+  final List<Recommendation> recommendations = [
+    Recommendation(
+      imageUrl: 'assets/images/ordinaryburger.png',
+      title: 'Ordinary Burgers',
+      rating: '4.9',
+      distance: '190m',
+      price: '\$18,230',
+      reviews: '137 x 106',
+    ),
+    Recommendation(
+      imageUrl: 'assets/images/burger2.png',
+      title: 'Ordinary Burgers',
+      rating: '4.9',
+      distance: '190m',
+      price: '\$17,230',
+      reviews: '',
+    ),
+    Recommendation(
+      imageUrl: 'assets/images/ordinaryburger.png',
+      title: 'Ordinary Burgers',
+      rating: '4.9',
+      distance: '190m',
+      price: '\$27,230',
+      reviews: '137 x 106',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: 300,
+                    child: Image.asset(
+                      'assets/images/burgerimg.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Smoky BBQ Burger',
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                height: 6.h,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ShaderMask(
+                                    shaderCallback: (bounds) => LinearGradient(
+                                      colors: [
+                                        AppColors.klineargradient1,
+                                        AppColors.klineargradient2
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ).createShader(bounds),
+                                    child: Text(
+                                      '\$12.20',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  Row(children: [
+                                    Image.asset(
+                                      "assets/images/staricon.png",
+                                      height: 19,
+                                    ),
+                                    CustomText(
+                                      text: "Free Delivery",
+                                      fontsize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.APP_GRAY_COLOR,
+                                    )
+                                  ]),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 6.h,
+                              ),
+                              Row(
+                                children: [
+                                  Row(children: [
+                                    Image.asset(
+                                      "assets/images/staricon.png",
+                                      height: 19,
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    CustomText(
+                                      text: "4.5",
+                                      fontsize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.APP_GRAY_COLOR,
+                                    )
+                                  ]),
+                                  SizedBox(
+                                    width: 6.w,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/clocktime.png",
+                                        height: 16,
+                                      ),
+                                      SizedBox(
+                                        width: 2.w,
+                                      ),
+                                      CustomText(
+                                        text: "20 - 30",
+                                        fontsize: 14.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.APP_GRAY_COLOR,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 16.h),
+                              CustomText(
+                                text: "Description",
+                                fontsize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              SizedBox(
+                                height: 4.h,
+                              ),
+                              CustomText(
+                                text:
+                                    "Burger With Meat is a typical food from our restaurant that is much in demand by many people, this is very recommended for you.",
+                                fontsize: 14.0,
+                              ),
+                              SizedBox(height: 7.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Recommended For You',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: Text('See All',
+                                        style: TextStyle(color: Colors.orange)),
+                                  ),
+                                ],
+                              ),
+                              // Using ListView.builder for horizontal recommendations
+                              Container(
+                                height: 210,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: recommendations.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Container(
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 2,
+                                              blurRadius: 5,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                      top: Radius.circular(10)),
+                                              child: Image.asset(
+                                                recommendations[index].imageUrl,
+                                                fit: BoxFit.cover,
+                                                height: 120,
+                                                width: 150,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    recommendations[index]
+                                                        .title,
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                  SizedBox(height: 6.h),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Icon(Icons.star,
+                                                              color:
+                                                                  Colors.amber,
+                                                              size: 16),
+                                                          Text(
+                                                            recommendations[
+                                                                    index]
+                                                                .rating,
+                                                            style: TextStyle(
+                                                                fontSize: 14),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Icon(
+                                                              Icons.location_on,
+                                                              color:
+                                                                  Colors.orange,
+                                                              size: 16),
+                                                          Text(
+                                                            recommendations[
+                                                                    index]
+                                                                .distance,
+                                                            style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .grey),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 8.h),
+                                                  ShaderMask(
+                                                    shaderCallback: (bounds) =>
+                                                        LinearGradient(
+                                                      colors: [
+                                                        AppColors
+                                                            .klineargradient1,
+                                                        AppColors
+                                                            .klineargradient2
+                                                      ],
+                                                      begin: Alignment.topLeft,
+                                                      end:
+                                                          Alignment.bottomRight,
+                                                    ).createShader(bounds),
+                                                    child: Text(
+                                                      recommendations[index]
+                                                          .price,
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 15),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Ratings & Reviews (273)',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 12.h),
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    color: Colors.white,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Summary',
+                                                style: TextStyle(fontSize: 16)),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '4.5 ',
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Icon(Icons.star,
+                                                    color: Colors.pink,
+                                                    size: 16),
+                                                SizedBox(width: 5),
+                                                Text('273 Reviews',
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.grey)),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Column(
+                                          children: [
+                                            _buildRatingBar(
+                                                5, 0.9), // 5-star rating
+                                            _buildRatingBar(
+                                                4, 0.7), // 4-star rating
+                                            _buildRatingBar(
+                                                3, 0.5), // 3-star rating
+                                            _buildRatingBar(
+                                                2, 0.3), // 2-star rating
+                                            _buildRatingBar(
+                                                1, 0.1), // 1-star rating
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('88% Recommended',
+                                                style: TextStyle(fontSize: 16)),
+                                            OutlinedButton(
+                                              onPressed: () {},
+                                              child: Text('Write a review',
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                              style: OutlinedButton.styleFrom(
+                                                side: BorderSide(
+                                                    color: Colors.grey),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      height: 60
+                                          .h), // Added extra space to ensure scrollable content goes under sticky bar
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Back Arrow and Favorite Icon
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white.withOpacity(0.7),
+                        child: Icon(Icons.arrow_back, color: Colors.black),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Add favorite functionality here
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white.withOpacity(0.7),
+                        child: Icon(Icons.favorite_border, color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Sticky Add to Cart Section
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, -2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.white,
+                          child: IconButton(
+                            icon: Icon(Icons.remove),
+                            onPressed: () {},
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          '4',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 10),
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.white,
+                          child: IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                    CustomButton(
+                      buttonColor: Colors.orange,
+                      onTap: () {
+                        Get.toNamed(AppRouteName.CHECKOUTs_SCREEN_ROUTE);
+                        // AppNavigation.navigateCloseDialog(context);
+                      },
+                      buttonText: 'Add to Cart',
+                      fontSize: 14.sp,
+                      borderRadius: 20,
+                      fontFamily: AppFonts.plusJakartaSansRegular,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRatingBar(int stars, double fill) {
+    return Row(
+      children: [
+        Text('$stars', style: TextStyle(fontSize: 16)),
+        SizedBox(width: 10),
+        Expanded(
+          child: Stack(
+            children: [
+              Container(
+                height: 10,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              FractionallySizedBox(
+                widthFactor: fill,
+                child: Container(
+                  height: 10,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.pink, Colors.orange],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class RecommendationItem extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String price;
+
+  RecommendationItem(
+      {required this.imageUrl, required this.title, required this.price});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(imageUrl, width: 50, height: 50),
+          Text('$title - $price'),
+        ],
+      ),
+    );
+  }
+}
