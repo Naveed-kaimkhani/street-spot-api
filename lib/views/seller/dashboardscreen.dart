@@ -1,3 +1,4 @@
+import 'package:StreetSpot/controller/DashboardController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/custom_widgets/custom_text.dart';
@@ -14,6 +15,8 @@ class Dashboardscreen extends StatefulWidget {
 }
 
 class _DashboardscreenState extends State<Dashboardscreen> {
+  final DashboardController controller = Get.find<DashboardController>();
+
   final List<Map<String, String>> _products = [
     {
       'name': 'Broast',
@@ -64,411 +67,425 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.zero,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 22.h),
-            // Profile Section
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRouteName.truckownerscreen);
-              },
-              child: Container(
-                width: double.infinity,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Stack(
-                      alignment: Alignment.centerRight,
+        backgroundColor: Colors.white,
+        body: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final data = controller.dashboardData.value;
+          if (data == null || data.menuItems.isEmpty) {
+            return const Center(child: Text("No menu items available"));
+          }
+          final products = data.menuItems;
+          return SingleChildScrollView(
+            padding: EdgeInsets.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 22.h),
+                // Profile Section
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(AppRouteName.truckownerscreen);
+                  },
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Center(
-                          child: Container(
-                            width: 80.w,
-                            height: 80.h,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xffFEF2F2),
+                        Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            Center(
+                              child: Container(
+                                width: 80.w,
+                                height: 80.h,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xffFEF2F2),
+                                ),
+                                child: Image.asset("assets/images/Alice.png"),
+                              ),
                             ),
-                            child: Image.asset("assets/images/Alice.png"),
-                          ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 16.w),
+                              child: Container(
+                                width: 50.r,
+                                height: 50.r,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.grey[200],
+                                ),
+                                child: Icon(
+                                  Icons.settings,
+                                  size: 26.r,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 16.w),
-                          child: Container(
-                            width: 50.r,
-                            height: 50.r,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey[200],
-                            ),
-                            child: Icon(
-                              Icons.settings,
-                              size: 26.r,
-                              color: Colors.black,
-                            ),
-                          ),
+                        SizedBox(height: 12.h),
+                        CustomText(
+                          text: 'Arya Muller',
+                          fontsize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          textAlign: TextAlign.center,
+                          isLeftAlign: false, // Ensure centering
+                        ),
+                        SizedBox(height: 12.h),
+                        CustomText(
+                          text: 'Overview Stats',
+                          fontsize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          gradientColors: const [
+                            AppColors.klineargradient1,
+                            AppColors.klineargradient2,
+                          ],
+                          textAlign: TextAlign.center,
+                          isLeftAlign: false, // Ensure centering
                         ),
                       ],
                     ),
-                    SizedBox(height: 12.h),
-                    CustomText(
-                      text: 'Arya Muller',
-                      fontsize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      textAlign: TextAlign.center,
-                      isLeftAlign: false, // Ensure centering
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                // Overview Stats
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(12.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/images/followers.png",
+                            height: 20.h,
+                            fit: BoxFit.contain,
+                          ),
+                          SizedBox(width: 8.w),
+                          CustomText(
+                            text: '1k Followers',
+                            fontsize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 12.h),
-                    CustomText(
-                      text: 'Overview Stats',
-                      fontsize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      gradientColors: [
-                        AppColors.klineargradient1,
-                        AppColors.klineargradient2,
-                      ],
-                      textAlign: TextAlign.center,
-                      isLeftAlign: false, // Ensure centering
+                    Container(
+                      padding: EdgeInsets.all(12.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/images/Vector.png",
+                            height: 20.h,
+                            fit: BoxFit.contain,
+                          ),
+                          SizedBox(width: 8.w),
+                          CustomText(
+                            text: '1000 USD Daily Sales',
+                            fontsize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            SizedBox(height: 12.h),
-            // Overview Stats
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+                SizedBox(height: 24.h),
+                // Graph with Syncfusion
                 Container(
-                  padding: EdgeInsets.all(12.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
+                  height: 200.h,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16.w),
+                  child: SfCartesianChart(
+                    primaryXAxis: const CategoryAxis(
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    primaryYAxis: const NumericAxis(
+                      isVisible: false,
+                    ),
+                    title: const ChartTitle(
+                      text: '1000 USD',
+                      textStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      alignment: ChartAlignment.near,
+                    ),
+                    series: <CartesianSeries<SalesData, String>>[
+                      LineSeries<SalesData, String>(
+                        dataSource: _chartData,
+                        xValueMapper: (SalesData sales, _) => sales.month,
+                        yValueMapper: (SalesData sales, _) => sales.sales,
+                        color: AppColors.klineargradient1,
+                        width: 2,
+                        markerSettings: const MarkerSettings(isVisible: true),
+                        dataLabelSettings:
+                            const DataLabelSettings(isVisible: false),
                       ),
                     ],
                   ),
-                  child: Row(
+                ),
+                // Popular Menu Items Horizontal ScrollView
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(
-                        "assets/images/followers.png",
-                        height: 20.h,
-                        fit: BoxFit.contain,
-                      ),
-                      SizedBox(width: 8.w),
                       CustomText(
-                        text: '1k Followers',
-                        fontsize: 12.sp,
-                        fontWeight: FontWeight.w400,
+                        text: 'Popular Menu Items',
+                        fontsize: 14.sp,
+                        fontWeight: FontWeight.w600,
                         color: Colors.black,
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(12.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/images/Vector.png",
-                        height: 20.h,
-                        fit: BoxFit.contain,
-                      ),
-                      SizedBox(width: 8.w),
-                      CustomText(
-                        text: '1000 USD Daily Sales',
-                        fontsize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 24.h),
-            // Graph with Syncfusion
-            Container(
-              height: 200.h,
-              width: double.infinity,
-              padding: EdgeInsets.all(16.w),
-              child: SfCartesianChart(
-                primaryXAxis: const CategoryAxis(
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                primaryYAxis: const NumericAxis(
-                  isVisible: false,
-                ),
-                title: const ChartTitle(
-                  text: '1000 USD',
-                  textStyle: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  alignment: ChartAlignment.near,
-                ),
-                series: <CartesianSeries<SalesData, String>>[
-                  LineSeries<SalesData, String>(
-                    dataSource: _chartData,
-                    xValueMapper: (SalesData sales, _) => sales.month,
-                    yValueMapper: (SalesData sales, _) => sales.sales,
-                    color: AppColors.klineargradient1,
-                    width: 2,
-                    markerSettings: const MarkerSettings(isVisible: true),
-                    dataLabelSettings: const DataLabelSettings(isVisible: false),
-                  ),
-                ],
-              ),
-            ),
-            // Popular Menu Items Horizontal ScrollView
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: 'Popular Menu Items',
-                    fontsize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                  SizedBox(height: 12.h),
-                  SizedBox(
-                    height: 120.h,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _products.length,
-                      itemBuilder: (context, index) {
-                        final product = _products[index];
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            right: 12.w,
-                            top: 8.h,
-                            bottom: 8.h,
-                            left: 4.w,
-                          ),
-                          child: Container(
-                            width: 100.w,
-                            height: 110.h,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16.r),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3),
+                      SizedBox(height: 12.h),
+                      SizedBox(
+                        height: 120.h,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _products.length,
+                          itemBuilder: (context, index) {
+                            final product = _products[index];
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                right: 12.w,
+                                top: 8.h,
+                                bottom: 8.h,
+                                left: 4.w,
+                              ),
+                              child: Container(
+                                width: 100.w,
+                                height: 110.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                  border: Border.all(
+                                      color: AppColors.klineargradient1,
+                                      width: 1),
                                 ),
-                              ],
-                              border: Border.all(
-                                  color: AppColors.klineargradient1, width: 1),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 70.h,
+                                      width: 70.w,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(12.r),
+                                        image: DecorationImage(
+                                          image: AssetImage(product['image']!),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 8.w),
+                                      child: CustomText(
+                                        text: product['name']!,
+                                        fontsize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                        textAlign: TextAlign.center,
+                                        isLeftAlign: false,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4.h),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Products Grid
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12.w,
+                      mainAxisSpacing: 12.h,
+                      childAspectRatio: 0.8,
+                    ),
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      final product = products[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
                               children: [
                                 Container(
-                                  height: 70.h,
-                                  width: 70.w,
+                                  height: 100.h,
+                                  width: double.infinity,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.r),
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(8.r)),
                                     image: DecorationImage(
-                                      image: AssetImage(product['image']!),
+                                      image: AssetImage(product.imageUrl),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 8.h),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                                  child: CustomText(
-                                    text: product['name']!,
-                                    fontsize: 14.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                    textAlign: TextAlign.center,
-                                    isLeftAlign: false,
+                                if ('new' == 'new')
+                                  Positioned(
+                                    top: 8.w,
+                                    left: 8.w,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8.w, vertical: 2.h),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius:
+                                            BorderRadius.circular(4.r),
+                                      ),
+                                      child: CustomText(
+                                        text: 'New Arrival',
+                                        fontsize: 10.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 4.h),
                               ],
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Products Grid
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12.w,
-                  mainAxisSpacing: 12.h,
-                  childAspectRatio: 0.8,
-                ),
-                itemCount: _products.length,
-                itemBuilder: (context, index) {
-                  final product = _products[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: 100.h,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(8.r)),
-                                image: DecorationImage(
-                                  image: AssetImage(product['image']!),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            if (product['type'] == 'new')
-                              Positioned(
-                                top: 8.w,
-                                left: 8.w,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8.w, vertical: 2.h),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(4.r),
-                                  ),
-                                  child: CustomText(
-                                    text: 'New Arrival',
-                                    fontsize: 10.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: product['name']!,
-                                fontsize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                              SizedBox(height: 4.h),
-                              CustomText(
-                                text: product['category']!,
-                                fontsize: 10.sp,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.grey,
-                              ),
-                              SizedBox(height: 8.h),
-                              Row(
+                            Padding(
+                              padding: EdgeInsets.all(8.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CustomText(
-                                    text: '15 mins',
-                                    fontsize: 12.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.grey,
-                                  ),
-                                  VerticalDivider(
-                                    color: Colors.grey,
-                                    thickness: 1,
-                                    width: 16.w,
-                                  ),
-                                  Icon(Icons.star,
-                                      size: 16.sp, color: Colors.yellow),
-                                  SizedBox(width: 4.w),
-                                  CustomText(
-                                    text: '12k',
-                                    fontsize: 12.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 8.h),
-                              Row(
-                                children: [
-                                  CustomText(
-                                    text: '\$19.99',
+                                    text:product.name,
                                     fontsize: 14.sp,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.black,
                                   ),
-                                  SizedBox(width: 8.w),
+                                  SizedBox(height: 4.h),
                                   CustomText(
-                                    text: '10% off',
-                                    fontsize: 12.sp,
+                                    text: "category",
+                                    fontsize: 10.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Colors.red,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    children: [
+                                      CustomText(
+                                        text: product.timeToMake.toString(),
+                                        fontsize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey,
+                                      ),
+                                      VerticalDivider(
+                                        color: Colors.grey,
+                                        thickness: 1,
+                                        width: 16.w,
+                                      ),
+                                      Icon(Icons.star,
+                                          size: 16.sp, color: Colors.yellow),
+                                      SizedBox(width: 4.w),
+                                      CustomText(
+                                        text: product.averageRating.toString(),
+                                        fontsize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    children: [
+                                      CustomText(
+                                        text: '\$${product.unitPrice}',
+                                        fontsize: 14.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      CustomText(
+                                        text: '10% off',
+                                        fontsize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.red,
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 24.h),
+              ],
             ),
-            SizedBox(height: 24.h),
-          ],
-        ),
-      ),
-    );
+          );
+        }));
   }
 }
 

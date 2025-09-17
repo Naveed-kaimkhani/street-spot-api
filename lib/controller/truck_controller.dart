@@ -24,6 +24,14 @@ class TruckController extends GetxController {
 
   final truckName = TextEditingController();
 
+  final foodName = TextEditingController();
+
+  final foodPrice = TextEditingController();
+
+
+  final foodDelievery = TextEditingController();
+
+  final foodDescription = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
   var selectedRating = "A".obs; // default value

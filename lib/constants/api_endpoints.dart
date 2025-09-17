@@ -13,6 +13,7 @@ class ApiEndpoints {
 
   static const  truckInformation = '$baseApiURL/truck-information/handler';
 
- 
+   static const  dashboard = '$baseApiURL/truck-information/dashboard';
+
  
 }

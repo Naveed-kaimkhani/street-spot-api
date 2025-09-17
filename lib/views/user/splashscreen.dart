@@ -56,11 +56,13 @@
 //   }
 // }
 
-
 // ignore_for_file: prefer_const_constructors
+
+import 'dart:developer';
 
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
+import 'package:StreetSpot/views/seller/AddMenuItemScreen.dart';
 import 'package:StreetSpot/views/seller/dashboardscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -86,8 +88,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () async {
       await userController.getUserFromPrefs();
 
-      if (userController.token.value.isNotEmpty &&
-          userController.currentUser != null) {
+      if (userController.token.value.isNotEmpty) {
         Get.offAll(() => Dashboardscreen());
       } else {
         Get.offAll(() => UserSellerPage());

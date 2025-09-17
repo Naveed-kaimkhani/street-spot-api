@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:StreetSpot/controller/truck_controller.dart';
 import 'package:StreetSpot/custom_widgets/day_dropdown.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,10 +9,7 @@ import 'package:StreetSpot/custom_widgets/custom_button.dart';
 import 'package:StreetSpot/custom_widgets/custom_text.dart';
 import 'package:StreetSpot/utils/app_colors.dart';
 import 'package:StreetSpot/utils/app_fonts.dart';
-import 'package:StreetSpot/views/seller/locationscreen.dart'
-    show Locationscreen;
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class TruckOwnerProfileScreen extends StatefulWidget {
   const TruckOwnerProfileScreen({super.key});
@@ -29,59 +25,6 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
   void dispose() {
     super.dispose();
   }
-
-  // Future<void> _selectTime(
-  //     BuildContext context, TextEditingController controller) async {
-  //   final TimeOfDay? picked = await showTimePicker(
-  //     context: context,
-  //     initialTime: TimeOfDay.now(),
-  //   );
-  //   if (picked != null) {
-  //     setState(() {
-  //       controller.text = picked.format(context); // e.g., 2:30 PM
-  //     });
-  //   }
-  // }
-
-
-
-// Future<void> _selectTime(
-//     BuildContext context, TextEditingController controller) async {
-//   if (Platform.isIOS) {
-//     // Cupertino style picker
-//     await showCupertinoModalPopup(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return Container(
-//           height: 250,
-//           color: Colors.white,
-//           child: CupertinoDatePicker(
-//             mode: CupertinoDatePickerMode.time,
-//             initialDateTime: DateTime.now(),
-//             use24hFormat: false,
-//             onDateTimeChanged: (DateTime dateTime) {
-//                  HapticFeedback.selectionClick();
-
-//               final hh = dateTime.hour.toString().padLeft(2, '0');
-//               final mm = dateTime.minute.toString().padLeft(2, '0');
-//               controller.text = "$hh:$mm"; // HH:mm
-              
-//             },
-//           ),
-//         );
-//       },
-//     );
-//   } else {
-//     // Material style picker
-//     final TimeOfDay? picked = await showTimePicker(
-//       context: context,
-//       initialTime: TimeOfDay.now(),
-//     );
-//     if (picked != null) {
-//       controller.text = picked.format(context);
-//     }
-//   }
-// }
 
 Future<void> _selectTime(
     BuildContext context, TextEditingController controller) async {
@@ -155,19 +98,6 @@ Future<void> _selectTime(
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: Padding(
-      //   padding: const EdgeInsets.only(left: 38.0, right: 38, bottom: 20),
-      //   // child: CustomButton(
-      //   //   buttonColor: Colors.green,
-      //   //   onTap: () {
-      //   //     // save logic
-      //   //   },
-      //   //   buttonText: 'Save',
-      //   //   fontSize: 14.sp,
-      //   //   borderRadius: 20,
-      //   //   fontFamily: AppFonts.plusJakartaSansRegular,
-      //   // ),
-      // ),
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
