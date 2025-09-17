@@ -5,6 +5,7 @@ import 'package:StreetSpot/constants/api_endpoints.dart';
 import 'package:StreetSpot/model/dashboard_model.dart';
 import 'package:get/get.dart';
 import '../services/api_client.dart';
+
 class DashboardRepository extends GetxController {
   final ApiClient apiClient;
   DashboardRepository({required this.apiClient});
@@ -16,11 +17,12 @@ class DashboardRepository extends GetxController {
   }) async {
     try {
       final response = await apiClient.get(
-        url: ApiEndpoints.dashboard, 
+        url: ApiEndpoints.dashboard,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final jsonData = jsonDecode(response.body);
+        log("Dashboard API Response: $jsonData"); // Debug log
         final dashboard = DashboardModel.fromJson(jsonData);
         onSuccess(dashboard);
       } else {

@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 class TruckController extends GetxController {
   final TruckRepository truckRepo;
-  TruckController({required this.truckRepo});
+  TruckController( {required this.truckRepo});
 
   RxBool isLoading = false.obs;
 
@@ -125,7 +125,7 @@ class TruckController extends GetxController {
       enableGpsTracking: enableManualLocation.value,
       weeklySchedule: weeklySchedules, // build list from your UI
     );
-
+print("submit check");
     isLoading.value = true;
     truckRepo.addTruckInformation(
       truck:truck ,

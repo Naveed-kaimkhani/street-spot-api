@@ -18,10 +18,6 @@ class _MainScreenState extends State<MainScreen> {
     const HomePage(),
      FavoritesListPage(),
     const Profilesettingscreen(),
-
-    // const UserManagementPage(),
-    // ReportAnalysisScreen(), // Assuming this represents History
-    // Profilesettingscreen(),
   ];
 
   void _onItemTapped(int index) {

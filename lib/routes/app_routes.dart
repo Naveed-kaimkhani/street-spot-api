@@ -13,8 +13,7 @@ import 'package:StreetSpot/views/user/checkoutpage.dart';
 import 'package:StreetSpot/views/user/detailpage.dart';
 import 'package:StreetSpot/views/user/homescreen.dart';
 import 'package:StreetSpot/views/user/location.dart';
-import 'package:StreetSpot/views/user/loginscreen.dart'
-    show TabScreen, LoginTab;
+
 import 'package:StreetSpot/views/user/notificationscreen.dart';
 import 'package:StreetSpot/views/profilepage/emailverification.dart';
 import 'package:StreetSpot/views/profilepage/forgotpassword.dart';
@@ -89,11 +88,7 @@ class AppRouters {
       page: () => const TruckOwnerProfileScreen(),
       curve: Curves.easeIn,
     ),
-    GetPage(
-      name: AppRouteName.LOGIN_SCREEN_ROUTE,
-      page: () => const LoginTab(),
-      curve: Curves.easeIn,
-    ),
+    
     GetPage(
       name: AppRouteName.profilepagescreen,
       page: () => const Profilesettingscreen(),

@@ -14,6 +14,7 @@ class ApiEndpoints {
   static const  truckInformation = '$baseApiURL/truck-information/handler';
 
    static const  dashboard = '$baseApiURL/truck-information/dashboard';
+   static const  logout = '$baseApiURL/auth/logout';
 
  
 }

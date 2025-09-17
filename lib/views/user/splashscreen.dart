@@ -64,6 +64,7 @@ import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
 import 'package:StreetSpot/views/seller/AddMenuItemScreen.dart';
 import 'package:StreetSpot/views/seller/dashboardscreen.dart';
+import 'package:StreetSpot/views/seller/sellerbottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
@@ -76,8 +77,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final UserController userController = Get.find<UserController>();
-
+  
+  final userController = Get.put(UserController());
   @override
   void initState() {
     super.initState();
@@ -89,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
       await userController.getUserFromPrefs();
 
       if (userController.token.value.isNotEmpty) {
-        Get.offAll(() => Dashboardscreen());
+        Get.offAll(() => Sellerbottombar());
       } else {
         Get.offAll(() => UserSellerPage());
       }

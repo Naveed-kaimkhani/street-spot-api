@@ -27,7 +27,6 @@ class DashboardController extends GetxController {
     );
   }
 
-
   @override
   void onInit() {
     super.onInit();

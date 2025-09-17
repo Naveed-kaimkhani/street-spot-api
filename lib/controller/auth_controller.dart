@@ -24,7 +24,7 @@ class AuthController extends GetxController {
   var otp = "".obs;
   final UserController userController = Get.find<UserController>();
 
-  // set user role
+// set user role
   void setRole(String role) {
     selectedRole.value = role;
   }
@@ -49,8 +49,7 @@ log("in register user");
     );
   }
 
-// auth_controller.dart
-  void loginUser({
+void loginUser({
     required String email,
     required String password,
   }) {
@@ -58,11 +57,15 @@ log("in register user");
     authRepo.loginUser(
       email: email,
       password: password,
-      onSuccess: () {
+      onSuccess: (UserModel user) {
         isLoading.value = false;
-
         Get.snackbar("Success", "Login successful", colorText: Colors.black);
-        Get.toNamed(AppRouteName.dashboardscreen);
+        // Navigate based on user role
+        if (user.role == 'TRUCK_OWNER') {
+          Get.toNamed(AppRouteName.sellerbottomnavbar);
+        } else {
+          Get.toNamed(AppRouteName.bottomnavbar);
+        }
       },
       onError: (message) {
         isLoading.value = false;
@@ -71,7 +74,6 @@ log("in register user");
     );
   }
 
-  // ✅ forgot password
   void forgotPassword({required String email}) {
     isLoading.value = true;
     authRepo.forgotPassword(
@@ -118,7 +120,7 @@ void resetPassword({
           colorText: Colors.black);
 
       // after reset, take user back to login screen
-      Get.offAllNamed(AppRouteName.LOGIN_SCREEN_ROUTE);
+      Get.offAllNamed(AppRouteName.sellerlogin);
     },
     onError: (message) {
       isLoading.value = false;

@@ -3,7 +3,7 @@
 class AppRouteName {
   //Auth
   static const String SPLASH_SCREEN_ROUTE = "/";
-  static const String LOGIN_SCREEN_ROUTE = "/login_screen";
+  // static const String LOGIN_SCREEN_ROUTE = "/login_screen";
 
   static const String Editprofile_SCREEN_ROUTE = "/edit_profile";
   static const String bottomnavbar = "/bottomnavbar";

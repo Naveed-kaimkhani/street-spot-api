@@ -1,4 +1,4 @@
-import 'package:StreetSpot/controller/DashboardController.dart';
+import 'package:StreetSpot/controller/homcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/custom_widgets/custom_text.dart';
