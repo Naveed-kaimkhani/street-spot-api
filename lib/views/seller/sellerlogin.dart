@@ -1,5 +1,6 @@
 import 'package:StreetSpot/controller/auth_controller.dart';
 import 'package:StreetSpot/model/user_model.dart';
+import 'package:StreetSpot/repositries/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
     show FilteringTextInputFormatter, LengthLimitingTextInputFormatter;
@@ -26,7 +27,8 @@ class Sellerlogin extends StatefulWidget {
 }
 
 class _SellerloginbState extends State<Sellerlogin> {
-  final authController = Get.find<AuthController>();
+  final authController =
+  Get.put(AuthController(authRepo: Get.find()), permanent: true);
   GlobalKey<FormState> authForm = GlobalKey<FormState>();
   bool isPasswordObsure = true;
   bool isLoginActive = true; // State to track active tab

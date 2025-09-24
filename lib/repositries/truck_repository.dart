@@ -1,6 +1,6 @@
-
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
 import 'package:StreetSpot/constants/api_endpoints.dart';
 import 'package:StreetSpot/model/truck_model.dart';
@@ -18,16 +18,12 @@ class TruckRepository extends GetxController {
   }) async {
     try {
       log("yhn tk arha hy flow");
-final response = await apiClient.post(
-  url: ApiEndpoints.truckInformation,
-  body: jsonEncode(truck.toJson()),
-
-);
-
-
+      final response = await apiClient.post(
+        url: ApiEndpoints.truckInformation,
+        body: jsonEncode(truck.toJson()),
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        
         log(response.statusCode.toString());
         final data = jsonDecode(response.body);
 
@@ -45,4 +41,68 @@ final response = await apiClient.post(
       onError("Something went wrong: $e");
     }
   }
+  
+  
+//   Future<void> addMenuItem({
+//   required String truckId,
+//   required File file,
+//   required Map<String, String> data, // flat strings
+//   required Function() onSuccess,
+//   required Function(String) onError,
+// }) async {
+//   try {
+//     log("Sending data: ${jsonEncode(data)}");
+
+//     final response = await apiClient.postImagesToServer(
+//       endPoint: "${ApiEndpoints.creatMenu}$truckId",
+//       data: data, // ✅ no wrapping
+//       files: {
+//         "file": file,
+//       },
+//     );
+
+//     log("Menu response: ${response.body}");
+
+//     if (response.statusCode == 200 || response.statusCode == 201) {
+//       onSuccess();
+//     } else {
+//       onError("Failed: ${response.body}");
+//     }
+//   } catch (e) {
+//     log("Repo error: $e");
+//     onError(e.toString());
+//   }
+// }
+
+Future<void> addMenuItem({
+  required String truckId,
+  required File file,
+  required Map<String, dynamic> data,
+  required Function() onSuccess,
+  required Function(String) onError,
+}) async {
+  try {
+    final response = await apiClient.postImagesToServer(
+      endPoint: "${ApiEndpoints.creatMenu}$truckId",
+      data: {
+        "data": jsonEncode(data), // ✅ encode before sending
+      },
+      files: {
+        "file": file,
+      },
+    );
+
+    log("Menu response: ${response.body}");
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      onSuccess();
+    } else {
+      onError("Failed: ${response.body}");
+    }
+  } catch (e) {
+    log(e.toString());
+    onError(e.toString());
+  }
+}
+
 }

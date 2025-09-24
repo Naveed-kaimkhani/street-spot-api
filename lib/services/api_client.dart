@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:get/get.dart';
@@ -28,7 +29,7 @@ class ApiClient extends GetxService {
     log("auth ${userController.token.value}");
     final headers = {
       "Authorization":
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJjcmVhdGVkX2F0IjoiMjAyNS0wOS0xNVQxNzowMzoxNS4wMDBaIiwidXBkYXRlZF9hdCI6IjIwMjUtMDktMTVUMTc6MDM6MTUuMDAwWiIsImRlbGV0ZWRfYXQiOm51bGwsInVzZXJuYW1lIjoiYXNoYXIiLCJlbWFpbCI6ImFzaGFyQGdtYWlsLmNvbSIsInJvbGUiOiJUUlVDS19PV05FUiIsImRvbWFpbiI6IlNFTEYiLCJhY3RpdmUiOnRydWUsInByb2ZpbGVfcGljdHVyZSI6bnVsbCwicmVzZXRfdG9rZW4iOm51bGwsIm90cCI6MTk1MywicGhvbmVfbnVtYmVyIjpudWxsLCJkYXRlX29mX2JpcnRoIjpudWxsLCJnZW5kZXIiOm51bGwsImlhdCI6MTc1ODA1MjA3NSwiZXhwIjoxNzU4MTM4NDc1fQ.LshUZfc6KxhHpBJii-jGgK_BxNkFMuLSMY2vwmkfy50",
+          "Bearer ${userController.token.value}",
       "Accept": "application/json",
     };
     return await http.get(Uri.parse(url), headers: headers);
@@ -69,4 +70,52 @@ class ApiClient extends GetxService {
   }) async {
     return await http.post(Uri.parse(url), body: body);
   }
+
+
+
+  
+  /////////post images methods
+  Future<http.Response> postImagesToServer({
+    required String endPoint,
+    required Map<String, String> data,
+    required Map<String, dynamic> files,
+  }) async {
+    try {
+      // final prefs = await SharedPreferences.getInstance();
+      // String? token = prefs.getString('token');
+
+      var request = http.MultipartRequest('POST', Uri.parse(endPoint));
+
+      request.headers['Authorization'] =
+          "Bearer ${userController.token.value}";
+      for (var entry in files.entries) {
+        String key = entry.key;
+        dynamic value = entry.value;
+
+        if (value is List<File?>) {
+          for (var file in value.where((file) => file != null).cast<File>()) {
+            request.files.add(
+              await http.MultipartFile.fromPath(key, file.path),
+            );
+          }
+        } else if (value is File?) {
+          if (value != null) {
+            request.files.add(
+              await http.MultipartFile.fromPath(key, value.path),
+            );
+          }
+        }
+      }
+
+      request.fields.addAll(data);
+
+      var response = await request.send();
+      return http.Response.fromStream(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+
 }

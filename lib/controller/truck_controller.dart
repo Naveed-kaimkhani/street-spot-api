@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:StreetSpot/model/truck_model.dart';
 import 'package:StreetSpot/repositries/truck_repository.dart';
@@ -7,7 +9,7 @@ import 'package:get/get.dart';
 
 class TruckController extends GetxController {
   final TruckRepository truckRepo;
-  TruckController( {required this.truckRepo});
+  TruckController({required this.truckRepo});
 
   RxBool isLoading = false.obs;
 
@@ -27,7 +29,6 @@ class TruckController extends GetxController {
   final foodName = TextEditingController();
 
   final foodPrice = TextEditingController();
-
 
   final foodDelievery = TextEditingController();
 
@@ -125,13 +126,82 @@ class TruckController extends GetxController {
       enableGpsTracking: enableManualLocation.value,
       weeklySchedule: weeklySchedules, // build list from your UI
     );
-print("submit check");
+    print("submit check");
     isLoading.value = true;
     truckRepo.addTruckInformation(
-      truck:truck ,
+      truck: truck,
       onSuccess: () {
         isLoading.value = false;
         Get.snackbar("Success", "Truck info saved successfully",
+            colorText: Colors.black);
+        Get.back();
+      },
+      onError: (message) {
+        isLoading.value = false;
+        Get.snackbar("Error", message, colorText: Colors.black);
+      },
+    );
+  }
+
+  // Add menu item
+  void addMenuItem({
+    required String truckId,
+    required File file,
+  }) {
+    if (foodName.text.isEmpty ||
+        foodPrice.text.isEmpty ||
+        foodDelievery.text.isEmpty ||
+        foodDescription.text.isEmpty) {
+      Get.snackbar("Error", "All fields are required", colorText: Colors.black);
+      return;
+    }
+
+    isLoading.value = true;
+
+    //   truckRepo.addMenuItem(
+    //     truckId: truckId,
+    //     file: file, // make sure it's not null
+    //     data: {
+    //       "name": foodName.text.trim(),
+    //       "unit_price": foodPrice.text.trim(),
+    //       "time_to_make": foodDelievery.text.trim(),
+    //       "description": foodDescription.text.trim(),
+    //       "category_id": "1", // later make dynamic
+    //     },
+    //     onSuccess: () {
+    //       isLoading.value = false;
+    //       Get.snackbar(
+    //         "Success",
+    //         "Menu item added successfully",
+    //         colorText: Colors.black,
+    //       );
+    //       Get.back();
+    //     },
+    //     onError: (message) {
+    //       isLoading.value = false;
+    //       Get.snackbar("Error", message, colorText: Colors.black);
+    //     },
+    //   );
+    // }
+
+    truckRepo.addMenuItem(
+      truckId: truckId,
+      file: file,
+      data: {
+        // "name": foodName.text.trim(),
+        // "unit_price": foodPrice.text.trim(),
+        // "time_to_make": foodDelievery.text.trim(),
+        // "description": foodDescription.text.trim(),
+        // "category_id": "1",
+        "name": foodName.text.trim(),
+        "unit_price": double.tryParse(foodPrice.text.trim()) ?? 0, // number
+        "time_to_make": int.tryParse(foodDelievery.text.trim()) ?? 0, // integer
+        "description": foodDescription.text.trim(),
+        "category_id": int.tryParse("1") ?? 0, // integer (make dynamic later)
+      },
+      onSuccess: () {
+        isLoading.value = false;
+        Get.snackbar("Success", "Menu item added successfully",
             colorText: Colors.black);
         Get.back();
       },

@@ -20,7 +20,7 @@ class VerifyEmailScreen extends StatelessWidget {
   final bool isFromForgotPassword;
   final String? email;
 
-  final UserController userController = Get.find<UserController>();
+  final UserController userController = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     final pinTheme = PinTheme(

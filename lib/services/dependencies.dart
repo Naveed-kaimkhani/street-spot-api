@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 Future<void> init() async {
   Get.lazyPut(() => ApiClient());
-  Get.lazyPut(() => AuthRepository(apiClient: Get.find()));
+  Get.lazyPut(() => AuthRepository(apiClient: Get.find()), );
   Get.lazyPut(() => TruckRepository(apiClient: Get.find()));
   Get.lazyPut(() => DashboardRepository(apiClient: Get.find()));
   

@@ -17,4 +17,5 @@ class ApiEndpoints {
    static const  logout = '$baseApiURL/auth/logout';
 
  
+   static const  creatMenu = '$baseApiURL/menu/item/:';
 }
