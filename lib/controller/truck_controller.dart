@@ -65,13 +65,15 @@ class TruckController extends GetxController {
   void toggleManualLocation(bool value) {
     enableManualLocation.value = value;
   }
+  final RxnString selectedDay = RxnString();
 
-  // ADDED: selectedDay
-  var selectedDay = RxString('');
-  void setDay(String? day) {
+  void selectDay(String? day) {
     if (day != null && availableDays.contains(day)) {
       selectedDay.value = day;
-      availableDays.remove(day); // Remove selected day from available days
+      // availableDays.remove(day);
+
+      // // reset value so Dropdown doesn't try to hold a removed item
+      // selectedDay.value = null;
     }
   }
 
@@ -94,18 +96,18 @@ class TruckController extends GetxController {
 
     weeklySchedules.add(WeeklySchedule(
       day: selectedDay.value!,
-      startTime: startTimeController.text,
-      endTime: endTimeController.text,
+      startTime: weeklyStartTime.text,
+      endTime: weeklyEndTime.text,
       address: mondayLocationController.text.isNotEmpty
           ? mondayLocationController.text
           : null,
     ));
     log(weeklySchedules.length.toString());
     // clear inputs
-    selectedDay.value = '';
+    // selectedDay.value = '';
     mondayLocationController.clear();
-    startTimeController.clear();
-    endTimeController.clear();
+    weeklyStartTime.clear();
+    weeklyEndTime.clear();
   }
 
   void addTruckInfo({required TruckModel truck}) {

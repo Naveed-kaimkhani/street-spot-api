@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:StreetSpot/components/weekday_dropdown.dart';
 import 'package:StreetSpot/controller/homcontroller.dart';
 import 'package:StreetSpot/controller/truck_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
@@ -492,14 +493,15 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                       //         if (value != null) controller.setDay(value);
                       //       },
                       //     )),
-                      Obx(() => DayDropdown(
-                            days:
-                                controller.availableDays, // ✅ pass updated list
-                            selectedDay: controller.selectedDay.value,
-                            onChanged: (value) {
-                              if (value != null) controller.setDay(value);
-                            },
-                          )),
+                      // Obx(() => DayDropdown(
+                      //       days:
+                      //           controller.availableDays, // ✅ pass updated list
+                      //       selectedDay: controller.selectedDay.value,
+                      //       onChanged: (value) {
+                      //         if (value != null) controller.selectDay(value);
+                      //       },
+                      //     )),
+                      WeekdayDropdown(),
                       SizedBox(height: 8.h),
                       TextFormField(
                         controller: controller.mondayLocationController,
