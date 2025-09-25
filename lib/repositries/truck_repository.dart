@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 import 'package:StreetSpot/constants/api_endpoints.dart';
+import 'package:StreetSpot/model/category_model.dart';
 import 'package:StreetSpot/model/truck_model.dart';
 import 'package:get/get.dart';
 import '../services/api_client.dart';
@@ -41,67 +42,51 @@ class TruckRepository extends GetxController {
       onError("Something went wrong: $e");
     }
   }
-  
-  
-//   Future<void> addMenuItem({
-//   required String truckId,
-//   required File file,
-//   required Map<String, String> data, // flat strings
-//   required Function() onSuccess,
-//   required Function(String) onError,
-// }) async {
-//   try {
-//     log("Sending data: ${jsonEncode(data)}");
 
-//     final response = await apiClient.postImagesToServer(
-//       endPoint: "${ApiEndpoints.creatMenu}$truckId",
-//       data: data, // ✅ no wrapping
-//       files: {
-//         "file": file,
-//       },
-//     );
+  Future<void> addMenuItem({
+    required String truckId,
+    required File file,
+    required Map<String, dynamic> data,
+    required Function() onSuccess,
+    required Function(String) onError,
+  }) async {
+    try {
+      log("${ApiEndpoints.creatMenu}$truckId");
+      final response = await apiClient.postImagesToServer(
+        endPoint: "${ApiEndpoints.creatMenu}$truckId",
+        data: {
+          "data": jsonEncode(data),
+        },
+        files: {
+          "file": file,
+        },
+      );
 
-//     log("Menu response: ${response.body}");
+      log("Menu response: ${response.body}");
 
-//     if (response.statusCode == 200 || response.statusCode == 201) {
-//       onSuccess();
-//     } else {
-//       onError("Failed: ${response.body}");
-//     }
-//   } catch (e) {
-//     log("Repo error: $e");
-//     onError(e.toString());
-//   }
-// }
-
-Future<void> addMenuItem({
-  required String truckId,
-  required File file,
-  required Map<String, dynamic> data,
-  required Function() onSuccess,
-  required Function(String) onError,
-}) async {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        onSuccess();
+      } else {
+        onError("Failed: ${response.body}");
+      }
+    } catch (e) {
+      log(e.toString());
+      onError(e.toString());
+    }
+  }
+Future<List<CategoryModel>> fetchCategories() async {
   try {
-    final response = await apiClient.postImagesToServer(
-      endPoint: "${ApiEndpoints.creatMenu}$truckId",
-      data: {
-        "data": jsonEncode(data), // ✅ encode before sending
-      },
-      files: {
-        "file": file,
-      },
-    );
+    final response = await apiClient.get(url: ApiEndpoints.categories);
 
-    log("Menu response: ${response.body}");
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      onSuccess();
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final categoriesJson = data['data']['categories'] as List;
+      return categoriesJson.map((e) => CategoryModel.fromJson(e)).toList();
     } else {
-      onError("Failed: ${response.body}");
+      throw Exception("Failed to fetch categories");
     }
   } catch (e) {
-    log(e.toString());
-    onError(e.toString());
+    throw Exception("Error: $e");
   }
 }
 

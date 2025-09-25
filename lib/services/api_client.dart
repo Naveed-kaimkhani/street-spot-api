@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:StreetSpot/constants/api_endpoints.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -28,8 +29,7 @@ class ApiClient extends GetxService {
   }) async {
     log("auth ${userController.token.value}");
     final headers = {
-      "Authorization":
-          "Bearer ${userController.token.value}",
+      "Authorization": "Bearer ${userController.token.value}",
       "Accept": "application/json",
     };
     return await http.get(Uri.parse(url), headers: headers);
@@ -71,23 +71,17 @@ class ApiClient extends GetxService {
     return await http.post(Uri.parse(url), body: body);
   }
 
-
-
-  
-  /////////post images methods
+  // /////////post images methods
   Future<http.Response> postImagesToServer({
     required String endPoint,
     required Map<String, String> data,
     required Map<String, dynamic> files,
   }) async {
     try {
-      // final prefs = await SharedPreferences.getInstance();
-      // String? token = prefs.getString('token');
-
       var request = http.MultipartRequest('POST', Uri.parse(endPoint));
-
-      request.headers['Authorization'] =
-          "Bearer ${userController.token.value}";
+      log(endPoint);
+      log(data.toString());
+      request.headers['Authorization'] = "Bearer ${userController.token.value}";
       for (var entry in files.entries) {
         String key = entry.key;
         dynamic value = entry.value;
@@ -115,7 +109,4 @@ class ApiClient extends GetxService {
       rethrow;
     }
   }
-
-
-
 }

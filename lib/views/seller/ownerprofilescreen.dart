@@ -1,6 +1,11 @@
 import 'dart:io';
+import 'package:StreetSpot/controller/homcontroller.dart';
 import 'package:StreetSpot/controller/truck_controller.dart';
+import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/custom_widgets/day_dropdown.dart';
+import 'package:StreetSpot/repositries/auth_repo.dart';
+import 'package:StreetSpot/repositries/truck_repository.dart';
+import 'package:StreetSpot/routes/route_name.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,19 +20,26 @@ class TruckOwnerProfileScreen extends StatefulWidget {
   const TruckOwnerProfileScreen({super.key});
 
   @override
-  State<TruckOwnerProfileScreen> createState() => _TruckOwnerProfileScreenState();
+  State<TruckOwnerProfileScreen> createState() =>
+      _TruckOwnerProfileScreenState();
 }
 
 class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
-  final controller = Get.put(TruckController(truckRepo: Get.find()));
+  final controller = Get.put(
+      TruckController(truckRepo: TruckRepository(apiClient: Get.find())));
   final _formKey = GlobalKey<FormState>(); // Form key for validation
 
+  final DashboardController dashboardController =
+      Get.find<DashboardController>();
+
+  final UserController userController = Get.find<UserController>();
   @override
   void dispose() {
     super.dispose();
   }
 
-  Future<void> _selectTime(BuildContext context, TextEditingController controller) async {
+  Future<void> _selectTime(
+      BuildContext context, TextEditingController controller) async {
     if (Platform.isIOS) {
       DateTime selectedTime = DateTime.now();
 
@@ -40,7 +52,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   color: Colors.grey[200],
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,8 +67,10 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                         padding: EdgeInsets.zero,
                         child: const Text("Done"),
                         onPressed: () {
-                          final hh = selectedTime.hour.toString().padLeft(2, '0');
-                          final mm = selectedTime.minute.toString().padLeft(2, '0');
+                          final hh =
+                              selectedTime.hour.toString().padLeft(2, '0');
+                          final mm =
+                              selectedTime.minute.toString().padLeft(2, '0');
                           controller.text = "$hh:$mm";
                           Navigator.pop(context);
                         },
@@ -100,7 +115,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            Get.back();
           },
           color: Colors.black,
         ),
@@ -136,7 +152,7 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                       ),
                       SizedBox(height: 12.h),
                       CustomText(
-                        text: 'Arya Muller',
+                        text: userController.currentUser!.name,
                         fontsize: 14.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -181,7 +197,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           ),
                           SizedBox(width: 8.w),
                           CustomText(
-                            text: '1k Followers',
+                            text:
+                                '${dashboardController.dashboardData.value!.followersCount} Followers',
                             fontsize: 12.sp,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
@@ -212,7 +229,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           ),
                           SizedBox(width: 8.w),
                           CustomText(
-                            text: '1000 USD Daily Sales',
+                            text:
+                                '${dashboardController.dashboardData.value!.todaySales} USD Daily Sales',
                             fontsize: 12.sp,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
@@ -243,7 +261,9 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           AppColors.klineargradient2
                         ],
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed(AppRouteName.ADD_MEMU_ITEM);
+                      },
                     ),
                   ],
                 ),
@@ -294,7 +314,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.r),
-                                borderSide: const BorderSide(color: Colors.grey),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey),
                               ),
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 12.h, horizontal: 12.w),
@@ -308,8 +329,12 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                               fontWeight: FontWeight.w400,
                               color: Colors.grey,
                             ),
-                            items: <String>['American', 'Italian', 'Mexican', 'Asian']
-                                .map((String value) {
+                            items: <String>[
+                              'American',
+                              'Italian',
+                              'Mexican',
+                              'Asian'
+                            ].map((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: CustomText(
@@ -352,7 +377,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 12.h, horizontal: 12.w),
                         ),
-                        onTap: () => _selectTime(context, controller.startTimeController),
+                        onTap: () => _selectTime(
+                            context, controller.startTimeController),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Start time is required';
@@ -380,7 +406,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 12.h, horizontal: 12.w),
                         ),
-                        onTap: () => _selectTime(context, controller.endTimeController),
+                        onTap: () =>
+                            _selectTime(context, controller.endTimeController),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'End time is required';
@@ -459,7 +486,15 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Obx(() => DayDropdown(
+                      //       selectedDay: controller.selectedDay.value,
+                      //       onChanged: (value) {
+                      //         if (value != null) controller.setDay(value);
+                      //       },
+                      //     )),
                       Obx(() => DayDropdown(
+                            days:
+                                controller.availableDays, // ✅ pass updated list
                             selectedDay: controller.selectedDay.value,
                             onChanged: (value) {
                               if (value != null) controller.setDay(value);
@@ -504,7 +539,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 12.h, horizontal: 12.w),
                         ),
-                        onTap: () => _selectTime(context, controller.weeklyStartTime),
+                        onTap: () =>
+                            _selectTime(context, controller.weeklyStartTime),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Weekly start time is required';
@@ -532,7 +568,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 12.h, horizontal: 12.w),
                         ),
-                        onTap: () => _selectTime(context, controller.weeklyEndTime),
+                        onTap: () =>
+                            _selectTime(context, controller.weeklyEndTime),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Weekly end time is required';
@@ -568,7 +605,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: ['A', 'B', 'C', 'D'].map((rating) {
-                        bool isSelected = controller.selectedRating.value == rating;
+                        bool isSelected =
+                            controller.selectedRating.value == rating;
                         return GestureDetector(
                           onTap: () => controller.setRating(rating),
                           child: Container(
@@ -614,15 +652,15 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
                     if (controller.weeklySchedules.isEmpty) {
-                      Get.snackbar("Error", "Please add at least one weekly day",
+                      Get.snackbar(
+                          "Error", "Please add at least one weekly day",
                           colorText: Colors.black);
                       return;
-                      
                     }
-                     print("lock");
+                    print("lock");
                     controller.submitTruckInfo();
-                    }
-                   
+                  }
+
                   // }
                 },
                 buttonText: 'Save',

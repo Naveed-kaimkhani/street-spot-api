@@ -1,4 +1,5 @@
 import 'package:StreetSpot/views/selectionuserpage.dart';
+import 'package:StreetSpot/views/seller/AddMenuItemScreen.dart';
 import 'package:StreetSpot/views/seller/sellerbottombar.dart';
 import 'package:StreetSpot/views/seller/sellerlogin.dart';
 import 'package:StreetSpot/views/user/mainscreen.dart';
@@ -86,6 +87,12 @@ class AppRouters {
     GetPage(
       name: AppRouteName.truckownerscreen,
       page: () => const TruckOwnerProfileScreen(),
+      curve: Curves.easeIn,
+    ),
+
+       GetPage(
+      name: AppRouteName.ADD_MEMU_ITEM,
+      page: () => const AddMenuItemScreen(),
       curve: Curves.easeIn,
     ),
     

@@ -41,4 +41,5 @@ class AppRouteName {
       "/in_app_notification_screen";
   static const String sellernotificationscreen = "/sellernotificationscreen";
   static const String MY_FRIENDS_SCREEN_ROUTE = "/my_friends_screen";
+ static const String ADD_MEMU_ITEM = "/add_menu_item";
 }

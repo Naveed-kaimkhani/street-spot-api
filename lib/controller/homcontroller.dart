@@ -2,8 +2,6 @@ import 'package:StreetSpot/model/dashboard_model.dart';
 import 'package:StreetSpot/repositries/dashboard_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../routes/app_routes.dart';
-
 class DashboardController extends GetxController {
   final DashboardRepository dashboardRepo;
 

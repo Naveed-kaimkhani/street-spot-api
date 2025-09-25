@@ -32,7 +32,7 @@ class DashboardRepository extends GetxController {
       }
     } catch (e) {
       log("Exception in fetchDashboard: $e");
-      onError("Something went wrong. Please try again.");
+      onError("Something went wrong. Please try again.$e");
     }
   }
 }
