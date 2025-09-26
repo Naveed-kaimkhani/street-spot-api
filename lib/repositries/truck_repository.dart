@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 import 'package:StreetSpot/constants/api_endpoints.dart';
+import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/model/category_model.dart';
 import 'package:StreetSpot/model/truck_model.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,8 @@ import '../services/api_client.dart';
 class TruckRepository extends GetxController {
   final ApiClient apiClient;
   TruckRepository({required this.apiClient});
+
+  final UserController userController = Get.find<UserController>();
 
   Future<void> addTruckInformation({
     required TruckModel truck,
@@ -22,14 +25,13 @@ class TruckRepository extends GetxController {
         url: ApiEndpoints.truckInformation,
         body: jsonEncode(truck.toJson()),
       );
-      log(response.body);
-      // onSuccess();
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // log(response.statusCode.toString());
-        final data = jsonDecode(response.body);
       
+        
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
         if (data['success'] == true) {
+            await userController.saveTruckFromCreationResponse(
+            data);
         onSuccess();
         } else {
           onError(data['message'] ?? "Failed to add truck info");

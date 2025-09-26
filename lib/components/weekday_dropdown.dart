@@ -13,7 +13,7 @@ class WeekdayDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return DropdownButtonFormField<String>(
-        value: controller.selectedDay.value,
+        initialValue:controller.selectedDay.value,
         decoration: const InputDecoration(
           labelText: "Select a Day",
           border: OutlineInputBorder(),
@@ -28,7 +28,7 @@ class WeekdayDropdown extends StatelessWidget {
             .toList(),
         onChanged: controller.selectDay,
         validator: (value) =>
-            value == null ? "Please select a day" : null,
+          controller.weeklySchedules.isEmpty ? "Please select a day" : null,
       );
     });
   }

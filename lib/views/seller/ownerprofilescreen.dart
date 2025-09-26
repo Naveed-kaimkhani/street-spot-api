@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:StreetSpot/components/weekday_dropdown.dart';
 import 'package:StreetSpot/controller/homcontroller.dart';
 import 'package:StreetSpot/controller/truck_controller.dart';
@@ -199,7 +200,7 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           SizedBox(width: 8.w),
                           CustomText(
                             text:
-                                '${dashboardController.dashboardData.value!.followersCount} Followers',
+                             '${dashboardController.dashboardData.value?.followersCount ?? 0} Followers',
                             fontsize: 12.sp,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
@@ -231,7 +232,7 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           SizedBox(width: 8.w),
                           CustomText(
                             text:
-                                '${dashboardController.dashboardData.value!.todaySales} USD Daily Sales',
+                                '${dashboardController.dashboardData.value?.todaySales ?? 0} USD Daily Sales',
                             fontsize: 12.sp,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
@@ -263,7 +264,12 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                         ],
                       ),
                       onTap: () {
+                  
+                      if (userController.user.value?.truckInformation==null){
+                        Get.snackbar("Error", "Please add truck information first", colorText: Colors.black);
+                      }else{
                         Get.toNamed(AppRouteName.ADD_MEMU_ITEM);
+                      }
                       },
                     ),
                   ],
@@ -487,20 +493,7 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Obx(() => DayDropdown(
-                      //       selectedDay: controller.selectedDay.value,
-                      //       onChanged: (value) {
-                      //         if (value != null) controller.setDay(value);
-                      //       },
-                      //     )),
-                      // Obx(() => DayDropdown(
-                      //       days:
-                      //           controller.availableDays, // ✅ pass updated list
-                      //       selectedDay: controller.selectedDay.value,
-                      //       onChanged: (value) {
-                      //         if (value != null) controller.selectDay(value);
-                      //       },
-                      //     )),
+                      
                       WeekdayDropdown(),
                       SizedBox(height: 8.h),
                       TextFormField(
@@ -515,7 +508,7 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                               vertical: 12.h, horizontal: 12.w),
                         ),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (controller.weeklySchedules.isEmpty) {
                             return 'Location is required';
                           }
                           return null;
@@ -544,8 +537,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                         onTap: () =>
                             _selectTime(context, controller.weeklyStartTime),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Weekly start time is required';
+                        if (controller.weeklySchedules.isEmpty) {
+                            return 'Weekly Schedule is required';
                           }
                           return null;
                         },
@@ -573,8 +566,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                         onTap: () =>
                             _selectTime(context, controller.weeklyEndTime),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Weekly end time is required';
+                          if (controller.weeklySchedules.isEmpty) {
+                            return 'Weekly Schedule is required';
                           }
                           return null;
                         },
@@ -660,7 +653,7 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           colorText: Colors.black);
                       return;
                     }
-                    print("lock");
+                    
                     controller.submitTruckInfo();
                   }
 

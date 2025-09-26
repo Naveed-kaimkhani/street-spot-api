@@ -25,6 +25,7 @@ class AuthRepository extends GetxController {
           await apiClient.signup(url: ApiEndpoints.signup,  
           body: user.toJson(),
 );
+log(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = jsonDecode(response.body);

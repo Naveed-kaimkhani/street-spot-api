@@ -71,12 +71,12 @@ class TruckController extends GetxController {
   void selectDay(String? day) {
     if (day != null && availableDays.contains(day)) {
       selectedDay.value = day;
-      // availableDays.remove(day);
 
       // // reset value so Dropdown doesn't try to hold a removed item
       // selectedDay.value = null;
     }
   }
+  
 
   void clearDay() => selectedDay.value = '';
   // Add a new schedule
@@ -105,7 +105,10 @@ class TruckController extends GetxController {
     ));
     log(weeklySchedules.length.toString());
     // clear inputs
-    // selectedDay.value = '';
+
+      availableDays.remove(selectedDay.value);
+    selectedDay.value = null;
+
     mondayLocationController.clear();
     weeklyStartTime.clear();
     weeklyEndTime.clear();

@@ -3,7 +3,9 @@
 import 'package:StreetSpot/controller/auth_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
-import 'package:StreetSpot/views/seller/sellerlogin.dart';
+import 'package:StreetSpot/views/seller/dashboardscreen.dart';
+
+import 'package:StreetSpot/views/seller/sellerbottombar.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,14 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
       await userController.getUserFromPrefs();
 
       if (userController.token.value.isNotEmpty) {
-        // Get.offAll(() => Sellerbottombar());
-
-Get.offAll(() => Sellerlogin());
-        // Get.to(() => Dashboardscreen());
+        // Get.to(() => UserSellerPage());
+        Get.to(() => Sellerbottombar());
       } else {
         // Get.offAll(() => UserSellerPage());
 
         Get.to(() => UserSellerPage());
+
+// Get.offAll(() => DepencyTest());
       }
     });
   }
