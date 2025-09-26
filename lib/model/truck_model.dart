@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 class WeeklySchedule {
@@ -22,11 +23,9 @@ class WeeklySchedule {
       "day": day,
       "startTime": startTime,
       "endTime": endTime,
-      //  "latitude": latitude,
-      //  "longitude": longitude,
- "latitude": 123.0,
-     "longitude": 123.0,
-    "address": address,
+      "latitude": 123.0,
+      "longitude": 123.0,
+      "address": address,
     };
   }
 }
@@ -64,7 +63,8 @@ class TruckModel {
       "start_time": startTime,
       "end_time": endTime,
       "enable_gps_tracking": false,
-      "weekly_schedule": weeklySchedule.map((e) => e.toJson()).toList(),
+              "weekly_schedule": weeklySchedule.map((e) => e.toJson()).toList(),
+
     };
   }
 }

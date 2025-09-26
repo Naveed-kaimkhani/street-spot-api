@@ -1,14 +1,10 @@
 
 
-import 'dart:developer';
-
 import 'package:StreetSpot/controller/auth_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
-import 'package:StreetSpot/views/seller/AddMenuItemScreen.dart';
-import 'package:StreetSpot/views/seller/dashboardscreen.dart';
-import 'package:StreetSpot/views/seller/sellerbottombar.dart';
 import 'package:StreetSpot/views/seller/sellerlogin.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
@@ -38,7 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
       if (userController.token.value.isNotEmpty) {
         // Get.offAll(() => Sellerbottombar());
 
-        Get.to(() => Dashboardscreen());
+Get.offAll(() => Sellerlogin());
+        // Get.to(() => Dashboardscreen());
       } else {
         // Get.offAll(() => UserSellerPage());
 

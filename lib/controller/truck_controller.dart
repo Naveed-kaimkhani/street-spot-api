@@ -45,13 +45,13 @@ class TruckController extends GetxController {
   var selectedRating = "A".obs; // default value
   var enableManualLocation = false.obs;
   var availableDays = <String>[
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+    "SUNDAY",
   ].obs;
   // ===== Actions =====
   void setCuisine(String cuisine) {
@@ -65,6 +65,7 @@ class TruckController extends GetxController {
   void toggleManualLocation(bool value) {
     enableManualLocation.value = value;
   }
+
   final RxnString selectedDay = RxnString();
 
   void selectDay(String? day) {
@@ -149,19 +150,19 @@ class TruckController extends GetxController {
       enableGpsTracking: enableManualLocation.value,
       weeklySchedule: weeklySchedules, // build list from your UI
     );
-    print("submit check");
+    
     isLoading.value = true;
     truckRepo.addTruckInformation(
       truck: truck,
       onSuccess: () {
         isLoading.value = false;
+        Get.back();
         Get.snackbar("Success", "Truck info saved successfully",
             colorText: Colors.black);
-        Get.back();
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: Colors.black);
+        Get.snackbar("Error", message, colorText: const Color.fromARGB(255, 3, 1, 1));
       },
     );
   }

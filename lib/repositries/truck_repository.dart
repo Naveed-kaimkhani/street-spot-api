@@ -18,18 +18,19 @@ class TruckRepository extends GetxController {
     required Function(String message) onError,
   }) async {
     try {
-      log("yhn tk arha hy flow");
       final response = await apiClient.post(
         url: ApiEndpoints.truckInformation,
         body: jsonEncode(truck.toJson()),
       );
+      log(response.body);
+      // onSuccess();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        log(response.statusCode.toString());
+        // log(response.statusCode.toString());
         final data = jsonDecode(response.body);
-
+      
         if (data['success'] == true) {
-          onSuccess();
+        onSuccess();
         } else {
           onError(data['message'] ?? "Failed to add truck info");
         }
@@ -74,20 +75,20 @@ class TruckRepository extends GetxController {
       onError(e.toString());
     }
   }
-Future<List<CategoryModel>> fetchCategories() async {
-  try {
-    final response = await apiClient.get(url: ApiEndpoints.categories);
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final categoriesJson = data['data']['categories'] as List;
-      return categoriesJson.map((e) => CategoryModel.fromJson(e)).toList();
-    } else {
-      throw Exception("Failed to fetch categories");
+  Future<List<CategoryModel>> fetchCategories() async {
+    try {
+      final response = await apiClient.get(url: ApiEndpoints.categories);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final categoriesJson = data['data']['categories'] as List;
+        return categoriesJson.map((e) => CategoryModel.fromJson(e)).toList();
+      } else {
+        throw Exception("Failed to fetch categories");
+      }
+    } catch (e) {
+      throw Exception("Error: $e");
     }
-  } catch (e) {
-    throw Exception("Error: $e");
   }
-}
-
 }

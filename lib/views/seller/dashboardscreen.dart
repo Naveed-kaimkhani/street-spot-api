@@ -22,7 +22,7 @@ class Dashboardscreen extends StatefulWidget {
 class _DashboardscreenState extends State<Dashboardscreen> {
   final DashboardController controller = Get.find<DashboardController>();
 
-  final UserController userController = Get.find<UserController>();
+  final UserController userController = Get.put(UserController());
 
   final List<Map<String, String>> _products = [
     {

@@ -650,6 +650,7 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
             child: Padding(
               padding: const EdgeInsets.only(left: 40.0, right: 40, bottom: 20),
               child: CustomButton(
+                isLoading: controller.isLoading,
                 buttonColor: Colors.green,
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
