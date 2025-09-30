@@ -1,3 +1,5 @@
+import 'package:StreetSpot/model/trunk_information.dart';
+
 class UserModel {
   final int? id;
   final String name;
@@ -9,6 +11,7 @@ class UserModel {
 
   final String? otp;
   final String role;
+  final TruckInformation? truckInformation;
 
   UserModel({
     this.id,
@@ -16,6 +19,7 @@ class UserModel {
     required this.email,
     this.password,
 
+    this.truckInformation,
     this.otp,
     required this.role,
     this.profilePicture,
@@ -28,8 +32,9 @@ class UserModel {
       email: json['email'] ?? '',
       profilePicture: json['profile_picture'] ?? "",
       role: json['role'] ?? '',
-
-      // otp: json['otp'] ?? '',
+ truckInformation: json['truck_information'] != null
+          ? TruckInformation.fromJson(json['truck_information'])
+          : null,
     );
   }
   Map<String, dynamic> toJson() {

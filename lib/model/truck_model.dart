@@ -1,37 +1,11 @@
 import 'dart:developer';
 
-class WeeklySchedule {
-  final String day;
-  final String startTime;
-  final String endTime;
-  final double? latitude;
-  final double? longitude;
-  final String? address;
-
-  WeeklySchedule({
-    required this.day,
-    required this.startTime,
-    required this.endTime,
-    this.latitude,
-    this.longitude,
-    this.address,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      "day": day,
-      "startTime": startTime,
-      "endTime": endTime,
-      //  "latitude": latitude,
-      //  "longitude": longitude,
- "latitude": 123.0,
-     "longitude": 123.0,
-    "address": address,
-    };
-  }
-}
+import 'package:StreetSpot/model/dashboard_model.dart';
+import 'package:StreetSpot/model/menu_item.dart';
+import 'package:StreetSpot/model/weekly_schedule.dart';
 
 class TruckModel {
+  final int? id;
   final String truckName;
   final String cuisineType;
   final String phoneNumber;
@@ -40,7 +14,14 @@ class TruckModel {
   final String startTime;
   final String endTime;
   final bool enableGpsTracking;
+
+  final double? latitude;
+  final double? longitude;
+  final double? distance;
+  final double? averageRating;
   final List<WeeklySchedule> weeklySchedule;
+
+  final List<MenuItem2>? menuItems; // 👈 added here
 
   TruckModel({
     required this.truckName,
@@ -52,6 +33,12 @@ class TruckModel {
     required this.endTime,
     required this.enableGpsTracking,
     required this.weeklySchedule,
+    this.menuItems,
+    this.id,
+    this.latitude,
+    this.longitude,
+    this.distance,
+    this.averageRating,
   });
 
   Map<String, dynamic> toJson() {
@@ -66,5 +53,36 @@ class TruckModel {
       "enable_gps_tracking": false,
       "weekly_schedule": weeklySchedule.map((e) => e.toJson()).toList(),
     };
+  }
+
+  factory TruckModel.fromJson(Map<String, dynamic> json) {
+    final coords = json['coordinates']['coordinates'] as List<dynamic>;
+    return TruckModel(
+      truckName: json['truck_name'] ?? '',
+      cuisineType: json['cuisine_type'] ?? '',
+      phoneNumber: json['phone_number'] ?? '',
+      email: json['email'] ?? '',
+      healthRating: json['health_rating'] ?? '',
+      startTime: json['start_time'] ?? '',
+      endTime: json['end_time'] ?? '',
+      enableGpsTracking: json['enable_gps_tracking'] ?? false,
+      weeklySchedule: (json['weekly_schedule'] as List<dynamic>?)
+              ?.map((e) => WeeklySchedule.fromJson(e))
+              .toList() ??
+          [],
+      id: json['id'],
+      longitude: (coords[0] as num).toDouble(), // first = longitude
+      latitude: (coords[1] as num).toDouble(), // second = latitude
+
+      distance: json['distance'] != null
+          ? (json['distance'] as num).toDouble()
+          : null,
+
+      averageRating: double.tryParse(json['average_rating'].toString()) ?? 0.0,
+      menuItems: (json['menu_items'] as List<dynamic>?)
+              ?.map((e) => MenuItem2.fromJson(e))
+              .toList() ??
+          [],
+    );
   }
 }

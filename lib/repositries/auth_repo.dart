@@ -54,11 +54,11 @@ class AuthRepository extends GetxController {
     }
   }
 
-  // auth_repository.dart
+  /// Assume apiClient and userController are injected or defined
   Future<void> loginUser({
     required String email,
     required String password,
-    required VoidCallback onSuccess,
+    required void Function(UserModel user) onSuccess, // Updated to accept UserModel
     required Function(String message) onError,
   }) async {
     try {
@@ -69,22 +69,21 @@ class AuthRepository extends GetxController {
           'password': password,
         },
       ).timeout(const Duration(seconds: 15));
-      // log(response.body);
+      // developer.log(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
-     
         final responseData = jsonDecode(response.body);
 
         if (responseData['success'] == true) {
           final data = responseData['data'];
           final token = data['access_token'];
-          log("token value$token");
+         
           final userData = data['user'];
 
           final user = UserModel.fromJson(userData);
 
           await userController.saveUserSessionFromResponse(user, token);
 
-          onSuccess();
+          onSuccess(user); // Pass the UserModel to onSuccess
         } else {
           onError(responseData['message'] ?? 'Login failed');
         }
@@ -93,7 +92,7 @@ class AuthRepository extends GetxController {
         onError(error['message'] ?? 'Login failed');
       }
     } catch (e) {
-      log(e.toString());
+    
       onError("An error occurred during login.");
     }
   }

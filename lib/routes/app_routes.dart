@@ -1,4 +1,5 @@
 import 'package:StreetSpot/views/selectionuserpage.dart';
+import 'package:StreetSpot/views/seller/AddMenuItemScreen.dart';
 import 'package:StreetSpot/views/seller/sellerbottombar.dart';
 import 'package:StreetSpot/views/seller/sellerlogin.dart';
 import 'package:StreetSpot/views/user/mainscreen.dart';
@@ -13,8 +14,7 @@ import 'package:StreetSpot/views/user/checkoutpage.dart';
 import 'package:StreetSpot/views/user/detailpage.dart';
 import 'package:StreetSpot/views/user/homescreen.dart';
 import 'package:StreetSpot/views/user/location.dart';
-import 'package:StreetSpot/views/user/loginscreen.dart'
-    show TabScreen, LoginTab;
+
 import 'package:StreetSpot/views/user/notificationscreen.dart';
 import 'package:StreetSpot/views/profilepage/emailverification.dart';
 import 'package:StreetSpot/views/profilepage/forgotpassword.dart';
@@ -40,7 +40,7 @@ class AppRouters {
       page: () => const Sellerbottombar(),
       curve: Curves.easeIn,
     ),
-     GetPage(
+    GetPage(
       name: AppRouteName.SPLASH_SCREEN_ROUTE,
       page: () => const SplashScreen(),
       curve: Curves.easeIn,
@@ -60,8 +60,6 @@ class AppRouters {
       page: () => const MainScreen(),
       curve: Curves.easeIn,
     ),
-
-
 
     GetPage(
       name: AppRouteName.customerinteraction,
@@ -89,11 +87,13 @@ class AppRouters {
       page: () => const TruckOwnerProfileScreen(),
       curve: Curves.easeIn,
     ),
+
     GetPage(
-      name: AppRouteName.LOGIN_SCREEN_ROUTE,
-      page: () => const LoginTab(),
+      name: AppRouteName.ADD_MEMU_ITEM,
+      page: () => const AddMenuItemScreen(),
       curve: Curves.easeIn,
     ),
+
     GetPage(
       name: AppRouteName.profilepagescreen,
       page: () => const Profilesettingscreen(),
@@ -104,16 +104,16 @@ class AppRouters {
       page: () => const HomePage(),
       curve: Curves.easeIn,
     ),
- GetPage(
-  name: AppRouteName.emailverification,
-  page: () {
-    final args = Get.arguments as Map<String, dynamic>? ?? {};
-    return VerifyEmailScreen(
-      isFromForgotPassword: args["isFromForgotPassword"] ?? false,
-      email: args["email"],
-    );
-  },
-),
+    GetPage(
+      name: AppRouteName.emailverification,
+      page: () {
+        final args = Get.arguments as Map<String, dynamic>? ?? {};
+        return VerifyEmailScreen(
+          isFromForgotPassword: args["isFromForgotPassword"] ?? false,
+          email: args["email"],
+        );
+      },
+    ),
     GetPage(
       name: AppRouteName.Trackyouroder_ROUTE,
       page: () => TrackOrderScreen(),
@@ -145,11 +145,11 @@ class AppRouters {
       page: () => LocationScreen(),
       curve: Curves.easeIn,
     ),
-    GetPage(
-      name: AppRouteName.DETAIL_SCREEN_ROUTE,
-      page: () => BurgerDetailsPage(),
-      curve: Curves.easeIn,
-    ),
+    // GetPage(
+    //   name: AppRouteName.DETAIL_SCREEN_ROUTE,
+    //   page: () => BurgerDetailsPage(),
+    //   curve: Curves.easeIn,
+    // ),
     GetPage(
       name: AppRouteName.CHECKOUTs_SCREEN_ROUTE,
       page: () => CheckoutPage(),

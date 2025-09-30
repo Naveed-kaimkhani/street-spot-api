@@ -1,3 +1,4 @@
+import 'package:StreetSpot/controller/user_controller.dart' show UserController;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/custom_widgets/custom_button.dart';
@@ -15,6 +16,8 @@ class Profilesettingscreen extends StatefulWidget {
 }
 
 class _ProfilesettingscreenState extends State<Profilesettingscreen> {
+  
+ final userController = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -309,7 +312,8 @@ class _ProfilesettingscreenState extends State<Profilesettingscreen> {
           CustomButton(
             buttonColor: Colors.orange,
             onTap: () {
-              Get.toNamed(AppRouteName.LOGIN_SCREEN_ROUTE);
+          userController.logout();
+
             },
             buttonText: 'Sign Out',
             fontSize: 14.sp,

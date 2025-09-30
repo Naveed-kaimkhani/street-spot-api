@@ -1,16 +1,34 @@
+import 'package:StreetSpot/components/days_card_widget.dart';
+import 'package:StreetSpot/components/menu_card_widget.dart';
+import 'package:StreetSpot/components/store_page_shimmer.dart';
+import 'package:StreetSpot/controller/dashboard_controller.dart';
+import 'package:StreetSpot/model/truck_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/routes/route_name.dart';
 import 'package:get/get.dart';
 
-class StorePage extends StatelessWidget {
-  StorePage({super.key});
+class StorePage extends StatefulWidget {
+  const StorePage({super.key});
+
+  @override
+  State<StorePage> createState() => _StorePageState();
+}
+
+class _StorePageState extends State<StorePage> {
+  late final int id;
+  // late final DashboardController controller;
+
+  final DashboardController controller = Get.find<DashboardController>();
 
   // Sample store data
   final String storeImage = 'assets/images/burgerimg.png';
+
   final String storeName = 'The Rolling Bite';
+
   final String storeDescription =
       'Delicious burgers and fast food with a twist!';
+
   final bool isFollowing = false;
 
   // Sample menu data (dynamic)
@@ -51,186 +69,184 @@ class StorePage extends StatelessWidget {
 
   // Sample ratings data
   final double averageRating = 4.5;
+
   final int totalReviews = 273;
 
   @override
+  void initState() {
+    super.initState();
+
+    final args = Get.arguments as Map<String, dynamic>;
+    id = args['id'] as int;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchTruckInformation(id);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Store Image
-              Container(
-                height: 250.h,
-                width: double.infinity,
-                child: Image.asset(
-                  storeImage,
-                  fit: BoxFit.cover,
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return Scaffold(
+            backgroundColor: Colors.white, body: buildStoreDetailsShimmer());
+      }
+      if (controller.truckData.value == null) {
+        return const Center(
+          child: Text("No data found"),
+        );
+      }
+
+      final truckResponse = controller.truckData.value!;
+      final TruckModel truck = truckResponse.truck;
+      final reviews = truckResponse.truckReviewChart;
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Store Image
+                SizedBox(
+                  height: 250.h,
+                  width: double.infinity,
+                  child: Image.asset(
+                    storeImage,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              // Store Details
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              storeName,
-                              style: TextStyle(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.bold,
+                // Store Details
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                truck.truckName,
+                                // truck,
+                                style: TextStyle(
+                                  fontSize: 24.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 5.h),
+                              Text(
+                                "storeDescription",
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Toggle follow logic here
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  isFollowing ? Colors.grey : Colors.pink,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            SizedBox(height: 5.h),
-                            Text(
-                              storeDescription,
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Colors.grey,
-                              ),
+                            child: Text(
+                              isFollowing ? 'Following' : 'Follow',
+                              style: const TextStyle(color: Colors.white),
                             ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 15.h),
+
+                      // Categories
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildCategoryButton('Menu'),
+                          _buildCategoryButton('Location'),
+                          _buildCategoryButton('Ratings & Reviews'),
+                        ],
+                      ),
+                      SizedBox(height: 15.h),
+
+                      // Menu Section
+                      Text(
+                        'Menu',
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10.h),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        // itemCount: menuItems.length,
+                        itemCount: truck.menuItems!.length,
+                        itemBuilder: (context, index) {
+                          final item = truck.menuItems![index];
+                          return MenuCardWidget(item: item);
+                        },
+                      ),
+                      SizedBox(height: 15.h),
+
+                      // Location Section
+                      Text(
+                        'Location',
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10.h),
+                      GestureDetector(
+                        onTap: () {
+                          Get.offNamed(AppRouteName.location_SCREEN_ROUTE);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.location_on,
+                                  color: Colors.orange, size: 20.sp),
+                              SizedBox(width: 10.w),
+                              Expanded(
+                                child: Text(
+                                  location,
+                                  style: TextStyle(
+                                      fontSize: 14.sp, color: Colors.grey),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Toggle follow logic here
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                isFollowing ? Colors.grey : Colors.pink,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          child: Text(
-                            isFollowing ? 'Following' : 'Follow',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 15.h),
+                      ),
+                      SizedBox(height: 15.h),
 
-                    // Categories
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildCategoryButton('Menu'),
-                        _buildCategoryButton('Location'),
-                        _buildCategoryButton('Ratings & Reviews'),
-                      ],
-                    ),
-                    SizedBox(height: 15.h),
-
-                    // Menu Section
-                    Text(
-                      'Menu',
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10.h),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: menuItems.length,
-                      itemBuilder: (context, index) {
-                        final item = menuItems[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Get.offNamed(AppRouteName.DETAIL_SCREEN_ROUTE);
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 10.h),
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.asset(
-                                      item['image']!,
-                                      height: 80.h,
-                                      width: 80.w,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item['title']!,
-                                          style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5.h),
-                                        Text(
-                                          item['subtitle']!,
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5.h),
-                                        Text(
-                                          item['price']!,
-                                          style: TextStyle(
-                                            fontSize: 16.sp,
-                                            color: Colors.pink,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 15.h),
-
-                    // Location Section
-                    Text(
-                      'Location',
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10.h),
-                    GestureDetector(
-                      onTap: () {
-                        Get.offNamed(AppRouteName.location_SCREEN_ROUTE);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10),
+                      // Schedule Section
+                      Text(
+                        'Schedule',
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10.h),
+                      Container(
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -239,173 +255,120 @@ class StorePage extends StatelessWidget {
                               color: Colors.grey.withOpacity(0.2),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                             ),
                           ],
                         ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.location_on,
-                                color: Colors.orange, size: 20.sp),
-                            SizedBox(width: 10.w),
-                            Expanded(
-                              child: Text(
-                                location,
-                                style: TextStyle(
-                                    fontSize: 14.sp, color: Colors.grey),
-                              ),
-                            ),
-                          ],
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: truck.weeklySchedule.map((entry) {
+                            return DaysCardWidget(
+                              weeklySchedule: entry,
+                            );
+                          }).toList(),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 15.h),
+                      SizedBox(height: 15.h),
 
-                    // Schedule Section
-                    Text(
-                      'Schedule',
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10.h),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
+                      // Ratings & Reviews Section
+                      Text(
+                        'Ratings & Reviews',
+                        style: TextStyle(
+                            fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: schedule.entries.map((entry) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5.h),
-                            child: Row(
+                      SizedBox(height: 10.h),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  entry.key,
-                                  style: TextStyle(fontSize: 14.sp),
+                                  'Summary',
+                                  style: TextStyle(fontSize: 16.sp),
                                 ),
-                                Text(
-                                  entry.value,
-                                  style: TextStyle(
-                                      fontSize: 14.sp, color: Colors.grey),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${truck.averageRating} ',
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Icon(Icons.star,
+                                        color: Colors.pink, size: 16.sp),
+                                    SizedBox(width: 5.w),
+                                    Text(
+                                      '${reviews.length} Reviews',
+                                      style: TextStyle(
+                                          fontSize: 12.sp, color: Colors.grey),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    SizedBox(height: 15.h),
-
-                    // Ratings & Reviews Section
-                    Text(
-                      'Ratings & Reviews',
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10.h),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Summary',
-                                style: TextStyle(fontSize: 16.sp),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    '$averageRating ',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
+                            SizedBox(height: 10.h),
+                            Column(
+                              children: reviews.map((review) {
+                                final progress = review.ratingCount
+                                    .toDouble(); // you can normalize if needed
+                                return _buildRatingBar(review.rating, progress);
+                              }).toList(),
+                            ),
+                            SizedBox(height: 10.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '88% Recommended',
+                                  style: TextStyle(fontSize: 16.sp),
+                                ),
+                                OutlinedButton(
+                                  onPressed: () {
+                                    Get.toNamed(
+                                        AppRouteName.Review_SCREEN_ROUTE);
+                                  },
+                                  style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(color: Colors.grey),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
                                   ),
-                                  Icon(Icons.star,
-                                      color: Colors.pink, size: 16.sp),
-                                  SizedBox(width: 5.w),
-                                  Text(
-                                    '$totalReviews Reviews',
-                                    style: TextStyle(
-                                        fontSize: 12.sp, color: Colors.grey),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          Column(
-                            children: [
-                              _buildRatingBar(5, 0.9),
-                              _buildRatingBar(4, 0.7),
-                              _buildRatingBar(3, 0.5),
-                              _buildRatingBar(2, 0.3),
-                              _buildRatingBar(1, 0.1),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '88% Recommended',
-                                style: TextStyle(fontSize: 16.sp),
-                              ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  Get.toNamed(AppRouteName.Review_SCREEN_ROUTE);
-                                },
-                                child: Text(
-                                  'Write a review',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: Colors.grey),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                  child: const Text(
+                                    'Write a review',
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 15.h),
-                  ],
+                      SizedBox(height: 15.h),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildCategoryButton(String title) {
@@ -415,14 +378,14 @@ class StorePage extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        side: BorderSide(color: Colors.grey),
+        side: const BorderSide(color: Colors.grey),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
       ),
       child: Text(
         title,
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
       ),
     );
   }
@@ -447,7 +410,7 @@ class StorePage extends StatelessWidget {
                 child: Container(
                   height: 10.h,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [Colors.pink, Colors.orange],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,

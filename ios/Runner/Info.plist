@@ -28,6 +28,13 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
+	<!-- 👇 Add these location usage descriptions at root level -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app requires your location to show nearby trucks.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to show nearby trucks even in the background.</string>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -20,7 +20,7 @@ class UserSellerPage extends StatelessWidget {
               onTap: () {
                 authController.setRole("CUSTOMER"); // 👈 store role
 
-                Get.toNamed(AppRouteName.LOGIN_SCREEN_ROUTE);
+                Get.toNamed(AppRouteName.sellerlogin);
               },
               child: Container(
                 width: 150.w, // Responsive width

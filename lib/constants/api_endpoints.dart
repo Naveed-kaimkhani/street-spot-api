@@ -13,6 +13,18 @@ class ApiEndpoints {
 
   static const  truckInformation = '$baseApiURL/truck-information/handler';
 
+   static const  dashboard = '$baseApiURL/truck-information/dashboard?menu_items_limit=10';
+   static const  logout = '$baseApiURL/auth/logout';
+
  
- 
+   static const  creatMenu = '$baseApiURL/menu/item/';
+
+   static const  categories = '$baseApiURL/category';
+
+   static const  image = '$baseApiURL/uploads/';
+
+
+  static const  truckInformationPage = '$baseApiURL/truck-information/id';
+   static const  truckInformationDashboard = '$baseApiURL/truck-information/customer-dashboard?limit=10&filtration=';
+
 }

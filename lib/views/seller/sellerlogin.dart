@@ -1,5 +1,6 @@
 import 'package:StreetSpot/controller/auth_controller.dart';
 import 'package:StreetSpot/model/user_model.dart';
+import 'package:StreetSpot/repositries/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
     show FilteringTextInputFormatter, LengthLimitingTextInputFormatter;
@@ -26,7 +27,8 @@ class Sellerlogin extends StatefulWidget {
 }
 
 class _SellerloginbState extends State<Sellerlogin> {
-  final authController = Get.find<AuthController>();
+  final authController =
+  Get.put(AuthController(authRepo: Get.find()));
   GlobalKey<FormState> authForm = GlobalKey<FormState>();
   bool isPasswordObsure = true;
   bool isLoginActive = true; // State to track active tab
@@ -161,7 +163,7 @@ class _SellerloginbState extends State<Sellerlogin> {
               ),
               SizedBox(height: 40.h),
               Form(
-                key: authForm, // Attach the GlobalKey to the Form
+                key: authForm,
                 child: Column(
                   children: [
                     if (!isLoginActive) ...[
@@ -175,10 +177,9 @@ class _SellerloginbState extends State<Sellerlogin> {
                         hintText: "Enter Username",
                         filled: true,
                         prefixIconColor: AppColors.kPrimaryColor,
-                        textEditingController:
-                            authController.nameController, // 👈 from controller
+                        textEditingController: authController.nameController,
                         validator: (val) =>
-                            val!.isEmpty ? "Username is required" : null,
+                            val!.trim().isEmpty ? "Username is required" : null,
                       ),
                       SizedBox(height: 12.h),
                     ],
@@ -200,12 +201,16 @@ class _SellerloginbState extends State<Sellerlogin> {
                                   RegularExpressions.DISALLOW_SPACES),
                             ],
                       keyboardType: TextInputType.emailAddress,
-                      textEditingController:
-                          authController.emailController, // 👈 from controller
-                      validator: (val) => Validation.emailOrPhoneValidator(
-                        fieldLabel: "Email or mobile number",
-                        value: val ?? '',
-                      ),
+                      textEditingController: authController.emailController,
+                      validator: (val) {
+                        if (val == null || val.trim().isEmpty) {
+                          return "Email is required";
+                        }
+                        if (!isPhoneInput && !GetUtils.isEmail(val.trim())) {
+                          return "Please enter a valid email";
+                        }
+                        return null;
+                      },
                       onChanged: (val) {
                         final isPhone = RegExp(r'^[\d(]').hasMatch(val);
                         if (isPhone != isPhoneInput) {
@@ -236,9 +241,7 @@ class _SellerloginbState extends State<Sellerlogin> {
                       isLogin: true,
                       isObsCure: isPasswordObsure,
                       errorMaxLines: 10,
-
-                      textEditingController: authController
-                          .passwordController, // 👈 from controller
+                      textEditingController: authController.passwordController,
                       textInputFormattors: [
                         LengthLimitingTextInputFormatter(
                             AppConstants.PASSWORD_MAX_LENGTH),
@@ -249,8 +252,11 @@ class _SellerloginbState extends State<Sellerlogin> {
                         });
                       },
                       validator: (value) {
-                        if (value!.trim().isEmpty) {
-                          return "${AppStrings.PASSWORD}${" is required"}";
+                        if (value == null || value.trim().isEmpty) {
+                          return "Password is required";
+                        }
+                        if (value.trim().length < 6) {
+                          return "Password must be at least 6 characters";
                         }
                         return null;
                       },
@@ -270,9 +276,8 @@ class _SellerloginbState extends State<Sellerlogin> {
                         isLogin: true,
                         isObsCure: isPasswordObsure,
                         errorMaxLines: 10,
-
-                        textEditingController: authController
-                            .confirmPasswordController, // 👈 from controller
+                        textEditingController:
+                            authController.confirmPasswordController,
                         textInputFormattors: [
                           LengthLimitingTextInputFormatter(
                               AppConstants.PASSWORD_MAX_LENGTH),
@@ -283,10 +288,11 @@ class _SellerloginbState extends State<Sellerlogin> {
                           });
                         },
                         validator: (value) {
-                          if (value!.trim().isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return "Confirm Password is required";
                           }
-                          if (value != authController.passwordController.text) {
+                          if (value.trim() !=
+                              authController.passwordController.text.trim()) {
                             return "Passwords do not match";
                           }
                           return null;
@@ -414,62 +420,35 @@ class _SellerloginbState extends State<Sellerlogin> {
               SizedBox(height: 22.h),
               CustomButton(
                 buttonColor: AppColors.kPrimaryColor,
-                onTap: () => isLoginActive ? login() : registerUser(),
+                onTap: () {
+                  if (authForm.currentState!.validate()) {
+                    if (isLoginActive) {
+                      authController.loginUser(
+                        email: authController.emailController.text.trim(),
+                        password: authController.passwordController.text.trim(),
+                      );
+                    } else {
+                      authController.registerUser(
+                        user: UserModel(
+                          name: authController.nameController.text.trim(),
+                          email: authController.emailController.text.trim(),
+                          password: authController.passwordController.text.trim(),
+                          role: authController.selectedRole.value,
+                        ),
+                      );
+                    }
+                  }
+                },
                 isLoading: authController.isLoading,
                 buttonText: isLoginActive ? "Login" : "Sign Up",
                 fontSize: 14.sp,
                 borderRadius: 15,
                 fontFamily: AppFonts.plusJakartaSansRegular,
-              )
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> registerUser() async {
-    if (authForm.currentState?.validate() ?? false) {
-      authController.registerUser(
-        user: UserModel(
-          name: authController.nameController.text.trim(),
-          email: authController.emailController.text.trim(),
-          password: authController.passwordController.text.trim(),
-          role: authController.selectedRole.value,
-        ),
-      );
-    }
-  }
-
-  Future<void> login() async {
-    final email = authController.emailController.text.trim();
-    final password = authController.passwordController.text.trim();
-
-    // ✅ Basic validation
-    if (email.isEmpty) {
-      Get.snackbar("Error", "Email is required");
-      return;
-    }
-
-    if (!GetUtils.isEmail(email)) {
-      Get.snackbar("Error", "Please enter a valid email");
-      return;
-    }
-
-    if (password.isEmpty) {
-      Get.snackbar("Error", "Password is required");
-      return;
-    }
-
-    if (password.length < 6) {
-      Get.snackbar("Error", "Password must be at least 6 characters");
-      return;
-    }
-
-    // ✅ Call API
-    authController.loginUser(
-      email: email,
-      password: password,
     );
   }
 }

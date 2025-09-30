@@ -201,7 +201,7 @@ class _PersonalinformationscreenState extends State<Personalinformationscreen> {
           CustomButton(
             buttonColor: Colors.orange,
             onTap: () {
-              Get.toNamed(AppRouteName.LOGIN_SCREEN_ROUTE);
+              Get.toNamed(AppRouteName.sellerlogin);
               // AppNavigation.navigateCloseDialog(context);
             },
             buttonText: 'Save',
