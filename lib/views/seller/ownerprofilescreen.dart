@@ -1,10 +1,8 @@
 import 'dart:io';
 import 'package:StreetSpot/components/weekday_dropdown.dart';
-import 'package:StreetSpot/controller/homcontroller.dart';
+import 'package:StreetSpot/controller/dashboard_controller.dart';
 import 'package:StreetSpot/controller/truck_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
-import 'package:StreetSpot/custom_widgets/day_dropdown.dart';
-import 'package:StreetSpot/repositries/auth_repo.dart';
 import 'package:StreetSpot/repositries/truck_repository.dart';
 import 'package:StreetSpot/routes/route_name.dart';
 import 'package:flutter/cupertino.dart';
@@ -487,20 +485,6 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Obx(() => DayDropdown(
-                      //       selectedDay: controller.selectedDay.value,
-                      //       onChanged: (value) {
-                      //         if (value != null) controller.setDay(value);
-                      //       },
-                      //     )),
-                      // Obx(() => DayDropdown(
-                      //       days:
-                      //           controller.availableDays, // ✅ pass updated list
-                      //       selectedDay: controller.selectedDay.value,
-                      //       onChanged: (value) {
-                      //         if (value != null) controller.selectDay(value);
-                      //       },
-                      //     )),
                       WeekdayDropdown(),
                       SizedBox(height: 8.h),
                       TextFormField(

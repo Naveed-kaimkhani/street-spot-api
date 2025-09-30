@@ -91,4 +91,19 @@ class TruckRepository extends GetxController {
       throw Exception("Error: $e");
     }
   }
+
+  Future<TruckModel?> fetchTruckInformation() async {
+ final response = await apiClient.get(url: ApiEndpoints.categories);
+
+
+  if (response.statusCode == 200) {
+    final jsonBody = jsonDecode(response.body);
+    if (jsonBody['success'] == true &&
+        jsonBody['data']?['truck_information'] != null) {
+      return TruckModel.fromJson(jsonBody['data']['truck_information']);
+    }
+  }
+  return null;
+}
+
 }

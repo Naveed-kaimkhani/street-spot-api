@@ -23,4 +23,8 @@ class ApiEndpoints {
 
    static const  image = '$baseApiURL/uploads/';
 
+
+  static const  truckInformationPage = '$baseApiURL/truck-information/id';
+   static const  truckInformationDashboard = '$baseApiURL/truck-information/customer-dashboard?limit=10&filtration=';
+
 }

@@ -1,15 +1,13 @@
 import 'package:StreetSpot/components/dashboard_shimmer.dart';
 import 'package:StreetSpot/components/product_card.dart';
-import 'package:StreetSpot/controller/homcontroller.dart';
+import 'package:StreetSpot/controller/dashboard_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
-import 'package:StreetSpot/model/dashboard_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/custom_widgets/custom_text.dart';
 import 'package:StreetSpot/routes/route_name.dart' show AppRouteName;
 import 'package:StreetSpot/utils/app_colors.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Dashboardscreen extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:StreetSpot/controller/auth_controller.dart';
 
-import 'package:StreetSpot/controller/homcontroller.dart';
+import 'package:StreetSpot/controller/dashboard_controller.dart';
 import 'package:StreetSpot/controller/truck_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/repositries/auth_repo.dart';

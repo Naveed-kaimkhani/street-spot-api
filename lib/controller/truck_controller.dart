@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:StreetSpot/controller/homcontroller.dart';
+import 'package:StreetSpot/controller/dashboard_controller.dart';
 import 'package:StreetSpot/model/category_model.dart';
 import 'package:StreetSpot/model/truck_model.dart';
+import 'package:StreetSpot/model/weekly_schedule.dart';
 import 'package:StreetSpot/repositries/truck_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -71,10 +70,7 @@ class TruckController extends GetxController {
   void selectDay(String? day) {
     if (day != null && availableDays.contains(day)) {
       selectedDay.value = day;
-      // availableDays.remove(day);
-
-      // // reset value so Dropdown doesn't try to hold a removed item
-      // selectedDay.value = null;
+      
     }
   }
 

@@ -28,7 +28,7 @@ class Sellerlogin extends StatefulWidget {
 
 class _SellerloginbState extends State<Sellerlogin> {
   final authController =
-  Get.put(AuthController(authRepo: Get.find()), permanent: true);
+  Get.put(AuthController(authRepo: Get.find()));
   GlobalKey<FormState> authForm = GlobalKey<FormState>();
   bool isPasswordObsure = true;
   bool isLoginActive = true; // State to track active tab
