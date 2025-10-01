@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:StreetSpot/components/days_card_widget.dart';
 import 'package:StreetSpot/components/menu_card_widget.dart';
+import 'package:StreetSpot/components/store_page_shimmer.dart';
 import 'package:StreetSpot/controller/dashboard_controller.dart';
-import 'package:StreetSpot/model/dashboard_model.dart';
 import 'package:StreetSpot/model/truck_model.dart';
-import 'package:StreetSpot/model/weekly_schedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/routes/route_name.dart';
@@ -81,32 +78,21 @@ class _StorePageState extends State<StorePage> {
 
     final args = Get.arguments as Map<String, dynamic>;
     id = args['id'] as int;
-
-    // Delay the API call until after the first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.fetchTruckInformation(1);
+      controller.fetchTruckInformation(id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // TruckModel truck = controller.truckData.value!;
-
     return Obx(() {
       if (controller.isLoading.value) {
-        // ✅ Show loading indicator
-        return const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
+        return Scaffold(
+            backgroundColor: Colors.white, body: buildStoreDetailsShimmer());
       }
       if (controller.truckData.value == null) {
-        // ✅ Handle empty/error case
-        return const Scaffold(
-          body: Center(
-            child: Text("No data found"),
-          ),
+        return const Center(
+          child: Text("No data found"),
         );
       }
 

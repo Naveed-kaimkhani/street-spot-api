@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:StreetSpot/components/truck_card_home.dart';
+import 'package:StreetSpot/components/user_home_shimmer.dart';
+import 'package:StreetSpot/controller/cart_controller.dart';
 import 'package:StreetSpot/controller/dashboard_controller.dart';
 import 'package:StreetSpot/model/truck_model.dart';
 import 'package:StreetSpot/utils/utils.dart';
@@ -26,6 +28,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final DashboardController controller = Get.find<DashboardController>();
+
+  final CartController cartController = Get.put(CartController());
   final List<Restaurant> restaurants = [
     Restaurant(
       name: 'Burger Uncle',
@@ -77,6 +81,16 @@ class _HomePageState extends State<HomePage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    // Delay the API call until after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchCustomerDashboard();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -85,7 +99,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(15.0),
             child: Obx(() {
               if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
+                return buildShimmerEffect();
               }
 
               if (controller.customerDashboardData.value == null) {
@@ -344,15 +358,13 @@ class _HomePageState extends State<HomePage> {
                             itemBuilder: (context, index) {
                               final truck = mapTrucks[index];
                               return InkWell(
-                                onTap: () =>
-Get.to(
-  () =>  StorePage(),
-  arguments: {
-    'id': 5, // 👈 int value
-  },
-)
-,
-                                child: TruckWidget(truck: truck));
+                                  onTap: () => Get.to(
+                                        () => const StorePage(),
+                                        arguments: {
+                                          'id': truck.id,
+                                        },
+                                      ),
+                                  child: TruckWidget(truck: truck));
                             },
                           ),
                         )

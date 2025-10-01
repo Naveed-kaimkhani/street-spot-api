@@ -68,7 +68,15 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   void dispose() {
     super.dispose();
   }
+  @override
+  void initState() {
+    super.initState();
 
+    // Delay the API call until after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchDashboard();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

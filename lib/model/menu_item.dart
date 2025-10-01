@@ -10,6 +10,8 @@ class MenuItem2 {
   final String imageUrl;
   final int? createdBy;
 
+  final int? quantity;
+
   MenuItem2({
     required this.id,
     required this.truckId,
@@ -21,6 +23,7 @@ class MenuItem2 {
     required this.timeToMake,
     required this.imageUrl,
     this.createdBy,
+    this.quantity,
   });
 
   factory MenuItem2.fromJson(Map<String, dynamic> json) {
@@ -52,5 +55,36 @@ class MenuItem2 {
       "image_url": imageUrl,
       "created_by": createdBy,
     };
+  }
+
+
+
+
+  MenuItem2 copyWith({
+    int? id,
+    int? truckId,
+    int? categoryId,
+    String? name,
+    String? description,
+    double? unitPrice,
+    double? discountPercentage,
+    int? timeToMake,
+    String? imageUrl,
+    int? createdBy,
+    int? quantity,
+  }) {
+    return MenuItem2(
+      id: id ?? this.id,
+      truckId: truckId ?? this.truckId,
+      categoryId: categoryId ?? this.categoryId,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      unitPrice: unitPrice ?? this.unitPrice,
+      discountPercentage: discountPercentage ?? this.discountPercentage,
+      timeToMake: timeToMake ?? this.timeToMake,
+      imageUrl: imageUrl ?? this.imageUrl,
+      createdBy: createdBy ?? this.createdBy,
+      quantity: quantity ?? this.quantity,
+    );
   }
 }

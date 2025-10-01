@@ -1,5 +1,5 @@
 import 'package:StreetSpot/custom_widgets/customNavBar.dart' show CustomNavBar;
-import 'package:StreetSpot/views/user/favoriteslistscreen.dart';
+import 'package:StreetSpot/views/cart/cart_screen.dart';
 import 'package:StreetSpot/views/user/homescreen.dart';
 import 'package:StreetSpot/views/user/profilesettingscreen.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomePage(),
-     FavoritesListPage(),
+    CartScreen(),
     const Profilesettingscreen(),
   ];
 
@@ -30,10 +30,11 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: _screens.isNotEmpty && _selectedIndex < _screens.length
-            ? _screens[_selectedIndex]
-            : const Center(child: Text('No Screens Available')),
+     body: SafeArea(
+        child: IndexedStack(
+          index: _selectedIndex,
+          children: _screens,
+        ),
       ),
       bottomNavigationBar: CustomNavBar(
         selectedIndex: _selectedIndex,

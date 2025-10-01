@@ -1,3 +1,7 @@
+import 'package:StreetSpot/constants/api_endpoints.dart';
+import 'package:StreetSpot/controller/cart_controller.dart';
+import 'package:StreetSpot/model/menu_item.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/custom_widgets/custom_button.dart';
@@ -27,8 +31,18 @@ class Recommendation {
   });
 }
 
-class BurgerDetailsPage extends StatelessWidget {
+class BurgerDetailsPage extends StatefulWidget {
+  final MenuItem2 menuItem; // 👈 menu item passed in constructor
+  const BurgerDetailsPage({Key? key, required this.menuItem}) : super(key: key);
+
+  @override
+  State<BurgerDetailsPage> createState() => _BurgerDetailsPageState();
+}
+
+class _BurgerDetailsPageState extends State<BurgerDetailsPage> {
   // Sample recommendation list
+
+  final cartController = Get.find<CartController>();
   final List<Recommendation> recommendations = [
     Recommendation(
       imageUrl: 'assets/images/ordinaryburger.png',
@@ -66,12 +80,18 @@ class BurgerDetailsPage extends StatelessWidget {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 300,
-                    child: Image.asset(
-                      'assets/images/burgerimg.png',
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          "${ApiEndpoints.image}${widget.menuItem.imageUrl}",
                       fit: BoxFit.cover,
                       width: double.infinity,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error, size: 40),
                     ),
                   ),
                   Padding(
@@ -85,8 +105,8 @@ class BurgerDetailsPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Smoky BBQ Burger',
-                                style: TextStyle(
+                                widget.menuItem.name,
+                                style: const TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
@@ -97,7 +117,8 @@ class BurgerDetailsPage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   ShaderMask(
-                                    shaderCallback: (bounds) => LinearGradient(
+                                    shaderCallback: (bounds) =>
+                                        const LinearGradient(
                                       colors: [
                                         AppColors.klineargradient1,
                                         AppColors.klineargradient2
@@ -106,8 +127,8 @@ class BurgerDetailsPage extends StatelessWidget {
                                       end: Alignment.bottomRight,
                                     ).createShader(bounds),
                                     child: Text(
-                                      '\$12.20',
-                                      style: TextStyle(
+                                      '\$${widget.menuItem.unitPrice}',
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
@@ -118,7 +139,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                       "assets/images/staricon.png",
                                       height: 19,
                                     ),
-                                    CustomText(
+                                    const CustomText(
                                       text: "Free Delivery",
                                       fontsize: 14.0,
                                       fontWeight: FontWeight.bold,
@@ -140,7 +161,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                     SizedBox(
                                       width: 2.w,
                                     ),
-                                    CustomText(
+                                    const CustomText(
                                       text: "4.5",
                                       fontsize: 14.0,
                                       fontWeight: FontWeight.bold,
@@ -160,7 +181,8 @@ class BurgerDetailsPage extends StatelessWidget {
                                         width: 2.w,
                                       ),
                                       CustomText(
-                                        text: "20 - 30",
+                                        text: widget.menuItem.timeToMake
+                                            .toString(),
                                         fontsize: 14.0,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.APP_GRAY_COLOR,
@@ -170,7 +192,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: 16.h),
-                              CustomText(
+                              const CustomText(
                                 text: "Description",
                                 fontsize: 16.0,
                                 fontWeight: FontWeight.bold,
@@ -179,8 +201,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                 height: 4.h,
                               ),
                               CustomText(
-                                text:
-                                    "Burger With Meat is a typical food from our restaurant that is much in demand by many people, this is very recommended for you.",
+                                text: widget.menuItem.description,
                                 fontsize: 14.0,
                               ),
                               SizedBox(height: 7.h),
@@ -188,7 +209,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Recommended For You',
                                     style: TextStyle(
                                         fontSize: 16,
@@ -196,13 +217,13 @@ class BurgerDetailsPage extends StatelessWidget {
                                   ),
                                   TextButton(
                                     onPressed: () {},
-                                    child: Text('See All',
+                                    child: const Text('See All',
                                         style: TextStyle(color: Colors.orange)),
                                   ),
                                 ],
                               ),
                               // Using ListView.builder for horizontal recommendations
-                              Container(
+                              SizedBox(
                                 height: 210,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -223,7 +244,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                                   Colors.grey.withOpacity(0.2),
                                               spreadRadius: 2,
                                               blurRadius: 5,
-                                              offset: Offset(0, 3),
+                                              offset: const Offset(0, 3),
                                             ),
                                           ],
                                         ),
@@ -233,7 +254,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                           children: [
                                             ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.vertical(
+                                                  const BorderRadius.vertical(
                                                       top: Radius.circular(10)),
                                               child: Image.asset(
                                                 recommendations[index].imageUrl,
@@ -252,7 +273,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                                   Text(
                                                     recommendations[index]
                                                         .title,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.bold),
@@ -268,7 +289,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                                     children: [
                                                       Row(
                                                         children: [
-                                                          Icon(Icons.star,
+                                                          const Icon(Icons.star,
                                                               color:
                                                                   Colors.amber,
                                                               size: 16),
@@ -276,14 +297,16 @@ class BurgerDetailsPage extends StatelessWidget {
                                                             recommendations[
                                                                     index]
                                                                 .rating,
-                                                            style: TextStyle(
-                                                                fontSize: 14),
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        14),
                                                           ),
                                                         ],
                                                       ),
                                                       Row(
                                                         children: [
-                                                          Icon(
+                                                          const Icon(
                                                               Icons.location_on,
                                                               color:
                                                                   Colors.orange,
@@ -292,10 +315,12 @@ class BurgerDetailsPage extends StatelessWidget {
                                                             recommendations[
                                                                     index]
                                                                 .distance,
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Colors
-                                                                    .grey),
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .grey),
                                                           ),
                                                         ],
                                                       ),
@@ -304,7 +329,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                                   SizedBox(height: 8.h),
                                                   ShaderMask(
                                                     shaderCallback: (bounds) =>
-                                                        LinearGradient(
+                                                        const LinearGradient(
                                                       colors: [
                                                         AppColors
                                                             .klineargradient1,
@@ -318,7 +343,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                                     child: Text(
                                                       recommendations[index]
                                                           .price,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -335,11 +360,11 @@ class BurgerDetailsPage extends StatelessWidget {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 15),
+                              const SizedBox(height: 15),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Ratings & Reviews (273)',
                                     style: TextStyle(
                                         fontSize: 18,
@@ -347,13 +372,13 @@ class BurgerDetailsPage extends StatelessWidget {
                                   ),
                                   SizedBox(height: 12.h),
                                   Container(
-                                    padding: EdgeInsets.all(10),
+                                    padding: const EdgeInsets.all(10),
                                     color: Colors.white,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Row(
+                                        const Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
@@ -380,7 +405,7 @@ class BurgerDetailsPage extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         Column(
                                           children: [
                                             _buildRatingBar(
@@ -395,26 +420,27 @@ class BurgerDetailsPage extends StatelessWidget {
                                                 1, 0.1), // 1-star rating
                                           ],
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text('88% Recommended',
+                                            const Text('88% Recommended',
                                                 style: TextStyle(fontSize: 16)),
                                             OutlinedButton(
                                               onPressed: () {},
-                                              child: Text('Write a review',
-                                                  style: TextStyle(
-                                                      color: Colors.black)),
                                               style: OutlinedButton.styleFrom(
-                                                side: BorderSide(
+                                                side: const BorderSide(
                                                     color: Colors.grey),
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             20)),
                                               ),
+                                              child: const Text(
+                                                  'Write a review',
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
                                             ),
                                           ],
                                         ),
@@ -448,7 +474,8 @@ class BurgerDetailsPage extends StatelessWidget {
                       },
                       child: CircleAvatar(
                         backgroundColor: Colors.white.withOpacity(0.7),
-                        child: Icon(Icons.arrow_back, color: Colors.black),
+                        child:
+                            const Icon(Icons.arrow_back, color: Colors.black),
                       ),
                     ),
                     GestureDetector(
@@ -457,7 +484,8 @@ class BurgerDetailsPage extends StatelessWidget {
                       },
                       child: CircleAvatar(
                         backgroundColor: Colors.white.withOpacity(0.7),
-                        child: Icon(Icons.favorite_border, color: Colors.black),
+                        child: const Icon(Icons.favorite_border,
+                            color: Colors.black),
                       ),
                     ),
                   ],
@@ -470,7 +498,8 @@ class BurgerDetailsPage extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   boxShadow: [
@@ -478,7 +507,7 @@ class BurgerDetailsPage extends StatelessWidget {
                       color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 2,
                       blurRadius: 5,
-                      offset: Offset(0, -2),
+                      offset: const Offset(0, -2),
                     ),
                   ],
                 ),
@@ -491,22 +520,22 @@ class BurgerDetailsPage extends StatelessWidget {
                           radius: 20,
                           backgroundColor: Colors.white,
                           child: IconButton(
-                            icon: Icon(Icons.remove),
+                            icon: const Icon(Icons.remove),
                             onPressed: () {},
                           ),
                         ),
-                        SizedBox(width: 10),
-                        Text(
+                        const SizedBox(width: 10),
+                        const Text(
                           '4',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         CircleAvatar(
                           radius: 20,
                           backgroundColor: Colors.white,
                           child: IconButton(
-                            icon: Icon(Icons.add),
+                            icon: const Icon(Icons.add),
                             onPressed: () {},
                           ),
                         ),
@@ -515,8 +544,7 @@ class BurgerDetailsPage extends StatelessWidget {
                     CustomButton(
                       buttonColor: Colors.orange,
                       onTap: () {
-                        Get.toNamed(AppRouteName.CHECKOUTs_SCREEN_ROUTE);
-                        // AppNavigation.navigateCloseDialog(context);
+                        cartController.addToCart(widget.menuItem);
                       },
                       buttonText: 'Add to Cart',
                       fontSize: 14.sp,
@@ -536,8 +564,8 @@ class BurgerDetailsPage extends StatelessWidget {
   Widget _buildRatingBar(int stars, double fill) {
     return Row(
       children: [
-        Text('$stars', style: TextStyle(fontSize: 16)),
-        SizedBox(width: 10),
+        Text('$stars', style: const TextStyle(fontSize: 16)),
+        const SizedBox(width: 10),
         Expanded(
           child: Stack(
             children: [
@@ -553,7 +581,7 @@ class BurgerDetailsPage extends StatelessWidget {
                 child: Container(
                   height: 10,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: [Colors.pink, Colors.orange],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,

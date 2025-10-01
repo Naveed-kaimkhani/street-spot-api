@@ -40,7 +40,7 @@ class AppRouters {
       page: () => const Sellerbottombar(),
       curve: Curves.easeIn,
     ),
-     GetPage(
+    GetPage(
       name: AppRouteName.SPLASH_SCREEN_ROUTE,
       page: () => const SplashScreen(),
       curve: Curves.easeIn,
@@ -60,8 +60,6 @@ class AppRouters {
       page: () => const MainScreen(),
       curve: Curves.easeIn,
     ),
-
-
 
     GetPage(
       name: AppRouteName.customerinteraction,
@@ -90,12 +88,12 @@ class AppRouters {
       curve: Curves.easeIn,
     ),
 
-       GetPage(
+    GetPage(
       name: AppRouteName.ADD_MEMU_ITEM,
       page: () => const AddMenuItemScreen(),
       curve: Curves.easeIn,
     ),
-    
+
     GetPage(
       name: AppRouteName.profilepagescreen,
       page: () => const Profilesettingscreen(),
@@ -106,16 +104,16 @@ class AppRouters {
       page: () => const HomePage(),
       curve: Curves.easeIn,
     ),
- GetPage(
-  name: AppRouteName.emailverification,
-  page: () {
-    final args = Get.arguments as Map<String, dynamic>? ?? {};
-    return VerifyEmailScreen(
-      isFromForgotPassword: args["isFromForgotPassword"] ?? false,
-      email: args["email"],
-    );
-  },
-),
+    GetPage(
+      name: AppRouteName.emailverification,
+      page: () {
+        final args = Get.arguments as Map<String, dynamic>? ?? {};
+        return VerifyEmailScreen(
+          isFromForgotPassword: args["isFromForgotPassword"] ?? false,
+          email: args["email"],
+        );
+      },
+    ),
     GetPage(
       name: AppRouteName.Trackyouroder_ROUTE,
       page: () => TrackOrderScreen(),
@@ -147,11 +145,11 @@ class AppRouters {
       page: () => LocationScreen(),
       curve: Curves.easeIn,
     ),
-    GetPage(
-      name: AppRouteName.DETAIL_SCREEN_ROUTE,
-      page: () => BurgerDetailsPage(),
-      curve: Curves.easeIn,
-    ),
+    // GetPage(
+    //   name: AppRouteName.DETAIL_SCREEN_ROUTE,
+    //   page: () => BurgerDetailsPage(),
+    //   curve: Curves.easeIn,
+    // ),
     GetPage(
       name: AppRouteName.CHECKOUTs_SCREEN_ROUTE,
       page: () => CheckoutPage(),

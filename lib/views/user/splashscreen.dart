@@ -2,9 +2,14 @@
 
 import 'package:StreetSpot/controller/auth_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
+import 'package:StreetSpot/custom_widgets/customNavBar.dart';
+import 'package:StreetSpot/views/cart/cart_screen.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
 import 'package:StreetSpot/views/seller/sellerlogin.dart';
+import 'package:StreetSpot/views/user/checkoutpage.dart';
+import 'package:StreetSpot/views/user/detailpage.dart';
 import 'package:StreetSpot/views/user/homescreen.dart';
+import 'package:StreetSpot/views/user/mainscreen.dart';
 import 'package:StreetSpot/views/user/storepage.dart';
 
 import 'package:flutter/material.dart';
@@ -36,9 +41,10 @@ class _SplashScreenState extends State<SplashScreen> {
       if (userController.token.value.isNotEmpty) {
         // Get.offAll(() => Sellerbottombar());
 
-Get.to(() => HomePage());
+Get.to(() => MainScreen());
 
-// Get.to(() => StorePage());
+// Get.to(() => BurgerDetailsPage());
+
         // Get.to(() => Dashboardscreen());
       } else {
         // Get.offAll(() => UserSellerPage());

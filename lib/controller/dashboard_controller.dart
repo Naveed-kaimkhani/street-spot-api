@@ -69,10 +69,10 @@ class DashboardController extends GetxController {
     );
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    // fetchDashboard();
-    fetchCustomerDashboard();
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   // fetchDashboard();
+  //   fetchCustomerDashboard();
+  // }
 }

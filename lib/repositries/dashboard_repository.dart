@@ -74,7 +74,6 @@ class DashboardRepository extends GetxController {
     required Function(String message) onError,
   }) async {
     try {
-      log("${ApiEndpoints.truckInformationDashboard}/$truckId");
       final response = await apiClient.get(
         url: "${ApiEndpoints.truckInformationPage}/$truckId",
       );
