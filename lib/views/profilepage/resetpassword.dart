@@ -1,4 +1,5 @@
 import 'package:StreetSpot/controller/auth_controller.dart';
+import 'package:StreetSpot/utils/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/custom_widgets/custom_button.dart';
@@ -146,25 +147,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     // ✅ Basic validation
     if (password.isEmpty) {
-      Get.snackbar("Error", "Email is required");
+      // Get.snackbar("Error", "Email is required");
+      AppSnackbar.error("Password is required");
       return;
     }
 
     if (confirmPassword.isEmpty) {
-      Get.snackbar("Error", "Confirm Password is required");
+      AppSnackbar.error("Confirm Password is required");
       return;
     }
 
     if (password.length < 6) {
-      Get.snackbar("Error", "Password must be at least 6 characters");
+      AppSnackbar.error("Password must be at least 6 characters");
       return;
     }
     if (password.length < 6) {
-      Get.snackbar("Error", "Password must be at least 6 characters");
+      AppSnackbar.error("Password must be at least 6 characters");
       return;
     }
     if (password != confirmPassword) {
-      Get.snackbar("Error", "Password does not match");
+      AppSnackbar.error("Password does not match");
       return;
     }
     // ✅ Call API

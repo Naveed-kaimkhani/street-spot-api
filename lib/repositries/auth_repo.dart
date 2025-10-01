@@ -40,16 +40,13 @@ class AuthRepository extends GetxController {
 
           onSuccess();
         } else {
-          log(response.body);
           onError(responseData['message'] ?? 'Registration failed');
         }
       } else {
-        log(response.body);
         final error = jsonDecode(response.body);
         onError(error['message'] ?? 'Registration failed');
       }
     } catch (e) {
-      log(e.toString());
       onError("An error occurred during registration: $e");
     }
   }
@@ -69,7 +66,6 @@ class AuthRepository extends GetxController {
           'password': password,
         },
       ).timeout(const Duration(seconds: 15));
-      // developer.log(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
 
@@ -142,7 +138,6 @@ class AuthRepository extends GetxController {
           "password": newPassword,
         },
       ).timeout(const Duration(seconds: 15));
-      log(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
 

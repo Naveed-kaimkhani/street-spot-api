@@ -27,4 +27,7 @@ class ApiEndpoints {
   static const  truckInformationPage = '$baseApiURL/truck-information/id';
    static const  truckInformationDashboard = '$baseApiURL/truck-information/customer-dashboard?limit=10&filtration=';
 
+   static const  createOrder = '$baseApiURL/orders/create';
+
 }
+

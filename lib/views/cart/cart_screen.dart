@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:StreetSpot/constants/api_endpoints.dart';
 import 'package:StreetSpot/controller/cart_controller.dart';
+import 'package:StreetSpot/controller/order_controller.dart';
+import 'package:StreetSpot/custom_widgets/custom_button.dart';
 import 'package:StreetSpot/model/menu_item.dart';
 import 'package:StreetSpot/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +13,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class CartScreen extends StatelessWidget {
   final CartController cartController = Get.put(CartController());
-
+final orderController = Get.put(OrderController());
   CartScreen({Key? key}) : super(key: key);
 
   @override
@@ -95,13 +99,13 @@ class CartScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: 24.h),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28.0),
-            child: _buildGradientButton(
-              text: 'Browse Menu',
-              onTap: () => Get.back(),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 28.0),
+          //   child: CustomButton(
+          //     buttonText: 'Browse Menu',
+          //     onTap: () => Get.back(),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -407,16 +411,29 @@ class CartScreen extends StatelessWidget {
           SizedBox(height: 16.h),
 
           // Checkout Button
-          _buildGradientButton(
-            text: 'Proceed to Checkout',
-            // onTap: () => Get.toNamed(AppRouteName.CHECKOUT_SCREEN_ROUTE),
-            onTap: () {},
+
+          CustomButton(
+            isLoading: orderController.isLoading,
+            buttonColor: AppColors.klineargradient1,
+            onTap: () => checkoutOrder(),
+            buttonText: 'Create Order',
           ),
         ],
       ),
     );
   }
-
+void checkoutOrder() {
+  final items = cartController.cartItems.map((item) {
+    return {
+      "item_id": item.id,
+      "quantity": item.quantity ?? 1,
+    };
+  }).toList();
+  orderController.createOrder(
+    truckId: cartController.cartItems.first.truckId,
+    orderItems: items,
+  );
+}
   Widget _buildSummaryRow(String label, double amount, {bool isTotal = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -448,57 +465,6 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGradientButton(
-      {required String text, required VoidCallback onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 56.h,
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [AppColors.klineargradient1, AppColors.klineargradient2],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.klineargradient1.withOpacity(0.3),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Stack(
-          children: [
-            // Ripple effect background
-            Positioned.fill(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onTap,
-                  borderRadius: BorderRadius.circular(16.r),
-                  child: Container(),
-                ),
-              ),
-            ),
-            // Button content
-            Center(
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.whiteColor,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   void _showClearCartDialog() {
     Get.dialog(

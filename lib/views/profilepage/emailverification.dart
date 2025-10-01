@@ -217,13 +217,7 @@ class VerifyEmailScreen extends StatelessWidget {
                     ),
                   ),
                   onCompleted: (pin) {
-                    // if (userController.user.value!.otp == pin) {
-                    //   Get.snackbar("Success", "OTP Verified");
-                    //   // proceed to next screen
-                    // } else {
-                    //   Get.snackbar("Error", "Invalid OTP");
-                    // }
-                    log(isFromForgotPassword.toString());
+                    
                     if (isFromForgotPassword) {
                       Get.toNamed(AppRouteName.Reset_SCREEN_ROUTE);
                     } else {

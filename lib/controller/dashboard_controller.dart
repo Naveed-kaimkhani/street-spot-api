@@ -5,6 +5,7 @@ import 'package:StreetSpot/model/dashboard_model.dart';
 import 'package:StreetSpot/model/truck_model.dart';
 import 'package:StreetSpot/model/truck_profile_response.dart';
 import 'package:StreetSpot/repositries/dashboard_repository.dart';
+import 'package:StreetSpot/utils/app_snackbar.dart';
 import 'package:StreetSpot/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,24 +22,23 @@ class DashboardController extends GetxController {
 
   // ✅ fetch dashboard
   void fetchDashboard() {
+    log("Fetching dashboard data");
     isLoading.value = true;
     dashboardRepo.fetchDashboard(
       onSuccess: (data) {
         isLoading.value = false;
         dashboardData.value = data;
+        log(dashboardData.value!.menuItems.length.toString());
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: Colors.black);
+        AppSnackbar.error(message);
       },
     );
   }
 
   // ✅ new method for Customer Dashboard
   void fetchCustomerDashboard() async{
-
-    // final position = await Utils.getTruckLocation();
-    // log(position.latitude.toString());
     isLoading.value = true;
     dashboardRepo.fetchCustomerDashboard(
       onSuccess: (data) {
@@ -47,7 +47,8 @@ class DashboardController extends GetxController {
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: Colors.black);
+        // Get.snackbar("Error", message, colorText: Colors.black);
+        AppSnackbar.error(message);
       },
     );
   }
@@ -64,15 +65,11 @@ class DashboardController extends GetxController {
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: Colors.black);
+        // Get.snackbar("Error", message, colorText: Colors.black);
+        AppSnackbar.error(message);
       },
     );
   }
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   // fetchDashboard();
-  //   fetchCustomerDashboard();
-  // }
+
 }

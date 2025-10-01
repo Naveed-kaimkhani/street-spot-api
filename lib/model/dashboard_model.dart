@@ -1,5 +1,7 @@
 
 
+import 'dart:developer';
+
 class DashboardModel {
   final int followersCount;
   final String todaySales;
@@ -14,6 +16,7 @@ class DashboardModel {
   });
 
   factory DashboardModel.fromJson(Map<String, dynamic> json) {
+    // log(json['menu_items']);
     return DashboardModel(
       followersCount: json['followers_count'] ?? 0,
   todaySales: json['today_sales'],

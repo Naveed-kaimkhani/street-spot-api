@@ -5,6 +5,7 @@ import 'package:StreetSpot/model/category_model.dart';
 import 'package:StreetSpot/model/truck_model.dart';
 import 'package:StreetSpot/model/weekly_schedule.dart';
 import 'package:StreetSpot/repositries/truck_repository.dart';
+import 'package:StreetSpot/utils/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -87,7 +88,8 @@ class TruckController extends GetxController {
     if (selectedDay.value == null ||
         weeklyStartTime.text.isEmpty ||
         weeklyEndTime.text.isEmpty) {
-      Get.snackbar("Error", "Please fill day, start & end time");
+      // Get.snackbar("Error", "Please fill day, start & end time");
+      AppSnackbar.error("Please fill day, start & end time");
       return;
     }
 
@@ -99,9 +101,6 @@ class TruckController extends GetxController {
           ? mondayLocationController.text
           : null,
     ));
-    log(weeklySchedules.length.toString());
-    // clear inputs
-    // selectedDay.value = '';
     mondayLocationController.clear();
     weeklyStartTime.clear();
     weeklyEndTime.clear();
@@ -114,13 +113,14 @@ class TruckController extends GetxController {
       truck: truck,
       onSuccess: () {
         isLoading.value = false;
-        Get.snackbar("Success", "Truck information added",
-            colorText: Colors.black);
+        // Get.snackbar("Success", "Truck information added",
+        //     colorText: Colors.black);
+        AppSnackbar.success("Truck information added");
         Get.back();
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: Colors.black);
+        AppSnackbar.error(message);
       },
     );
   }
@@ -153,12 +153,13 @@ class TruckController extends GetxController {
       onSuccess: () {
         isLoading.value = false;
         Get.back();
-        Get.snackbar("Success", "Truck info saved successfully",
-            colorText: Colors.black);
+        // Get.snackbar("Success", "Truck info saved successfully",
+        //     colorText: Colors.black);
+        AppSnackbar.success("Truck info saved successfully");
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: const Color.fromARGB(255, 3, 1, 1));
+        AppSnackbar.error(message);
       },
     );
   }
@@ -172,7 +173,7 @@ class TruckController extends GetxController {
         foodPrice.text.isEmpty ||
         foodDelievery.text.isEmpty ||
         foodDescription.text.isEmpty) {
-      Get.snackbar("Error", "All fields are required", colorText: Colors.black);
+      AppSnackbar.error("All fields are required");
       return;
     }
 
@@ -193,14 +194,13 @@ class TruckController extends GetxController {
       onSuccess: () {
         isLoading.value = false;
         Get.back();
-        Get.snackbar("Success", "Menu item added successfully",
-            colorText: Colors.black);
+        AppSnackbar.success("Menu item added successfully");
 
         dashboardController.fetchDashboard();
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: Colors.black);
+        AppSnackbar.error(message);
       },
     );
   }
@@ -213,7 +213,7 @@ class TruckController extends GetxController {
       final result = await truckRepo.fetchCategories();
       categories.assignAll(result);
     } catch (e) {
-      Get.snackbar("Error", e.toString(), colorText: Colors.black);
+      AppSnackbar.error(e.toString());
     } finally {
       isLoading.value = false;
     }

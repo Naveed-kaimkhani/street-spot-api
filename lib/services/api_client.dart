@@ -27,7 +27,6 @@ class ApiClient extends GetxService {
   Future<http.Response> get({
     required String url,
   }) async {
-    log("auth ${userController.token.value}");
     final headers = {
       "Authorization": "Bearer ${userController.token.value}",
       "Accept": "application/json",
@@ -79,8 +78,7 @@ class ApiClient extends GetxService {
   }) async {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(endPoint));
-      log(endPoint);
-      log(data.toString());
+
       request.headers['Authorization'] = "Bearer ${userController.token.value}";
       for (var entry in files.entries) {
         String key = entry.key;

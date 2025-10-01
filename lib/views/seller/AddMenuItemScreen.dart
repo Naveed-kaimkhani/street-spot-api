@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:StreetSpot/controller/truck_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/model/category_model.dart';
+import 'package:StreetSpot/utils/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/custom_widgets/custom_button.dart';
@@ -50,12 +51,14 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       if (profilePhoto == null) {
-        Get.snackbar("Error", "Please upload a food image",
-            colorText: Colors.black);
+        // Get.snackbar("Error", "Please upload a food image",
+        //     colorText: Colors.black);
+        AppSnackbar.error("Please upload a food image");
         return;
       }
       if (userController.truck == null) {
-        Get.snackbar("info", "Create a truck first");
+        AppSnackbar.info("Info","Create a truck first");
+        return;
       } else {
         controller.addMenuItem(
             truckId: userController.truck!.id.toString(), file: profilePhoto!);

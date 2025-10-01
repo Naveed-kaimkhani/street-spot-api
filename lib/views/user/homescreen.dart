@@ -28,8 +28,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final DashboardController controller = Get.find<DashboardController>();
+  // final DashboardController controller = Get.put(DashboardController(dashboardRepo: Get.find()),permanent: true);
 
-  final CartController cartController = Get.put(CartController());
+  final CartController cartController = Get.put(CartController(),);
   final List<Restaurant> restaurants = [
     Restaurant(
       name: 'Burger Uncle',
