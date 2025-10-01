@@ -80,7 +80,7 @@ class TruckWidget extends StatelessWidget {
                   children: [
                     CustomText(
                       // text: truck.truckName,
-                      text: truck.id.toString() ?? "",
+                      text: truck.truckName.toString() ?? "",
                       fontsize: 16.0,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.plusJakartaSansExtraBold,

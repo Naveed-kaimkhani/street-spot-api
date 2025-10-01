@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:StreetSpot/controller/truck_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/model/category_model.dart';
+import 'package:StreetSpot/routes/route_name.dart';
+import 'package:StreetSpot/utils/app_colors.dart';
 import 'package:StreetSpot/utils/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,7 +59,7 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
         return;
       }
       if (userController.truck == null) {
-        AppSnackbar.info("Info","Create a truck first");
+        AppSnackbar.info("Info", "Create a truck first");
         return;
       } else {
         controller.addMenuItem(
@@ -127,11 +129,30 @@ class _AddMenuItemScreenState extends State<AddMenuItemScreen> {
                 ],
               ),
               SizedBox(height: 24.h),
-              CustomText(
-                text: '🍽️ Menu Information',
-                fontsize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    text: '🍽️ Menu Information',
+                    fontsize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                  // InkWell(
+                  //   child: CustomText(
+                  //     text: 'Add category',
+                  //     fontsize: 14.sp,
+                  //     fontWeight: FontWeight.w600,
+                  //     gradientColors: const [
+                  //       AppColors.klineargradient1,
+                  //       AppColors.klineargradient2
+                  //     ],
+                  //   ),
+                  //   onTap: () {
+                  //     // Get.toNamed(AppRouteName.ADD_MEMU_ITEM);
+                  //   },
+                  // ),
+                ],
               ),
               SizedBox(height: 12.h),
               Form(

@@ -59,27 +59,7 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  final List<Truck> trucks = [
-    Truck(
-      title: 'Fish & Chips',
-      imagePath: 'assets/images/image 2.png',
-      categoryDistance: 'Street Food • 1.2km',
-      rating: 5.0,
-    ),
-    Truck(
-      title: 'Burger Uncle',
-      imagePath: 'assets/images/image 2.png',
-      categoryDistance: 'Fast Food • 0.8km',
-      rating: 4.5,
-    ),
-    // Add more truck data as needed
-    Truck(
-      title: 'Taco Truck',
-      imagePath: 'assets/images/image 2.png',
-      categoryDistance: 'Mexican • 1.5km',
-      rating: 4.8,
-    ),
-  ];
+
 
   @override
   void initState() {

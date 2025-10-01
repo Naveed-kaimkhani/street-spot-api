@@ -23,7 +23,7 @@ class AppBindings implements Bindings {
     // Register controllers
     Get.lazyPut(() => AuthController(authRepo: Get.find()));
     Get.lazyPut(() => UserController(),fenix: true);
-    Get.lazyPut(() => TruckController(truckRepo: Get.find()),fenix: true);
+    Get.lazyPut(() => TruckController(truckRepo: TruckRepository(apiClient: Get.find())),fenix: true);
     Get.lazyPut(() => DashboardController(dashboardRepo: DashboardRepository(apiClient: Get.find())),fenix: true);
   }
 }

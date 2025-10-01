@@ -29,5 +29,7 @@ class ApiEndpoints {
 
    static const  createOrder = '$baseApiURL/orders/create';
 
+static const  orders = '$baseApiURL/orders/all';
+
 }
 
