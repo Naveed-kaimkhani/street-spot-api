@@ -36,6 +36,7 @@ dependencies:
   geolocator: ^14.0.2
   cached_network_image: ^3.4.1
   shimmer: ^3.0.0
+  lottie: ^3.3.2
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +57,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/animation/
     - assets/fonts/
 
   fonts:

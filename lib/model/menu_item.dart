@@ -39,6 +39,7 @@ class MenuItem2 {
       timeToMake: json['time_to_make'] ?? 0,
       imageUrl: json['image_url'] ?? '',
       createdBy: json['created_by'],
+      quantity: json['quantity'],
     );
   }
 
@@ -54,6 +55,7 @@ class MenuItem2 {
       "time_to_make": timeToMake,
       "image_url": imageUrl,
       "created_by": createdBy,
+      "quantity": quantity,
     };
   }
 

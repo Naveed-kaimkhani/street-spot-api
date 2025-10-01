@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:StreetSpot/constants/api_endpoints.dart';
 import 'package:StreetSpot/model/customer_dashboard_model.dart';
 import 'package:StreetSpot/model/dashboard_model.dart';
-import 'package:StreetSpot/model/truck_model.dart';
 import 'package:StreetSpot/model/truck_profile_response.dart';
 import 'package:StreetSpot/utils/utils.dart';
 import 'package:get/get.dart';
@@ -20,22 +18,32 @@ class DashboardRepository extends GetxController {
     required Function(String message) onError,
   }) async {
     try {
+      
       final response = await apiClient.get(
         url: ApiEndpoints.dashboard,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final jsonData = jsonDecode(response.body);
-        log("Dashboard API Response: $jsonData"); // Debug log
-        final dashboard = DashboardModel.fromJson(jsonData);
+          final data = jsonData['data'];
+  if (data == null || data['truck_information'] == null) {
+    onError( "No truck found. Please register your truck first.");
+    return;
+  }
+
+       final dashboard = DashboardModel.fromJson(jsonData['data']);
+
         onSuccess(dashboard);
       } else {
         final error = jsonDecode(response.body);
-        log("Error Dashboard: ${response.body}");
         onError(error['message'] ?? 'Failed to load dashboard');
       }
     } catch (e) {
-      log("Exception in fetchDashboard: $e");
+      final response = await apiClient.get(
+        url: ApiEndpoints.dashboard,
+      );
+      log(response.body);
+      log(response.statusCode.toString());
       onError("Something went wrong. Please try again.$e");
     }
   }
@@ -54,15 +62,16 @@ class DashboardRepository extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
-        log("Customer Dashboard API Response: $data");
+        log(data.toString());
         final customerDashboard = CustomerDashboardModel.fromJson(data);
         onSuccess(customerDashboard);
       } else {
         final error = jsonDecode(response.body);
+        log(error.toString());
         onError(error['message'] ?? "Failed to load customer dashboard");
       }
     } catch (e) {
-      log("Exception in fetchCustomerDashboard: $e");
+        
       onError("Something went wrong. $e");
     }
   }
@@ -77,7 +86,6 @@ class DashboardRepository extends GetxController {
       final response = await apiClient.get(
         url: "${ApiEndpoints.truckInformationPage}/$truckId",
       );
-      log(response.body);
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final jsonData = jsonDecode(response.body);
         // TruckModel truck = TruckModel.fromJson(jsonData['data']['truck']);
@@ -86,12 +94,10 @@ class DashboardRepository extends GetxController {
         onSuccess(truckResponse);
       } else {
         final error = jsonDecode(response.body) as Map<String, dynamic>?;
-        log("Error Truck Information: ${response.body}");
         onError(error?['message']?.toString() ??
             'Failed to load truck information');
       }
     } catch (e) {
-      log("Exception in fetchTruckInformation: $e");
       onError("Something went wrong: $e");
     }
   }

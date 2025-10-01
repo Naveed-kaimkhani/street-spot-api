@@ -22,11 +22,8 @@ class TruckRepository extends GetxController {
         url: ApiEndpoints.truckInformation,
         body: jsonEncode(truck.toJson()),
       );
-      log(response.body);
-      // onSuccess();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // log(response.statusCode.toString());
         final data = jsonDecode(response.body);
       
         if (data['success'] == true) {
@@ -39,7 +36,6 @@ class TruckRepository extends GetxController {
         onError(error['message'] ?? "Failed to add truck info");
       }
     } catch (e) {
-      log(e.toString());
       onError("Something went wrong: $e");
     }
   }
@@ -52,7 +48,6 @@ class TruckRepository extends GetxController {
     required Function(String) onError,
   }) async {
     try {
-      log("${ApiEndpoints.creatMenu}$truckId");
       final response = await apiClient.postImagesToServer(
         endPoint: "${ApiEndpoints.creatMenu}$truckId",
         data: {
@@ -63,7 +58,7 @@ class TruckRepository extends GetxController {
         },
       );
 
-      log("Menu response: ${response.body}");
+
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         onSuccess();
@@ -71,7 +66,7 @@ class TruckRepository extends GetxController {
         onError("Failed: ${response.body}");
       }
     } catch (e) {
-      log(e.toString());
+      
       onError(e.toString());
     }
   }

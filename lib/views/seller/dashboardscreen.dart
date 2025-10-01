@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:StreetSpot/components/dashboard_shimmer.dart';
 import 'package:StreetSpot/components/product_card.dart';
 import 'package:StreetSpot/controller/dashboard_controller.dart';
@@ -18,7 +20,10 @@ class Dashboardscreen extends StatefulWidget {
 }
 
 class _DashboardscreenState extends State<Dashboardscreen> {
-  final DashboardController controller = Get.find<DashboardController>();
+  
+  final DashboardController controller = 
+Get.find<DashboardController>();
+
 
   final UserController userController = Get.put(UserController());
 
@@ -71,8 +76,7 @@ class _DashboardscreenState extends State<Dashboardscreen> {
   @override
   void initState() {
     super.initState();
-
-    // Delay the API call until after the first frame
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchDashboard();
     });

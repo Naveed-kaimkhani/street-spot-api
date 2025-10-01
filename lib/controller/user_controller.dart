@@ -20,18 +20,6 @@ TruckInformation? get truck => user.value?.truckInformation;
     getUserFromPrefs(); // Load session on init
   }
 
-  // Future<void> saveUserSessionFromResponse(
-  //     UserModel userModel, String userToken) async {
-  //   await prefs.setInt('id', userModel.id ?? 0);
-  //   await prefs.setString('first_name', userModel.name);
-  //   await prefs.setString('email', userModel.email);
-  //   await prefs.setString('avatar_url', userModel.profilePicture ?? "");
-
-  //   await prefs.setString('otp', userModel.otp ?? "");
-  //   await prefs.setString('token', userToken);
-  //   token.value = userToken;
-  //   user.value = userModel;
-  // }
   Future<void> saveUserSessionFromResponse(
     UserModel userModel, String userToken) async {
   // Basic user info
@@ -62,25 +50,6 @@ TruckInformation? get truck => user.value?.truckInformation;
 }
 
 
-  // Future<void> getUserFromPrefs() async {
-  //   final id = prefs.getInt('id');
-  //   final name = prefs.getString('first_name');
-  //   final email = prefs.getString('email');
-  //   final role = prefs.getString('role');
-  //   token.value = prefs.getString('token') ?? '';
-
-  //   if (id == null || name == null || email == null || role == null) {
-  //     user.value = null; // Set user to null if any data is missing
-  //     return;
-  //   }
-
-  //   // Create the UserModel object
-  //   UserModel userModel =
-  //       UserModel(id: id, name: name, email: email, role: role);
-
-  //   // Assign the loaded user to the reactive user variable
-  //   user.value = userModel;
-  // }
   Future<void> getUserFromPrefs() async {
   final id = prefs.getInt('id');
   final name = prefs.getString('first_name');
@@ -137,6 +106,6 @@ TruckInformation? get truck => user.value?.truckInformation;
     await prefs.clear();
     token.value = '';
     // user.value = null;
-    Get.offAllNamed(AppRouteName.sellerlogin);
+    Get.offAndToNamed(AppRouteName.sellerlogin);
   }
 }

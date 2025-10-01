@@ -16,14 +16,14 @@ class AppBindings implements Bindings {
     Get.lazyPut(() => ApiClient());
 
     // Register repositories
-    Get.lazyPut(() => AuthRepository(apiClient: Get.find()));
-    Get.lazyPut(() => TruckRepository(apiClient: Get.find()));
-    Get.lazyPut(() => DashboardRepository(apiClient: Get.find()));
+    Get.lazyPut(() => AuthRepository(apiClient: Get.find()),fenix: true);
+    Get.lazyPut(() => TruckRepository(apiClient: Get.find()),fenix: true);
+    Get.lazyPut(() => DashboardRepository(apiClient: Get.find()),fenix: true);
 
     // Register controllers
     Get.lazyPut(() => AuthController(authRepo: Get.find()));
-    Get.lazyPut(() => UserController());
-    Get.lazyPut(() => TruckController(truckRepo: Get.find()));
-    Get.lazyPut(() => DashboardController(dashboardRepo: Get.find()));
+    Get.lazyPut(() => UserController(),fenix: true);
+    Get.lazyPut(() => TruckController(truckRepo: Get.find()),fenix: true);
+    Get.lazyPut(() => DashboardController(dashboardRepo: DashboardRepository(apiClient: Get.find())),fenix: true);
   }
 }

@@ -5,6 +5,7 @@ import 'package:StreetSpot/controller/truck_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/repositries/truck_repository.dart';
 import 'package:StreetSpot/routes/route_name.dart';
+import 'package:StreetSpot/utils/app_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -197,7 +198,8 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           SizedBox(width: 8.w),
                           CustomText(
                             text:
-                                '${dashboardController.dashboardData.value!.followersCount} Followers',
+                            '${dashboardController.dashboardData.value?.followersCount ?? 0} Followers'
+,
                             fontsize: 12.sp,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
@@ -229,7 +231,7 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                           SizedBox(width: 8.w),
                           CustomText(
                             text:
-                                '${dashboardController.dashboardData.value!.todaySales} USD Daily Sales',
+'${dashboardController.dashboardData.value?.todaySales ?? 0} USD Daily Sales',
                             fontsize: 12.sp,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
@@ -639,9 +641,7 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
                     if (controller.weeklySchedules.isEmpty) {
-                      Get.snackbar(
-                          "Error", "Please add at least one weekly day",
-                          colorText: Colors.black);
+                          AppSnackbar.error("Please add at least one weekly day");
                       return;
                     }
                     print("lock");

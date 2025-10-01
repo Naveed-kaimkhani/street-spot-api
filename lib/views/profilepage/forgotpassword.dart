@@ -1,4 +1,5 @@
 import 'package:StreetSpot/controller/auth_controller.dart';
+import 'package:StreetSpot/utils/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:StreetSpot/custom_widgets/custom_button.dart';
@@ -108,12 +109,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final email = controller.text.trim();
 
     if (email.isEmpty) {
-      Get.snackbar("Error", "Email is required");
+      // Get.snackbar("Error", "Email is required");
+      AppSnackbar.error("Email is required");
       return;
     }
 
     if (!GetUtils.isEmail(email)) {
-      Get.snackbar("Error", "Please enter a valid email");
+      // Get.snackbar("Error", "Please enter a valid email");
+      AppSnackbar.error("Please enter a valid email");
       return;
     }
 

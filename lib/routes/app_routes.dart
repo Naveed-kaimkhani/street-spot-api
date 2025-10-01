@@ -1,3 +1,4 @@
+import 'package:StreetSpot/helpers/appbindings.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
 import 'package:StreetSpot/views/seller/AddMenuItemScreen.dart';
 import 'package:StreetSpot/views/seller/sellerbottombar.dart';
@@ -38,6 +39,7 @@ class AppRouters {
     GetPage(
       name: AppRouteName.sellerbottomnavbar,
       page: () => const Sellerbottombar(),
+      binding: AppBindings(),
       curve: Curves.easeIn,
     ),
     GetPage(
@@ -58,6 +60,7 @@ class AppRouters {
     GetPage(
       name: AppRouteName.bottomnavbar,
       page: () => const MainScreen(),
+      binding: AppBindings(),
       curve: Curves.easeIn,
     ),
 

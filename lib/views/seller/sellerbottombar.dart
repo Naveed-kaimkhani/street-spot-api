@@ -20,9 +20,6 @@ class _SellerbottombarState extends State<Sellerbottombar> {
      FavoritesListPage(),
     const Profilesettingscreen(),
 
-    // const UserManagementPage(),
-    // ReportAnalysisScreen(), // Assuming this represents History
-    // Profilesettingscreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -35,10 +32,12 @@ class _SellerbottombarState extends State<Sellerbottombar> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: _screens.isNotEmpty && _selectedIndex < _screens.length
-            ? _screens[_selectedIndex]
-            : const Center(child: Text('No Screens Available')),
+        body: SafeArea(
+        // 👇 this keeps state alive
+        child: IndexedStack(
+          index: _selectedIndex,
+          children: _screens,
+        ),
       ),
       bottomNavigationBar: CustomNavBar(
         selectedIndex: _selectedIndex,

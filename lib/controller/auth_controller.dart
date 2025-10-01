@@ -4,6 +4,7 @@ import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/model/user_model.dart';
 import 'package:StreetSpot/repositries/auth_repo.dart';
 import 'package:StreetSpot/routes/route_name.dart';
+import 'package:StreetSpot/utils/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,19 +33,27 @@ class AuthController extends GetxController {
   // register User
   void registerUser({required UserModel user}) {
     isLoading.value = true;
-log("in register user");
     authRepo.registerUser(
       user: user,
       onSuccess: () {
         isLoading.value = false;
-        Get.snackbar("Success", "Registered successfully",
-            colorText: Colors.black);
-        Get.offAllNamed(
-            AppRouteName.emailverification); // Navigate or trigger OTP logic
-      },
+        // Get.snackbar("Success", "Registered successfully",
+        //     colorText: Colors.black);
+        AppSnackbar.success("Registered successfully");
+    
+      // ✅ Navigate based on user role
+      if (user.role == 'TRUCK_OWNER') {
+        Get.offAndToNamed(AppRouteName.sellerbottomnavbar);
+      } else {
+        Get.offAndToNamed(AppRouteName.bottomnavbar);
+      }
+
+      // 👉 If you *still* want to go to email verification first:
+      // Get.offAllNamed(AppRouteName.emailverification);
+    },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: Colors.black);
+        AppSnackbar.error(message);
       },
     );
   }
@@ -59,17 +68,19 @@ void loginUser({
       password: password,
       onSuccess: (UserModel user) {
         isLoading.value = false;
-        Get.snackbar("Success", "Login successful", colorText: Colors.black);
+        AppSnackbar.success("Login successful");
         // Navigate based on user role
+        log(user.role);
         if (user.role == 'TRUCK_OWNER') {
-          Get.toNamed(AppRouteName.sellerbottomnavbar);
+          Get.offAndToNamed(AppRouteName.sellerbottomnavbar);
         } else {
-          Get.toNamed(AppRouteName.bottomnavbar);
-        }
+          Get.offAndToNamed(AppRouteName.bottomnavbar);
+       }
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: Colors.black);
+        // Get.snackbar("Error", message, colorText: Colors.black);
+        AppSnackbar.error(message);
       },
     );
   }
@@ -82,9 +93,9 @@ void loginUser({
         isLoading.value = false;
 
         otp.value = "";
-        Get.snackbar("Success", "OTP sent to your email",
-            colorText: Colors.black);
-        log("coming from forget");
+        // Get.snackbar("Success", "OTP sent to your email",
+        //     colorText: Colors.black);
+        AppSnackbar.success("OTP sent to your email");
         Get.toNamed(
           AppRouteName.emailverification,
           arguments: {
@@ -95,7 +106,8 @@ void loginUser({
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message, colorText: Colors.black);
+        // Get.snackbar("Error", message, colorText: Colors.black);
+        AppSnackbar.error(message);
       },
     );
   }
@@ -116,15 +128,17 @@ void resetPassword({
     onSuccess: () {
       isLoading.value = false;
 
-      Get.snackbar("Success", "Password reset successfully",
-          colorText: Colors.black);
+      // Get.snackbar("Success", "Password reset successfully",
+      //     colorText: Colors.black);
+      AppSnackbar.success("Password reset successfully");
 
       // after reset, take user back to login screen
       Get.offAllNamed(AppRouteName.sellerlogin);
     },
     onError: (message) {
       isLoading.value = false;
-      Get.snackbar("Error", message, colorText: Colors.black);
+      // Get.snackbar("Error", message, colorText: Colors.black);
+      AppSnackbar.error(message);
     },
   );
 }
