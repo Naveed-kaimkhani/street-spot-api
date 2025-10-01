@@ -1,4 +1,4 @@
-
+import 'package:StreetSpot/constants/api_endpoints.dart';
 import 'package:StreetSpot/controller/cart_controller.dart';
 import 'package:StreetSpot/model/menu_item.dart';
 import 'package:StreetSpot/utils/app_colors.dart';
@@ -233,7 +233,7 @@ class CartScreen extends StatelessWidget {
         left: Radius.circular(16.r),
       ),
       child: CachedNetworkImage(
-        imageUrl: item.imageUrl,
+        imageUrl: "${ApiEndpoints.image}${item.imageUrl}",
         width: 100.w,
         height: 120.h,
         fit: BoxFit.cover,
