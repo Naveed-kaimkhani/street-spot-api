@@ -69,8 +69,6 @@ void loginUser({
       onSuccess: (UserModel user) {
         isLoading.value = false;
         AppSnackbar.success("Login successful");
-        // Navigate based on user role
-        log(user.role);
         if (user.role == 'TRUCK_OWNER') {
           Get.toNamed(AppRouteName.sellerbottomnavbar);
         } else {

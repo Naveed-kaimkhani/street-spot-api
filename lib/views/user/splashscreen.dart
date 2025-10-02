@@ -3,6 +3,7 @@
 import 'package:StreetSpot/binding/auth_binding.dart';
 import 'package:StreetSpot/binding/order_binding.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
+import 'package:StreetSpot/routes/route_name.dart';
 import 'package:StreetSpot/views/order/order_screen.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
 import 'package:StreetSpot/views/seller/sellerlogin.dart';
@@ -33,17 +34,18 @@ class _SplashScreenState extends State<SplashScreen> {
       await userController.getUserFromPrefs();
 
       if (userController.token.value.isNotEmpty) {
-        Get.offAll(() => Sellerbottombar());
+        // Get.offAll(() => Sellerbottombar());
+          if (userController.user.value!.role == 'TRUCK_OWNER') {
+    // Seller (Truck Owner)
+    // Get.offAllNamed(AppRouteName.sellerbottomnavbar);
+
+        Get.offAll(() => UserSellerPage(),binding: AuthBinding());
+  } else {
+    // Normal User
+    Get.offAllNamed(AppRouteName.bottomnavbar);
+  }
 
 // Get.to(() => OrderScreen(),binding: OrderBinding());
-
-
-
-
-
-// Get.to(() => BurgerDetailsPage());
-
-        // Get.to(() => Dashboardscreen());
       } else {
 
         Get.offAll(() => UserSellerPage(),binding: AuthBinding());

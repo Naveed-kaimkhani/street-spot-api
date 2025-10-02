@@ -30,7 +30,7 @@ class _ProfilesettingscreenState extends State<Profilesettingscreen> {
           },
           color: Colors.black,
         ),
-        title: CustomText(
+        title: const CustomText(
           text: 'Profile Settings',
           fontsize: 18,
           fontWeight: FontWeight.bold,
@@ -110,7 +110,7 @@ class _ProfilesettingscreenState extends State<Profilesettingscreen> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
                             AppColors.klineargradient1,
                             AppColors.klineargradient2,
@@ -160,7 +160,7 @@ class _ProfilesettingscreenState extends State<Profilesettingscreen> {
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
                               foreground: Paint()
-                                ..shader = LinearGradient(
+                                ..shader = const LinearGradient(
                                   colors: [
                                     AppColors.klineargradient1,
                                     AppColors.klineargradient2

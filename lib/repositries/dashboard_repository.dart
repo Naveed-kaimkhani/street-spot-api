@@ -56,12 +56,10 @@ class DashboardRepository extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
-        log(data.toString());
         final customerDashboard = CustomerDashboardModel.fromJson(data);
         onSuccess(customerDashboard);
       } else {
         final error = jsonDecode(response.body);
-        log(error.toString());
         onError(error['message'] ?? "Failed to load customer dashboard");
       }
     } catch (e) {

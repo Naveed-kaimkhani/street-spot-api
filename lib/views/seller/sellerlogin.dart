@@ -37,10 +37,13 @@ class _SellerloginbState extends State<Sellerlogin> {
 
   @override
   void dispose() {
-    authController.nameController.clear();
-    authController.emailController.clear();
-    authController.passwordController.clear();
-    authController.confirmPasswordController.clear();
+   WidgetsBinding.instance.addPostFrameCallback((_) {
+  authController.nameController.clear();
+  authController.emailController.clear();
+  authController.passwordController.clear();
+  authController.confirmPasswordController.clear();
+  
+});
     super.dispose();
   }
 

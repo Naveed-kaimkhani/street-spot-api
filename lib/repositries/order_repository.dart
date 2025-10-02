@@ -83,7 +83,6 @@ Future<void> acceptOrder({
     final response = await _apiClient.put(
       url: ApiEndpoints.acceptOrder(orderId),
     );
-log(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body);
       if (data['success'] == true) {

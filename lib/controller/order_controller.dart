@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderController extends GetxController {
-  final OrderRepository _repository = Get.find<OrderRepository>();
+  final OrderRepository _repository = OrderRepository();
 
   final RxBool isLoading = false.obs;
   final RxMap<String, dynamic> lastOrderResponse = <String, dynamic>{}.obs;
