@@ -1,6 +1,8 @@
 
 
 import 'dart:convert';
+import 'dart:developer';
+
 import 'package:StreetSpot/constants/api_endpoints.dart';
 import 'package:StreetSpot/model/order_model.dart';
 import 'package:StreetSpot/services/api_client.dart';
@@ -55,6 +57,7 @@ Future<void> fetchAllOrders({
       if (data['success'] == true) {
         final List ordersJson = data['data']['orders'] ?? [];
         final orders = ordersJson.map((e) => OrderModel.fromJson(e)).toList();
+      
         onSuccess(orders);
       } else {
         onError(data['message'] ?? "Failed to fetch orders");
@@ -65,6 +68,35 @@ Future<void> fetchAllOrders({
     }
   } catch (e) {
     onError("Something went wrong: $e");
+  }
+}
+
+
+
+
+Future<void> acceptOrder({
+  required int orderId,
+  required Function(Map<String, dynamic> data) onSuccess,
+  required Function(String message) onError,
+}) async {
+  try {
+    final response = await _apiClient.put(
+      url: ApiEndpoints.acceptOrder(orderId),
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final data = jsonDecode(response.body);
+      if (data['success'] == true) {
+        onSuccess(data);
+      } else {
+        onError(data['message'] ?? "Failed to accept order");
+      }
+    } else {
+      final error = jsonDecode(response.body);
+      onError(error['message'] ?? "Failed to accept order");
+    }
+  } catch (e) {
+    onError("Something went wrong: $e");
+
   }
 }
 

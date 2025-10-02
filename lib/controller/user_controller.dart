@@ -47,6 +47,7 @@ TruckInformation? get truck => user.value?.truckInformation;
 
   token.value = userToken;
   user.value = userModel;
+  log("User session saved: ${user.toJson()}");
 }
 
 

@@ -76,7 +76,7 @@ class AuthRepository extends GetxController {
           final userData = data['user'];
 
           final user = UserModel.fromJson(userData);
-
+          log("user before saving session: ${user.toJson()}");
           await userController.saveUserSessionFromResponse(user, token);
 
           onSuccess(user); // Pass the UserModel to onSuccess

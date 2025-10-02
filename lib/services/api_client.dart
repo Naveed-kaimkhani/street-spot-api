@@ -47,8 +47,11 @@ class ApiClient extends GetxService {
   Future<http.Response> put({
     required String url,
     Object? body,
-    Map<String, String>? headers,
+    
   }) async {
+      final headers = {
+      "Authorization": "Bearer ${userController.token.value}",
+    };
     return await http.put(
       Uri.parse(url),
       body: body,

@@ -67,4 +67,23 @@ void _showLottieSuccessCelebration(dynamic orderData) {
     barrierColor: Colors.black54,
   );
 }
+
+
+
+void acceptOrder(int orderId) async {
+  isLoading.value = true;
+  await _repository.acceptOrder(
+    orderId: orderId,
+    onSuccess: (data) {
+      isLoading.value = false;
+      AppSnackbar.success("Order accepted successfully");
+      fetchOrders();
+    },
+    onError: (message) {
+      isLoading.value = false;
+      AppSnackbar.error(message);
+    },
+  );
+}
+
 }

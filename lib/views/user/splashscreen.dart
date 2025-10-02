@@ -1,20 +1,12 @@
 
 
-import 'package:StreetSpot/controller/auth_controller.dart';
+import 'package:StreetSpot/binding/auth_binding.dart';
+import 'package:StreetSpot/binding/order_binding.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
-import 'package:StreetSpot/custom_widgets/customNavBar.dart';
-import 'package:StreetSpot/views/cart/cart_screen.dart';
+import 'package:StreetSpot/routes/route_name.dart';
 import 'package:StreetSpot/views/order/order_screen.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
-import 'package:StreetSpot/views/seller/dashboardscreen.dart';
-import 'package:StreetSpot/views/seller/sellerbottombar.dart';
 import 'package:StreetSpot/views/seller/sellerlogin.dart';
-import 'package:StreetSpot/views/user/checkoutpage.dart';
-import 'package:StreetSpot/views/user/detailpage.dart';
-import 'package:StreetSpot/views/user/homescreen.dart';
-import 'package:StreetSpot/views/user/mainscreen.dart';
-import 'package:StreetSpot/views/user/storepage.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
@@ -30,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   
 
   final userController = Get.put(UserController(),permanent: true);
-  final authController = Get.put(AuthController(authRepo: Get.find()),permanent: true);
+  // final authController = Get.put(AuthController(authRepo: Get.find()),permanent: true);
   @override
   void initState() {
     super.initState();
@@ -43,16 +35,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (userController.token.value.isNotEmpty) {
         // Get.offAll(() => Sellerbottombar());
+          if (userController.user.value!.role == 'TRUCK_OWNER') {
+    // Seller (Truck Owner)
+    // Get.offAllNamed(AppRouteName.sellerbottomnavbar);
 
-Get.to(() => OrderScreen());
+        Get.offAll(() => UserSellerPage(),binding: AuthBinding());
+  } else {
+    // Normal User
+    Get.offAllNamed(AppRouteName.bottomnavbar);
+  }
 
-// Get.to(() => BurgerDetailsPage());
-
-        // Get.to(() => Dashboardscreen());
+// Get.to(() => OrderScreen(),binding: OrderBinding());
       } else {
-        // Get.offAll(() => UserSellxerPage());
 
-        Get.to(() => UserSellerPage());
+        Get.offAll(() => UserSellerPage(),binding: AuthBinding());
       }
     });
   }

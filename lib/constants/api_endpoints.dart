@@ -31,5 +31,7 @@ class ApiEndpoints {
 
 static const  orders = '$baseApiURL/orders/all';
 
+  static String acceptOrder(int id) => "$baseApiURL/orders/accept-order/$id";
+
 }
 

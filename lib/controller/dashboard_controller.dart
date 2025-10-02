@@ -22,13 +22,13 @@ class DashboardController extends GetxController {
 
   // ✅ fetch dashboard
   void fetchDashboard() {
-    log("Fetching dashboard data");
+    
     isLoading.value = true;
     dashboardRepo.fetchDashboard(
       onSuccess: (data) {
         isLoading.value = false;
         dashboardData.value = data;
-        log(dashboardData.value!.menuItems.length.toString());
+        
       },
       onError: (message) {
         isLoading.value = false;

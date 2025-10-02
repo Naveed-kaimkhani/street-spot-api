@@ -4,6 +4,7 @@ import 'package:StreetSpot/components/truck_card_home.dart';
 import 'package:StreetSpot/components/user_home_shimmer.dart';
 import 'package:StreetSpot/controller/cart_controller.dart';
 import 'package:StreetSpot/controller/dashboard_controller.dart';
+import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/model/truck_model.dart';
 import 'package:StreetSpot/utils/utils.dart';
 import 'package:StreetSpot/views/user/storepage.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   final DashboardController controller = Get.find<DashboardController>();
   // final DashboardController controller = Get.put(DashboardController(dashboardRepo: Get.find()),permanent: true);
 
+  final UserController userController = Get.find<UserController>();
   final CartController cartController = Get.put(CartController(),);
   final List<Restaurant> restaurants = [
     Restaurant(

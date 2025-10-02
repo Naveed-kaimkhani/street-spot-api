@@ -27,38 +27,38 @@ Get.find<DashboardController>();
 
   final UserController userController = Get.put(UserController());
 
-  final List<Map<String, String>> _products = [
-    {
-      'name': 'Broast',
-      'category': 'Tacos',
-      'image': 'assets/images/broast.png',
-      'type': 'new'
-    },
-    {
-      'name': 'Cold Drinks',
-      'category': 'Pepsi',
-      'image': 'assets/images/coldrinks.png',
-      'type': 'simple'
-    },
-    {
-      'name': 'Desserts',
-      'category': 'Icecream',
-      'image': 'assets/images/desserts.png',
-      'type': 'simple'
-    },
-    {
-      'name': 'Burger',
-      'category': 'Burgers',
-      'image': 'assets/images/broast.png',
-      'type': 'new'
-    },
-    {
-      'name': 'Burger',
-      'category': 'Burgers',
-      'image': 'assets/images/broast.png',
-      'type': 'new'
-    },
-  ];
+  // final List<Map<String, String>> _products = [
+  //   {
+  //     'name': 'Broast',
+  //     'category': 'Tacos',
+  //     'image': 'assets/images/broast.png',
+  //     'type': 'new'
+  //   },
+  //   {
+  //     'name': 'Cold Drinks',
+  //     'category': 'Pepsi',
+  //     'image': 'assets/images/coldrinks.png',
+  //     'type': 'simple'
+  //   },
+  //   {
+  //     'name': 'Desserts',
+  //     'category': 'Icecream',
+  //     'image': 'assets/images/desserts.png',
+  //     'type': 'simple'
+  //   },
+  //   {
+  //     'name': 'Burger',
+  //     'category': 'Burgers',
+  //     'image': 'assets/images/broast.png',
+  //     'type': 'new'
+  //   },
+  //   {
+  //     'name': 'Burger',
+  //     'category': 'Burgers',
+  //     'image': 'assets/images/broast.png',
+  //     'type': 'new'
+  //   },
+  // ];
 
   final List<SalesData> _chartData = [
     SalesData('Jan', 200),
@@ -142,7 +142,7 @@ Get.find<DashboardController>();
                       ),
                       SizedBox(height: 12.h),
                       CustomText(
-                        text: userController.currentUser!.name,
+                        text: userController.user.value!.name,
                         fontsize: 14.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -284,20 +284,20 @@ Get.find<DashboardController>();
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(
+              data!.popularMenuItems.isNotEmpty?       CustomText(
                       text: 'Popular Menu Items',
                       fontsize: 14.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
-                    ),
+                    ):SizedBox(),
                     SizedBox(height: 12.h),
-                    SizedBox(
+                 data.popularMenuItems.isNotEmpty?   SizedBox(
                       height: 120.h,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: _products.length,
+                        itemCount:  data.popularMenuItems.length,
                         itemBuilder: (context, index) {
-                          final product = _products[index];
+                          final product = data.popularMenuItems[index];
                           return Padding(
                             padding: EdgeInsets.only(
                               right: 12.w,
@@ -332,7 +332,7 @@ Get.find<DashboardController>();
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12.r),
                                       image: DecorationImage(
-                                        image: AssetImage(product['image']!),
+                                        image: AssetImage(product.imageUrl),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -342,7 +342,7 @@ Get.find<DashboardController>();
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 8.w),
                                     child: CustomText(
-                                      text: product['name']!,
+                                      text: product.name,
                                       fontsize: 14.sp,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black,
@@ -357,14 +357,14 @@ Get.find<DashboardController>();
                           );
                         },
                       ),
-                    ),
+                    ):SizedBox()
                   ],
                 ),
               ),
               // Products Grid or Empty Message
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: data == null || data.menuItems.isEmpty
+                child:  data.menuItems.isEmpty
                     ? Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.h),
                         child: CustomText(
