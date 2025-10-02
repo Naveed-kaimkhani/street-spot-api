@@ -72,7 +72,7 @@ void loginUser({
         // Navigate based on user role
         log(user.role);
         if (user.role == 'TRUCK_OWNER') {
-          Get.offAndToNamed(AppRouteName.sellerbottomnavbar);
+          Get.toNamed(AppRouteName.sellerbottomnavbar);
         } else {
           Get.offAndToNamed(AppRouteName.bottomnavbar);
        }

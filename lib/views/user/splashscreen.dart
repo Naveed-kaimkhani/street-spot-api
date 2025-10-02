@@ -1,20 +1,11 @@
 
 
-import 'package:StreetSpot/controller/auth_controller.dart';
+import 'package:StreetSpot/binding/auth_binding.dart';
+import 'package:StreetSpot/binding/order_binding.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
-import 'package:StreetSpot/custom_widgets/customNavBar.dart';
-import 'package:StreetSpot/views/cart/cart_screen.dart';
 import 'package:StreetSpot/views/order/order_screen.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
-import 'package:StreetSpot/views/seller/dashboardscreen.dart';
-import 'package:StreetSpot/views/seller/sellerbottombar.dart';
 import 'package:StreetSpot/views/seller/sellerlogin.dart';
-import 'package:StreetSpot/views/user/checkoutpage.dart';
-import 'package:StreetSpot/views/user/detailpage.dart';
-import 'package:StreetSpot/views/user/homescreen.dart';
-import 'package:StreetSpot/views/user/mainscreen.dart';
-import 'package:StreetSpot/views/user/storepage.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
@@ -30,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   
 
   final userController = Get.put(UserController(),permanent: true);
-  final authController = Get.put(AuthController(authRepo: Get.find()),permanent: true);
+  // final authController = Get.put(AuthController(authRepo: Get.find()),permanent: true);
   @override
   void initState() {
     super.initState();
@@ -42,17 +33,20 @@ class _SplashScreenState extends State<SplashScreen> {
       await userController.getUserFromPrefs();
 
       if (userController.token.value.isNotEmpty) {
-        // Get.offAll(() => Sellerbottombar());
+        Get.offAll(() => Sellerbottombar());
 
-Get.to(() => OrderScreen());
+// Get.to(() => OrderScreen(),binding: OrderBinding());
+
+
+
+
 
 // Get.to(() => BurgerDetailsPage());
 
         // Get.to(() => Dashboardscreen());
       } else {
-        // Get.offAll(() => UserSellxerPage());
 
-        Get.to(() => UserSellerPage());
+        Get.offAll(() => UserSellerPage(),binding: AuthBinding());
       }
     });
   }

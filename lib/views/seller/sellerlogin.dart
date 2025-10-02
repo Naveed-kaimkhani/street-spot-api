@@ -28,11 +28,12 @@ class Sellerlogin extends StatefulWidget {
 
 class _SellerloginbState extends State<Sellerlogin> {
   final authController =
-  Get.put(AuthController(authRepo: Get.find()));
+  // Get.put(AuthController(authRepo: Get.find()));
+      Get.find<AuthController>();
   GlobalKey<FormState> authForm = GlobalKey<FormState>();
   bool isPasswordObsure = true;
-  bool isLoginActive = true; // State to track active tab
-  bool isSeller = false; // State to track seller checkbox
+  bool isLoginActive = true; 
+  bool isSeller = false; 
 
   @override
   void dispose() {

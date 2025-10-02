@@ -1,6 +1,8 @@
 import 'package:StreetSpot/controller/auth_controller.dart';
+import 'package:StreetSpot/controller/cart_controller.dart';
 
 import 'package:StreetSpot/controller/dashboard_controller.dart';
+import 'package:StreetSpot/controller/order_controller.dart';
 import 'package:StreetSpot/controller/truck_controller.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
 import 'package:StreetSpot/repositries/auth_repo.dart';
@@ -25,5 +27,9 @@ class AppBindings implements Bindings {
     Get.lazyPut(() => UserController(),fenix: true);
     Get.lazyPut(() => TruckController(truckRepo: TruckRepository(apiClient: Get.find())),fenix: true);
     Get.lazyPut(() => DashboardController(dashboardRepo: DashboardRepository(apiClient: Get.find())),fenix: true);
+
+    Get.lazyPut(() => OrderController());
+
+    Get.lazyPut(() => CartController());
   }
 }

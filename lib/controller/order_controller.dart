@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderController extends GetxController {
-  final OrderRepository _repository = OrderRepository();
+  final OrderRepository _repository = Get.find<OrderRepository>();
 
   final RxBool isLoading = false.obs;
   final RxMap<String, dynamic> lastOrderResponse = <String, dynamic>{}.obs;
@@ -67,4 +67,23 @@ void _showLottieSuccessCelebration(dynamic orderData) {
     barrierColor: Colors.black54,
   );
 }
+
+
+
+void acceptOrder(int orderId) async {
+  isLoading.value = true;
+  await _repository.acceptOrder(
+    orderId: orderId,
+    onSuccess: (data) {
+      isLoading.value = false;
+      AppSnackbar.success("Order accepted successfully");
+      fetchOrders();
+    },
+    onError: (message) {
+      isLoading.value = false;
+      AppSnackbar.error(message);
+    },
+  );
+}
+
 }

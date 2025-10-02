@@ -1,3 +1,4 @@
+import 'package:StreetSpot/binding/auth_binding.dart';
 import 'package:StreetSpot/helpers/appbindings.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
 import 'package:StreetSpot/views/seller/AddMenuItemScreen.dart';
@@ -50,11 +51,13 @@ class AppRouters {
     GetPage(
       name: AppRouteName.usersellersection,
       page: () => UserSellerPage(),
+      binding: AuthBinding(),
       curve: Curves.easeIn,
     ),
     GetPage(
       name: AppRouteName.sellerlogin,
       page: () => Sellerlogin(),
+      binding: AuthBinding(),
       curve: Curves.easeIn,
     ),
     GetPage(

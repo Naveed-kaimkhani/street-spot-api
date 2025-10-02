@@ -1,6 +1,6 @@
 import 'package:StreetSpot/custom_widgets/customNavBar.dart' show CustomNavBar;
+import 'package:StreetSpot/views/order/order_screen.dart';
 import 'package:StreetSpot/views/seller/dashboardscreen.dart';
-import 'package:StreetSpot/views/user/favoriteslistscreen.dart';
 import 'package:StreetSpot/views/user/profilesettingscreen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class _SellerbottombarState extends State<Sellerbottombar> {
 
   final List<Widget> _screens = [
     const Dashboardscreen(),
-     FavoritesListPage(),
+    const OrderScreen(),
     const Profilesettingscreen(),
 
   ];
