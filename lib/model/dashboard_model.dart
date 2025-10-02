@@ -4,7 +4,7 @@ import 'dart:developer';
 
 class DashboardModel {
   final int followersCount;
-  final String todaySales;
+  final String? todaySales;
   final List<MenuItem> popularMenuItems;
   final List<MenuItem> menuItems;
 
@@ -20,10 +20,12 @@ class DashboardModel {
     return DashboardModel(
       followersCount: json['followers_count'] ?? 0,
   todaySales: json['today_sales'],
-      popularMenuItems: (json['popular_menu_items'] as List<dynamic>?)
-              ?.map((e) => MenuItem.fromJson(e))
-              .toList() ??
-          [],
+      // popularMenuItems: (json['popular_menu_items'] as List<dynamic>?)
+      //         ?.map((e) => MenuItem.fromJson(e))
+      //         .toList() ??
+      //     [],
+          popularMenuItems:    [],
+          
       menuItems: (json['menu_items'] as List<dynamic>?)
               ?.map((e) => MenuItem.fromJson(e))
               .toList() ??

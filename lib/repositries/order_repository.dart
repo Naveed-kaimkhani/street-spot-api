@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:StreetSpot/constants/api_endpoints.dart';
+import 'package:StreetSpot/model/order_model.dart';
 import 'package:StreetSpot/services/api_client.dart';
 import 'package:get/get.dart';
 
@@ -37,4 +38,34 @@ class OrderRepository {
       onError(e.toString());
     }
   }
+
+
+Future<void> fetchAllOrders({
+  required Function(List<OrderModel> orders) onSuccess,
+  required Function(String message) onError,
+}) async {
+  try {
+    final response = await _apiClient.get(
+      url: ApiEndpoints.orders, // define this in your ApiEndpoints
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final data = jsonDecode(response.body);
+
+      if (data['success'] == true) {
+        final List ordersJson = data['data']['orders'] ?? [];
+        final orders = ordersJson.map((e) => OrderModel.fromJson(e)).toList();
+        onSuccess(orders);
+      } else {
+        onError(data['message'] ?? "Failed to fetch orders");
+      }
+    } else {
+      final error = jsonDecode(response.body);
+      onError(error['message'] ?? "Failed to fetch orders");
+    }
+  } catch (e) {
+    onError("Something went wrong: $e");
+  }
+}
+
 }

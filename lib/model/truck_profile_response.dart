@@ -8,7 +8,7 @@ class TruckProfileResponse {
 
   TruckProfileResponse({
     required this.truck,
-    required this.truckReviewChart,
+    required this.truckReviewChart
   });
 
   factory TruckProfileResponse.fromJson(Map<String, dynamic> json) {

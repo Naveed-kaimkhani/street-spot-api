@@ -18,20 +18,19 @@ class DashboardRepository extends GetxController {
     required Function(String message) onError,
   }) async {
     try {
-      
       final response = await apiClient.get(
         url: ApiEndpoints.dashboard,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final jsonData = jsonDecode(response.body);
-          final data = jsonData['data'];
-  if (data == null || data['truck_information'] == null) {
-    onError( "No truck found. Please register your truck first.");
-    return;
-  }
+        final data = jsonData['data'];
+        if (data == null || data['truck_information'] == null) {
+          onError("No truck found. Please register your truck first.");
+          return;
+        }
 
-       final dashboard = DashboardModel.fromJson(jsonData['data']);
+        final dashboard = DashboardModel.fromJson(jsonData['data']);
 
         onSuccess(dashboard);
       } else {
@@ -39,11 +38,6 @@ class DashboardRepository extends GetxController {
         onError(error['message'] ?? 'Failed to load dashboard');
       }
     } catch (e) {
-      final response = await apiClient.get(
-        url: ApiEndpoints.dashboard,
-      );
-      log(response.body);
-      log(response.statusCode.toString());
       onError("Something went wrong. Please try again.$e");
     }
   }
@@ -71,7 +65,6 @@ class DashboardRepository extends GetxController {
         onError(error['message'] ?? "Failed to load customer dashboard");
       }
     } catch (e) {
-        
       onError("Something went wrong. $e");
     }
   }
@@ -89,8 +82,9 @@ class DashboardRepository extends GetxController {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final jsonData = jsonDecode(response.body);
         // TruckModel truck = TruckModel.fromJson(jsonData['data']['truck']);
-        TruckProfileResponse truckResponse = TruckProfileResponse.fromJson(jsonData['data']);
-   
+        TruckProfileResponse truckResponse =
+            TruckProfileResponse.fromJson(jsonData['data']);
+
         onSuccess(truckResponse);
       } else {
         final error = jsonDecode(response.body) as Map<String, dynamic>?;
