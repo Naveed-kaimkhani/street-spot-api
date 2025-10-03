@@ -266,8 +266,7 @@ class OrderCardWidget extends StatelessWidget {
                         ),
                         onChanged: (newValue) {
                           if (newValue != null) {
-                            log("Status changed to $newValue for order ${order.id}");
-                            if (onStatusChanged != null) {
+                          if (onStatusChanged != null) {
                               onStatusChanged!(newValue); // 🔥 trigger callback
                             }
                           }
@@ -278,6 +277,8 @@ class OrderCardWidget extends StatelessWidget {
                           DropdownMenuItem(value: "In Progress", child: Text("In Progress")),
                           DropdownMenuItem(value: "Completed", child: Text("Completed")),
                           DropdownMenuItem(value: "Preparing", child: Text("Cancelled")),
+                            DropdownMenuItem(value: "Approved", child: Text("Approved")),
+                     
                         ],
                       ),
                     ),

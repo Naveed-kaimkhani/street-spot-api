@@ -70,10 +70,11 @@ void _showLottieSuccessCelebration(dynamic orderData) {
 
 
 
-void acceptOrder(int orderId) async {
+void acceptOrder(int orderId,int preperationTime) async {
   isLoading.value = true;
   await _repository.acceptOrder(
     orderId: orderId,
+    preparationTime: preperationTime,
     onSuccess: (data) {
       isLoading.value = false;
       AppSnackbar.success("Order accepted successfully");
@@ -86,4 +87,21 @@ void acceptOrder(int orderId) async {
   );
 }
 
+
+void updateOrderStatus(int orderId,String status) async {
+  isLoading.value = true;
+  await _repository.updateOrderStatus(
+    orderId: orderId,
+    status: status,
+    onSuccess: (data) {
+      isLoading.value = false;
+      AppSnackbar.success("Order Status updated");
+      fetchOrders();
+    },
+    onError: (message) {
+      isLoading.value = false;
+      AppSnackbar.error(message);
+    },
+  );
+}
 }

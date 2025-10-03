@@ -1,6 +1,8 @@
 import 'package:StreetSpot/model/truck_model.dart';
 import 'package:StreetSpot/model/user_model.dart';
 
+
+
 class OrderModel {
   final int id;
   final String status;
@@ -27,10 +29,8 @@ class OrderModel {
       originalAmount: double.tryParse(json['original_amount'].toString()) ?? 0.0,
       paidAmount: double.tryParse(json['paid_amount'].toString()) ?? 0.0,
       createdAt: DateTime.parse(json['created_at']),
-      truck: TruckModel.fromJson(json['truck']),
-      user: UserModel.fromJson(json['user']),
+      truck: TruckModel.fromJson(json['truck_information'] ?? {}),
+      user: UserModel.fromJson(json['user'] ?? {}),
     );
   }
 }
-
-

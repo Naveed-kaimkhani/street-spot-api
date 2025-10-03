@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:StreetSpot/model/category_model.dart';
 import 'package:StreetSpot/model/customer_dashboard_model.dart';
 import 'package:StreetSpot/model/dashboard_model.dart';
+import 'package:StreetSpot/model/menu_item.dart';
 import 'package:StreetSpot/model/truck_model.dart';
 import 'package:StreetSpot/model/truck_profile_response.dart';
 import 'package:StreetSpot/repositries/dashboard_repository.dart';
@@ -19,8 +21,11 @@ class DashboardController extends GetxController {
   var dashboardData = Rxn<DashboardModel>();
   var customerDashboardData = Rxn<CustomerDashboardModel>(); // ✅ new observable
   var truckData = Rxn<TruckProfileResponse>();
+  
+RxList<CategoryModel> categories = <CategoryModel>[].obs;
 
-  // ✅ fetch dashboard
+
+RxList<MenuItem2> menuItems = <MenuItem2>[].obs;
   void fetchDashboard() {
     
     isLoading.value = true;
@@ -32,7 +37,7 @@ class DashboardController extends GetxController {
       },
       onError: (message) {
         isLoading.value = false;
-        AppSnackbar.error(message);
+        AppSnackbar.info("Info", message);
       },
     );
   }
@@ -71,5 +76,32 @@ class DashboardController extends GetxController {
     );
   }
 
+void fetchCategories(int truckId) {
+  dashboardRepo.fetchCategories(
+    truckId: truckId,
+    onSuccess: (data) {
+      categories.assignAll(data);
+    },
+    onError: (message) {
+      AppSnackbar.error(message);
+    },
+  );
+}
+// Add this method (follows exact pattern)
+void fetchMenuItems(int truckId, int categoryId) async {
+  isLoading.value = true;
+  dashboardRepo.fetchMenuItems(
+    truckId: truckId,
+    categoryId: categoryId,
+    onSuccess: (data) {
+      isLoading.value = false;
+      menuItems.value = data;
+    },
+    onError: (message) {
+      isLoading.value = false;
+      AppSnackbar.error(message);
+    },
+  );
+}
 
 }

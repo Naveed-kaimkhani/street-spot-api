@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:StreetSpot/constants/api_endpoints.dart';
+import 'package:StreetSpot/model/category_model.dart';
 import 'package:StreetSpot/model/customer_dashboard_model.dart';
 import 'package:StreetSpot/model/dashboard_model.dart';
+import 'package:StreetSpot/model/menu_item.dart';
 import 'package:StreetSpot/model/truck_profile_response.dart';
 import 'package:StreetSpot/utils/utils.dart';
 import 'package:get/get.dart';
@@ -13,34 +15,72 @@ class DashboardRepository extends GetxController {
   DashboardRepository({required this.apiClient});
 
   // fetch dashboard data
-  Future<void> fetchDashboard({
-    required Function(DashboardModel data) onSuccess,
-    required Function(String message) onError,
-  }) async {
-    try {
-      final response = await apiClient.get(
-        url: ApiEndpoints.dashboard,
-      );
+  // Future<void> fetchDashboard({
+  //   required Function(DashboardModel data) onSuccess,
+  //   required Function(String message) onError,
+  // }) async {
+  //   try {
+  //     final response = await apiClient.get(
+  //       url: ApiEndpoints.dashboard,
+  //     );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final jsonData = jsonDecode(response.body);
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       final jsonData = jsonDecode(response.body);
+  //       final data = jsonData['data'];
+  //       log(data['truck_information']);
+  //       if (data == null || data['truck_information'] == null) {
+  //         onError("No truck found. Please register your truck first.");
+  //         return;
+  //       }
+  //       final dashboard = DashboardModel.fromJson(jsonData['data']);
+
+  //       onSuccess(dashboard);
+  //     } else {
+  //       final error = jsonDecode(response.body);
+  //       onError(error['message'] ?? 'Failed to load dashboard');
+  //     }
+  //   } catch (e) {
+  //     onError("Something went wrong. Please try again.$e");
+  //   }
+  // }
+
+
+  // ==================== Repository ====================
+Future<void> fetchDashboard({
+  required Function(DashboardModel data) onSuccess,
+  required Function(String message) onError,
+}) async {
+  try {
+    final response = await apiClient.get(
+      url: ApiEndpoints.dashboard,
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonData = jsonDecode(response.body);
+
+      if (jsonData['success'] == true) {
         final data = jsonData['data'];
+
+        // Handle case where truck_information is null
         if (data == null || data['truck_information'] == null) {
           onError("No truck found. Please register your truck first.");
           return;
         }
 
-        final dashboard = DashboardModel.fromJson(jsonData['data']);
-
+        final dashboard = DashboardModel.fromJson(data);
         onSuccess(dashboard);
       } else {
-        final error = jsonDecode(response.body);
-        onError(error['message'] ?? 'Failed to load dashboard');
+        onError(jsonData['message'] ?? "Something went wrong");
       }
-    } catch (e) {
-      onError("Something went wrong. Please try again.$e");
+    } else {
+      final error = jsonDecode(response.body);
+      onError(error['message'] ?? 'Failed to load dashboard');
     }
+  } catch (e) {
+    onError("Something went wrong. Please try again. $e");
   }
+}
+
 
   Future<void> fetchCustomerDashboard({
     required Function(CustomerDashboardModel data) onSuccess,
@@ -91,6 +131,68 @@ class DashboardRepository extends GetxController {
       }
     } catch (e) {
       onError("Something went wrong: $e");
+    }
+  }
+
+  Future<void> fetchCategories({
+    required int truckId,
+    required Function(List<CategoryModel> data) onSuccess,
+    required Function(String message) onError,
+  }) async {
+    try {
+      final response = await apiClient.get(
+        url: ApiEndpoints.fetchCategoriesByTruckId(truckId),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonData = jsonDecode(response.body);
+
+        if (jsonData['success'] == true) {
+          final List categoriesJson = jsonData['data']['categories'] ?? [];
+          final categories =
+              categoriesJson.map((e) => CategoryModel.fromJson(e)).toList();
+
+          onSuccess(categories);
+        } else {
+          onError(jsonData['message'] ?? 'Failed to load categories');
+        }
+      } else {
+        final error = jsonDecode(response.body);
+        onError(error['message'] ?? 'Failed to load categories');
+      }
+    } catch (e) {
+      onError("Something went wrong. Please try again. $e");
+    }
+  }
+
+// Add this method (exact same pattern as fetchCategories)
+  Future<void> fetchMenuItems({
+    required int truckId,
+    required int categoryId,
+    required Function(List<MenuItem2> data) onSuccess,
+    required Function(String message) onError,
+  }) async {
+    try {
+      final response = await apiClient.get(
+        url: ApiEndpoints.fetchMenuByCategoryId(truckId, categoryId),
+      );
+      log(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jsonData = jsonDecode(response.body);
+        if (jsonData['success'] == true) {
+          final List menuJson = jsonData['data']['menu_items'] ?? [];
+          final menus = menuJson.map((e) => MenuItem2.fromJson(e)).toList();
+
+          onSuccess(menus);
+        } else {
+          onError(jsonData['message'] ?? 'Failed to load categories');
+        }
+      } else {
+        final error = jsonDecode(response.body);
+        onError(error['message'] ?? 'Failed to load menu items');
+      }
+    } catch (e) {
+      onError("Something went wrong. Please try again. $e");
     }
   }
 }

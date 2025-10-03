@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 
 class FavoritesListPage extends StatelessWidget {
   final List<Map<String, dynamic>> favorites = [
@@ -48,7 +48,7 @@ class FavoritesListPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.grey[100],
-        title: Text(
+        title: const Text(
           "Favorites List",
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class FavoritesListPage extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: GridView.builder(
           itemCount: favorites.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, // 2 items per row
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
@@ -80,7 +80,7 @@ class FavoritesListPage extends StatelessWidget {
                   Stack(
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                         child: Image.asset(
                           item['image'],
                           height: 120,
@@ -88,7 +88,7 @@ class FavoritesListPage extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      Positioned(
+                      const Positioned(
                         top: 8,
                         right: 8,
                         child: CircleAvatar(
@@ -101,14 +101,14 @@ class FavoritesListPage extends StatelessWidget {
                         bottom: 8,
                         left: 8,
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: Colors.orange,
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             "\$${item['price'].toStringAsFixed(2)}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -122,7 +122,7 @@ class FavoritesListPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),
                     child: Text(
                       item['title'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
@@ -134,13 +134,13 @@ class FavoritesListPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Row(
                       children: [
-                        Icon(Icons.star, color: Colors.orange, size: 14),
-                        SizedBox(width: 4),
+                        const Icon(Icons.star, color: Colors.orange, size: 14),
+                        const SizedBox(width: 4),
                         Text(
                           item['rating'].toString(),
                           style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Icon(Icons.shopping_cart_outlined, size: 16, color: Colors.grey[700]),
                       ],
                     ),

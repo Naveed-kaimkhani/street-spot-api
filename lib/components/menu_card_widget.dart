@@ -1,12 +1,12 @@
+import 'dart:developer';
 import 'package:StreetSpot/constants/api_endpoints.dart';
-import 'package:StreetSpot/model/dashboard_model.dart';
 import 'package:StreetSpot/model/menu_item.dart';
 import 'package:StreetSpot/views/user/detailpage.dart';
+import 'package:StreetSpot/views/user/products_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MenuCardWidget extends StatelessWidget {
@@ -19,11 +19,13 @@ class MenuCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return GestureDetector(
       onTap: () {
         // Get.offNamed(AppRouteName.DETAIL_SCREEN_ROUTE);
 
-Get.to(() => BurgerDetailsPage(menuItem: item));
+        // Get.to(() => BurgerDetailsPage(menuItem: item));
+     
       },
       child: Padding(
         padding: EdgeInsets.only(bottom: 10.h),

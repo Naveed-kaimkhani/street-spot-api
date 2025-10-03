@@ -34,22 +34,14 @@ class ProductCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              // Container(
-              //   height: 100.h,
-              //   width: double.infinity,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.vertical(
-              //         top: Radius.circular(8.r)),
-              //     image: DecorationImage(
-              //       image: AssetImage(product.imageUrl),
-              //       fit: BoxFit.cover,
-              //     ),
-              //   ),
-              // ),
+            
+            
 
               Container(
-                height: 100.h,
-                width: double.infinity,
+                height: 100.h,     
+               constraints: BoxConstraints(
+        maxWidth: 200.w, // ✅ safe max width (GridView/ListView ke andar safe)
+      ),
                 decoration: BoxDecoration(
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(8.r)),
