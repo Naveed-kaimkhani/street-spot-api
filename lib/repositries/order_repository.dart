@@ -53,7 +53,8 @@ Future<void> fetchAllOrders({
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body);
-
+      log("Fetch Orders Response:");
+log(data.toString());
       if (data['success'] == true) {
         final List ordersJson = data['data']['orders'] ?? [];
         final orders = ordersJson.map((e) => OrderModel.fromJson(e)).toList();

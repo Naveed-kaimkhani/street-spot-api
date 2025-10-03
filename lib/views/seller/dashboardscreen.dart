@@ -27,38 +27,6 @@ Get.find<DashboardController>();
 
   final UserController userController = Get.put(UserController());
 
-  // final List<Map<String, String>> _products = [
-  //   {
-  //     'name': 'Broast',
-  //     'category': 'Tacos',
-  //     'image': 'assets/images/broast.png',
-  //     'type': 'new'
-  //   },
-  //   {
-  //     'name': 'Cold Drinks',
-  //     'category': 'Pepsi',
-  //     'image': 'assets/images/coldrinks.png',
-  //     'type': 'simple'
-  //   },
-  //   {
-  //     'name': 'Desserts',
-  //     'category': 'Icecream',
-  //     'image': 'assets/images/desserts.png',
-  //     'type': 'simple'
-  //   },
-  //   {
-  //     'name': 'Burger',
-  //     'category': 'Burgers',
-  //     'image': 'assets/images/broast.png',
-  //     'type': 'new'
-  //   },
-  //   {
-  //     'name': 'Burger',
-  //     'category': 'Burgers',
-  //     'image': 'assets/images/broast.png',
-  //     'type': 'new'
-  //   },
-  // ];
 
   final List<SalesData> _chartData = [
     SalesData('Jan', 200),
@@ -76,10 +44,10 @@ Get.find<DashboardController>();
   @override
   void initState() {
     super.initState();
-    
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.fetchDashboard();
-    });
+     controller.fetchDashboard();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   controller.fetchDashboard();
+    // });
   }
   @override
   Widget build(BuildContext context) {
