@@ -53,8 +53,7 @@ Future<void> fetchAllOrders({
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body);
-      log("Fetch Orders Response:");
-log(data.toString());
+    
       if (data['success'] == true) {
         final List ordersJson = data['data']['orders'] ?? [];
         final orders = ordersJson.map((e) => OrderModel.fromJson(e)).toList();
@@ -84,8 +83,10 @@ Future<void> acceptOrder({
     final response = await _apiClient.put(
       url: ApiEndpoints.acceptOrder(orderId),
     );
+    log(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body);
+      log(data.toString());
       if (data['success'] == true) {
         onSuccess(data);
       } else {
