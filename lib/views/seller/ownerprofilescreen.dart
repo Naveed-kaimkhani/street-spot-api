@@ -643,7 +643,6 @@ class _TruckOwnerProfileScreenState extends State<TruckOwnerProfileScreen> {
                       AppSnackbar.error("Please add at least one weekly day");
                       return;
                     }
-                    print("lock");
                     controller.submitTruckInfo();
                   }
 

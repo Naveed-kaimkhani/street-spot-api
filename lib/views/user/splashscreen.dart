@@ -1,12 +1,6 @@
 import 'package:StreetSpot/binding/auth_binding.dart';
-import 'package:StreetSpot/binding/order_binding.dart';
 import 'package:StreetSpot/controller/user_controller.dart';
-import 'package:StreetSpot/routes/route_name.dart';
-import 'package:StreetSpot/views/order/order_screen.dart';
 import 'package:StreetSpot/views/selectionuserpage.dart';
-import 'package:StreetSpot/views/seller/sellerbottombar.dart';
-import 'package:StreetSpot/views/seller/sellerlogin.dart';
-import 'package:StreetSpot/views/user/detailpage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
@@ -37,9 +31,9 @@ class _SplashScreenState extends State<SplashScreen> {
           // Seller (Truck Owner)
           // Get.offAllNamed(AppRouteName.sellerbottomnavbar);
 
-          // Get.offAll(() => UserSellerPage(),binding: AuthBinding());
-
           Get.offAll(() => UserSellerPage(),binding: AuthBinding());
+
+          // Get.offAll(() => UserSellerPage(),binding: AuthBinding());
         } else {
           // Normal User
           // Get.offAllNamed(AppRouteName.bottomnavbar);

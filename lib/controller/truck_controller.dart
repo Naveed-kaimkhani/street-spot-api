@@ -71,7 +71,6 @@ class TruckController extends GetxController {
   void selectDay(String? day) {
     if (day != null && availableDays.contains(day)) {
       selectedDay.value = day;
-      
     }
   }
 
@@ -113,8 +112,7 @@ class TruckController extends GetxController {
       truck: truck,
       onSuccess: () {
         isLoading.value = false;
-        // Get.snackbar("Success", "Truck information added",
-        //     colorText: Colors.black);
+        dashboardController.fetchDashboard();
         AppSnackbar.success("Truck information added");
         Get.back();
       },
@@ -146,15 +144,14 @@ class TruckController extends GetxController {
       enableGpsTracking: enableManualLocation.value,
       weeklySchedule: weeklySchedules, // build list from your UI
     );
-    
+
     isLoading.value = true;
     truckRepo.addTruckInformation(
       truck: truck,
       onSuccess: () {
         isLoading.value = false;
         Get.back();
-        // Get.snackbar("Success", "Truck info saved successfully",
-        //     colorText: Colors.black);
+
         AppSnackbar.success("Truck info saved successfully");
       },
       onError: (message) {
