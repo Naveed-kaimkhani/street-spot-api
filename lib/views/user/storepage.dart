@@ -1,3 +1,4 @@
+import 'package:StreetSpot/components/category_card_widget.dart';
 import 'package:StreetSpot/components/days_card_widget.dart';
 import 'package:StreetSpot/components/menu_card_widget.dart';
 import 'package:StreetSpot/components/store_page_shimmer.dart';
@@ -31,41 +32,8 @@ class _StorePageState extends State<StorePage> {
 
   final bool isFollowing = false;
 
-  // Sample menu data (dynamic)
-  final List<Map<String, String>> menuItems = [
-    {
-      'image': 'assets/images/ordinaryburger.png',
-      'title': 'Classic Burger',
-      'subtitle': 'Juicy beef patty with cheese',
-      'price': '\$10.99',
-    },
-    {
-      'image': 'assets/images/burger2.png',
-      'title': 'Spicy Chicken Burger',
-      'subtitle': 'Spicy chicken with fresh veggies',
-      'price': '\$12.99',
-    },
-    {
-      'image': 'assets/images/ordinaryburger.png',
-      'title': 'Veggie Delight',
-      'subtitle': 'Vegan patty with organic toppings',
-      'price': '\$9.99',
-    },
-  ];
-
   // Sample location data
   final String location = '123 Food St, Austin TX';
-
-  // Sample schedule data
-  final Map<String, String> schedule = {
-    'Monday': '10:00 AM - 10:00 PM',
-    'Tuesday': '10:00 AM - 10:00 PM',
-    'Wednesday': '10:00 AM - 10:00 PM',
-    'Thursday': '10:00 AM - 10:00 PM',
-    'Friday': '10:00 AM - 11:00 PM',
-    'Saturday': '11:00 AM - 11:00 PM',
-    'Sunday': 'Closed',
-  };
 
   // Sample ratings data
   final double averageRating = 4.5;
@@ -80,6 +48,7 @@ class _StorePageState extends State<StorePage> {
     id = args['id'] as int;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchTruckInformation(id);
+      controller.fetchCategories(id); // New: Fetch categories on load
     });
   }
 
@@ -178,19 +147,42 @@ class _StorePageState extends State<StorePage> {
 
                       // Menu Section
                       Text(
-                        'Menu',
+                        'Menu Categories',
                         style: TextStyle(
                             fontSize: 18.sp, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10.h),
-                      ListView.builder(
+
+                      // ListView.builder(
+                      //   shrinkWrap: true,
+                      //   physics: const NeverScrollableScrollPhysics(),
+                      //   itemCount: controller.categories.length,
+                      //   itemBuilder: (context, index) {
+                      //     final item = controller.categories[index];
+                      //     return CategoryCardWidget(
+                      //       item: item,
+                      //       truckId: id,
+                      //     );
+                      //   },
+                      // ),
+
+                      GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        // itemCount: menuItems.length,
-                        itemCount: truck.menuItems!.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, // 2 items per row
+                          crossAxisSpacing: 12.w,
+                          mainAxisSpacing: 12.h,
+                          childAspectRatio:
+                              0.8, // Adjust based on your card design
+                        ),
+                        itemCount: controller.categories.length,
                         itemBuilder: (context, index) {
-                          final item = truck.menuItems![index];
-                          return MenuCardWidget(item: item);
+                          final item = controller.categories[index];
+                          return CategoryCardWidget(
+                            item: item,
+                            truckId: id,
+                          );
                         },
                       ),
                       SizedBox(height: 15.h),

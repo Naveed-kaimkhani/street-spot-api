@@ -8,30 +8,38 @@ class ApiEndpoints {
 
   static const forgotPassword = '$baseApiURL/auth/forgot-password';
 
-  static const  resetPassword = '$baseApiURL/auth/reset-password';
+  static const resetPassword = '$baseApiURL/auth/reset-password';
 
+  static const truckInformation = '$baseApiURL/truck-information/handler';
 
-  static const  truckInformation = '$baseApiURL/truck-information/handler';
+  static const dashboard =
+      '$baseApiURL/truck-information/dashboard?menu_items_limit=10';
+  static const logout = '$baseApiURL/auth/logout';
 
-   static const  dashboard = '$baseApiURL/truck-information/dashboard?menu_items_limit=10';
-   static const  logout = '$baseApiURL/auth/logout';
+  static const creatMenu = '$baseApiURL/menu/item/';
 
- 
-   static const  creatMenu = '$baseApiURL/menu/item/';
+  static const categories = '$baseApiURL/category';
 
-   static const  categories = '$baseApiURL/category';
+  static const image = '$baseApiURL/uploads/';
 
-   static const  image = '$baseApiURL/uploads/';
+  static const truckInformationPage = '$baseApiURL/truck-information/id';
+  static const truckInformationDashboard =
+      '$baseApiURL/truck-information/customer-dashboard?limit=10&filtration=';
 
+  static const createOrder = '$baseApiURL/orders/create';
 
-  static const  truckInformationPage = '$baseApiURL/truck-information/id';
-   static const  truckInformationDashboard = '$baseApiURL/truck-information/customer-dashboard?limit=10&filtration=';
-
-   static const  createOrder = '$baseApiURL/orders/create';
-
-static const  orders = '$baseApiURL/orders/all';
+  static const orders = '$baseApiURL/orders/all';
 
   static String acceptOrder(int id) => "$baseApiURL/orders/accept-order/$id";
 
-}
+  static String fetchCategoriesByTruckId(int id) =>
+      "$baseApiURL/category/truck/$id";
+  static String fetchMenuByCategoryId(int truckId, int categoryId) =>
+      "$baseApiURL/menu/item/category/$truckId/$categoryId";
 
+
+   static String updateOrder(int id) => "$baseApiURL/orders/update-order-status/$id";
+
+
+
+}

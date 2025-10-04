@@ -32,7 +32,7 @@ class Recommendation {
 }
 
 class BurgerDetailsPage extends StatefulWidget {
-  final MenuItem2 menuItem; // 👈 menu item passed in constructor
+  final MenuItem2 menuItem; 
   const BurgerDetailsPage({Key? key, required this.menuItem}) : super(key: key);
 
   @override

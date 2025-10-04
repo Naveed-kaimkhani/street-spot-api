@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:StreetSpot/components/dashboard_shimmer.dart';
 import 'package:StreetSpot/components/product_card.dart';
 import 'package:StreetSpot/controller/dashboard_controller.dart';
@@ -20,13 +18,9 @@ class Dashboardscreen extends StatefulWidget {
 }
 
 class _DashboardscreenState extends State<Dashboardscreen> {
-  
-  final DashboardController controller = 
-Get.find<DashboardController>();
-
+  final DashboardController controller = Get.find<DashboardController>();
 
   final UserController userController = Get.put(UserController());
-
 
   final List<SalesData> _chartData = [
     SalesData('Jan', 200),
@@ -41,14 +35,13 @@ Get.find<DashboardController>();
   void dispose() {
     super.dispose();
   }
+
   @override
   void initState() {
     super.initState();
-     controller.fetchDashboard();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   controller.fetchDashboard();
-    // });
+    controller.fetchDashboard();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,9 +49,7 @@ Get.find<DashboardController>();
       body: Obx(() {
         if (controller.isLoading.value) {
           return const DashboardShimmer(); // custom shimmer widget
-            
         }
-
         final data = controller.dashboardData.value;
         return SingleChildScrollView(
           padding: EdgeInsets.zero,
@@ -110,7 +101,7 @@ Get.find<DashboardController>();
                       ),
                       SizedBox(height: 12.h),
                       CustomText(
-                        text: userController.user.value!.name,
+                        text: userController.user.value?.name ?? "Guest User",
                         fontsize: 14.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -160,10 +151,16 @@ Get.find<DashboardController>();
                           fit: BoxFit.contain,
                         ),
                         SizedBox(width: 8.w),
+                        // CustomText(
+                        //   text:
+                        //       //  "${controller.dashboardData.value?.followersCount ?? 0} Followers",
+                        //       '${controller.dashboardData.value?.todaySales ?? 0} USD Daily Sales',
+                        //   fontsize: 12.sp,
+                        //   fontWeight: FontWeight.w400,
+                        //   color: Colors.black,
+                        // ),
                         CustomText(
-                          text:
-                              //  "${controller.dashboardData.value?.followersCount ?? 0} Followers",
-                              '${controller.dashboardData.value?.todaySales ?? 0} USD Daily Sales',
+                          text: '${data?.followersCount ?? 0} Followers',
                           fontsize: 12.sp,
                           fontWeight: FontWeight.w400,
                           color: Colors.black,
@@ -246,105 +243,11 @@ Get.find<DashboardController>();
                   ],
                 ),
               ),
-              // Popular Menu Items Horizontal ScrollView
+
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-              data!.popularMenuItems.isNotEmpty?       CustomText(
-                      text: 'Popular Menu Items',
-                      fontsize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ):SizedBox(),
-                    SizedBox(height: 12.h),
-                 data.popularMenuItems.isNotEmpty?   SizedBox(
-                      height: 120.h,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount:  data.popularMenuItems.length,
-                        itemBuilder: (context, index) {
-                          final product = data.popularMenuItems[index];
-                          return Padding(
-                            padding: EdgeInsets.only(
-                              right: 12.w,
-                              top: 8.h,
-                              bottom: 8.h,
-                              left: 4.w,
-                            ),
-                            child: Container(
-                              width: 100.w,
-                              height: 110.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16.r),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                                border: Border.all(
-                                    color: AppColors.klineargradient1,
-                                    width: 1),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 70.h,
-                                    width: 70.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12.r),
-                                      image: DecorationImage(
-                                        image: AssetImage(product.imageUrl),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 8.h),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 8.w),
-                                    child: CustomText(
-                                      text: product.name,
-                                      fontsize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                      textAlign: TextAlign.center,
-                                      isLeftAlign: false,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4.h),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ):SizedBox()
-                  ],
-                ),
-              ),
-              // Products Grid or Empty Message
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child:  data.menuItems.isEmpty
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20.h),
-                        child: CustomText(
-                          text: "No menu items available",
-                          fontsize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey,
-                          textAlign: TextAlign.center,
-                          isLeftAlign: false,
-                        ),
-                      )
-                    : GridView.builder(
+                child: (data?.menuItems != null && data!.menuItems.isNotEmpty)
+                    ? GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -358,8 +261,20 @@ Get.find<DashboardController>();
                           final product = data.menuItems[index];
                           return ProductCard(product: product);
                         },
+                      )
+                    : Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.h),
+                        child: CustomText(
+                          text: "No menu items available",
+                          fontsize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,
+                          textAlign: TextAlign.center,
+                          isLeftAlign: false,
+                        ),
                       ),
               ),
+
               SizedBox(height: 24.h),
             ],
           ),

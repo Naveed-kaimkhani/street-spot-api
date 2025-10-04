@@ -11,7 +11,6 @@ class AuthRepository extends GetxController {
   final ApiClient apiClient;
   AuthRepository({required this.apiClient});
 
-
   final UserController userController = Get.find<UserController>();
 
   Future<void> registerUser({
@@ -20,11 +19,12 @@ class AuthRepository extends GetxController {
     required Function(String message) onError,
   }) async {
     try {
-      
-      final response =
-          await apiClient.signup(url: ApiEndpoints.signup,  
-          body: user.toJson(),
-);
+      final response = await apiClient.signup(
+        url: ApiEndpoints.signup,
+        body: user.toJson(),
+      );
+      log(response.body);
+      log(response.statusCode.toString());
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
@@ -55,7 +55,8 @@ class AuthRepository extends GetxController {
   Future<void> loginUser({
     required String email,
     required String password,
-    required void Function(UserModel user) onSuccess, // Updated to accept UserModel
+    required void Function(UserModel user)
+        onSuccess, // Updated to accept UserModel
     required Function(String message) onError,
   }) async {
     try {
@@ -72,7 +73,7 @@ class AuthRepository extends GetxController {
         if (responseData['success'] == true) {
           final data = responseData['data'];
           final token = data['access_token'];
-         
+
           final userData = data['user'];
 
           final user = UserModel.fromJson(userData);
@@ -88,7 +89,6 @@ class AuthRepository extends GetxController {
         onError(error['message'] ?? 'Login failed');
       }
     } catch (e) {
-    
       onError("An error occurred during login.");
     }
   }

@@ -31,11 +31,11 @@ class CustomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.favorite_rounded,
+            Icons.local_shipping,
             size: 22,
             color: selectedIndex == 1 ? Colors.orange : AppColors.inactive,
           ),
-          label: 'Favorites',
+          label: 'Orders',
         ),
         BottomNavigationBarItem(
           icon: Icon(

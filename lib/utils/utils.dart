@@ -7,49 +7,50 @@ import 'package:get/get.dart';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+
 class Utils {
- static Future<bool> checkInternetConnection() async {
-  final connectivityResults = await Connectivity().checkConnectivity();
+  static Future<bool> checkInternetConnection() async {
+    final connectivityResults = await Connectivity().checkConnectivity();
 
-  if (connectivityResults.contains(ConnectivityResult.none)) {
-    Get.snackbar(
-      "No Internet",
-      "Please check your connection and try again.",
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
-    return false;
-  }
-
-  return true;
-}
-
-static Future<Position> getTruckLocation() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    throw Exception('Location services are disabled.');
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      throw Exception('Location permissions are denied');
+    if (connectivityResults.contains(ConnectivityResult.none)) {
+      Get.snackbar(
+        "No Internet",
+        "Please check your connection and try again.",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return false;
     }
-  }
-  if (permission == LocationPermission.deniedForever) {
-    throw Exception('Location permissions are permanently denied.');
+
+    return true;
   }
 
-  return await Geolocator.getCurrentPosition(
-    desiredAccuracy: LocationAccuracy.high,
-  );
-}
+  static Future<Position> getTruckLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-static  Color getStatusColor(String status) {
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw Exception('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception('Location permissions are denied');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception('Location permissions are permanently denied.');
+    }
+
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+  }
+
+  static Color getStatusColor(String status) {
     switch (status) {
       case 'COMPLETED':
         return AppColors.greenColor;
@@ -61,6 +62,7 @@ static  Color getStatusColor(String status) {
         return AppColors.greyColor;
     }
   }
+
   static String getStatusText(String status) {
     switch (status) {
       case 'COMPLETED':
@@ -69,16 +71,40 @@ static  Color getStatusColor(String status) {
         return 'Preparing';
       case 'WAITING_APPROVAL':
         return 'Pending Approval';
+
+      case 'APPROVED':
+        return 'Approved';
+
       default:
         return status;
     }
   }
- static  String formatDate(String dateString) {
+
+  static String formatDate(String dateString) {
     try {
       final date = DateTime.parse(dateString).toLocal();
       return DateFormat('MMM dd, yyyy • hh:mm a').format(date);
     } catch (e) {
       return dateString;
+    }
+  }
+
+  static String getOriginalStatus(String displayText) {
+    switch (displayText) {
+      case 'Completed':
+        return 'COMPLETED';
+      case 'Preparing':
+        return 'PREPARING';
+      case 'Pending Approval':
+        return 'WAITING_APPROVAL';
+      case 'Approved':
+        return 'APPROVED';
+      case 'In Progress':
+        return 'PREPARED';
+      case 'Cancelled':
+        return 'RESTAURANT_CANCELLED';
+      default:
+        return displayText; // if it's already in backend format or unknown
     }
   }
 
